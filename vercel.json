@@ -1,0 +1,14 @@
+{
+  "redirects": [
+    {
+      "source": "/cv",
+      "destination": "https://github.com/donmutti/donmutti/blob/main/Dmitrii%20Petukhov%20%E2%80%93%20CV.pdf",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "destination": "https://github.com/donmutti/donmutti",
+      "permanent": false
+    }
+  ]
+}
