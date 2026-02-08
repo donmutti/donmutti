@@ -1,6 +1,6 @@
 ## Hey, I’m Dmitrii 👋  
 
-I leverage 20+ years of experience building long-lasting software systems – from high-growth startups to Amazon’s scale.
+I leverage 20+ years of experience building long-lasting software systems – from high-growth startups to Amazon's scale.
 My specialty is **business ontology and software architecture**, and my unique superpower is helping tech teams regain control over the complexity of their systems.
 
 Currently, I am building:
