@@ -12,7 +12,6 @@ Also thinking a lot about semantic modeling: describing systems as versioned gra
 
 **Building:**
 
-- [Paragrapher](https://paragrapher.ai) – an AI book translator for indie authors. Per-line quality scoring and glossary management. Currently translating a six-book hard sci-fi series.
-- [Plankton](https://plankton.build) – an AI landscape design tool for professional contractors. Terraces, decks, pergolas, and retaining walls. Generates CAD-ready plans and material lists.
+- [Paragrapher](https://paragrapher.ai) – an AI book translator for professional translators and indie authors. Per-line quality scoring and glossary management. In production with two authors, two books heading for publication.
 
 Happy to connect on [LinkedIn](https://linkedin.com/in/donmutti) or [X](https://x.com/donmutti0), or [hop on a short call](https://calendar.app.google/enz3DbqVSycBd6j47).
