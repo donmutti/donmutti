@@ -1,17 +1,21 @@
-## Hey, I’m Dmitrii 👋
+# Hey, I'm Dmitrii 👋
 
-I design and build distributed systems at scale. Industrial, telecom, fintech, and most recently eight years in retail at Amazon.
+I'm a software engineer and systems builder in Luxembourg. I spent most of my career on distributed systems across industrial, telecom, fintech, and retail, including eight years at Amazon.
 
-My thing is finding why engineering teams move slowly, and solving it. It's rarely poor architecture or dirty code. It's complexity debt, accumulated over years of success. Every successful system eventually outpaces the team's ability to coordinate it. Structural decay begins. Eventually nobody can change anything without breaking something else. I untangle that.
+Now I'm building two things:
 
-Also thinking a lot about semantic modeling: describing systems as versioned graphs of typed nodes, so tooling can reason about meaning instead of lines.
+**IncaTech** – an AI-first software company asking:
 
-**Shipped:**
+> What part of storytelling will remain scarce and valuable when competent stories, games, art, voices, code, and entire virtual productions become almost free to generate?
 
-- [Career Repo](https://github.com/donmutti/career-repo) – a job-hunt copilot that runs entirely on your machine, reads your inbox, scores opportunities, and drafts cover letters in your voice.
+**Go Indie** – a human-first platform and club for people building their way from employment to ownership, centered around the question:
 
-**Building:**
+> If employment disappeared tomorrow, what infrastructure would people need to live and work well?
 
-- [Paragrapher](https://paragrapher.ai) – an AI book translator for professional translators and indie authors. Per-line quality scoring and glossary management. In production with two authors, two books heading for publication.
+Shipped:
+- **Career Repo** – local-first career opportunity tracker and copilot.
+- **Paragrapher** – AI book translation tool for professional translators and indie authors.
 
-Happy to connect on [LinkedIn](https://linkedin.com/in/donmutti) or [X](https://x.com/donmutti0), or [hop on a short call](https://calendar.app.google/enz3DbqVSycBd6j47).
+I deeply care about system design, structural complexity, and semantic modeling.
+
+[LinkedIn](https://linkedin.com/in/donmutti) · [X](https://x.com/donmutti0) · [Book 30 min with Dmitrii](https://calendar.app.google/enz3DbqVSycBd6j47)
