@@ -6,6 +6,11 @@
       "permanent": true
     },
     {
+      "source": "/call",
+      "destination": "https://calendar.app.google/enz3DbqVSycBd6j47",
+      "permanent": false
+    },
+    {
       "source": "/",
       "destination": "https://github.com/donmutti/donmutti",
       "permanent": false
