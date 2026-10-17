@@ -18,4 +18,4 @@ Shipped:
 
 I deeply care about system design, structural complexity, and semantic modeling.
 
-[LinkedIn](https://linkedin.com/in/donmutti) · [X](https://x.com/donmutti0) · [Book 30 min with Dmitrii](https://calendar.app.google/enz3DbqVSycBd6j47)
+Happy to connect on [LinkedIn](https://linkedin.com/in/donmutti), [X](https://x.com/donmutti0), or [hop on a short call](https://calendar.app.google/enz3DbqVSycBd6j47)
