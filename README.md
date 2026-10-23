@@ -1,21 +1,13 @@
 # Hey, I'm Dmitrii 👋
 
-I'm a software engineer and systems builder in Luxembourg. I spent most of my career on distributed systems across industrial, telecom, fintech, and retail, including eight years at Amazon.
+Software engineer and systems builder in Luxembourg. Twenty years on distributed systems across industrial simulation, telecom, fintech and retail, including eight years at Amazon: 8 marketplace launches, 1,000+ services touched, 100M+ customers reached, two EU innovation awards. Now creating AI-native products end-to-end.
 
-Now I'm building two things:
-
-**IncaTech** – an AI-first software company asking:
-
-> What part of storytelling will remain scarce and valuable when competent stories, games, art, voices, code, and entire virtual productions become almost free to generate?
-
-**Go Indie** – a human-first platform and club for people building their way from employment to ownership, centered around the question:
-
-> If employment disappeared tomorrow, what infrastructure would people need to live and work well?
+Building:
+- **IncaTech** — an AI-first software company around storytelling.
+- **Go Indie** — a platform and club for people building their way from employment to ownership.
 
 Shipped:
-- **Career Repo** – local-first career opportunity tracker and copilot.
-- **Paragrapher** – AI book translation tool for professional translators and indie authors.
+- **Paragrapher** — translates a book to publish-ready quality in a language the author cannot read, and proves it line by line.
+- **Career Repo** — a career copilot that stays on your machine and becomes the single place that knows your entire professional history.
 
-I deeply care about system design, structural complexity, and semantic modeling.
-
-Happy to connect on [LinkedIn](https://linkedin.com/in/donmutti), [X](https://x.com/donmutti0), or [hop on a short call](https://calendar.app.google/enz3DbqVSycBd6j47)
+[LinkedIn](https://linkedin.com/in/donmutti) • [X](https://x.com/donmutti0) • [short call](https://calendar.app.google/enz3DbqVSycBd6j47)
