@@ -1,0 +1,39 @@
+# The event pages are static, so an event that has happened keeps showing as
+# upcoming until something re-renders them. Nothing does, on its own: Vercel
+# serves the committed HTML and there is no build step.
+#
+# So this re-runs the renderer every morning and commits the result if it
+# changed. The push is what deploys. Most days it changes nothing and the job
+# ends without a commit.
+name: Re-render events
+
+on:
+  schedule:
+    # 04:12 UTC. Not on the hour: GitHub drops scheduled runs when the minute
+    # is busy, and :00 is the busiest one there is.
+    - cron: "12 4 * * *"
+  workflow_dispatch:
+
+# Needed to push the commit back.
+permissions:
+  contents: write
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Re-render from events.json
+        run: python3 events/build.py
+
+      - name: Commit if anything moved
+        run: |
+          if git diff --quiet; then
+            echo "Nothing moved between upcoming and past."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -am "Re-render events for $(date -u +%-d\ %B\ %Y)"
+          git push
