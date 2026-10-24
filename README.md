@@ -1,6 +1,6 @@
 # Hey, I'm Dmitrii 👋
 
-Software engineer and systems builder in Luxembourg. Twenty years on distributed systems across industrial simulation, telecom, fintech and retail, including eight years at Amazon: 8 marketplace launches, 1,000+ services touched, 100M+ customers reached, two EU innovation awards. Now creating AI-native products end-to-end.
+Software engineer and community builder in Luxembourg. Twenty years on distributed systems across industrial simulation, telecom, fintech and retail, including eight years at Amazon: 8 marketplace launches, 1,000+ services touched, 100M+ customers reached, two EU innovation awards. Now creating AI-native products end-to-end.
 
 Building:
 - **IncaTech** — an AI-first software company around storytelling.
