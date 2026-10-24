@@ -22,6 +22,8 @@
   <link rel="preload" href="/assets/fonts/Raleway-800.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/assets/fonts/OpenSans-400.woff2" as="font" type="font/woff2" crossorigin>
 
+  <link rel="stylesheet" href="/assets/event-card.css">
+
   <style>
     @font-face {
       font-family: 'Raleway';
@@ -134,86 +136,19 @@
       color: #8d97a8;
     }
 
-    .next-meetup {
-      display: block;
-      border: 1px solid #263044;
-      border-radius: 6px;
-      padding: 20px 22px 22px;
-      margin: 0 0 44px;
-      transition: box-shadow 0.14s ease;
-    }
-
-    /* lighten on hover with a full-coverage inset, the way Paragrapher does it:
-       a wash over whatever colour sits underneath, rather than a new background. */
-    .next-meetup:hover {
-      box-shadow: inset 0 0 0 9999px rgba(255, 255, 255, 0.045);
-    }
-
-    .nm-head {
+    .sec-head {
       display: flex;
-      flex-wrap: wrap;
       align-items: baseline;
       justify-content: space-between;
-      gap: 10px 16px;
+      gap: 16px;
     }
 
-    .nm-label {
-      font-family: 'Raleway', system-ui, sans-serif;
-      font-weight: 700;
-      font-size: 11px;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: #6b7585;
-    }
-
-    .nm-kind {
-      display: inline-block;
-      padding: 3px 10px 4px;
-      border: 1px solid #2b3647;
-      border-radius: 999px;
-      color: #aab3c2;
-      font-size: 13px;
-      line-height: 1.3;
-      flex-shrink: 0;
-      white-space: nowrap;
-    }
-
-    .nm-title {
-      font-weight: 700;
-      color: #fff;
-      font-size: 18px;
-    }
-
-    .nm-when {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      color: #cbd2dd;
-      margin-top: 8px;
-    }
-
-    .nm-where {
-      display: flex;
-      align-items: center;
-      gap: 8px;
+    .sec-more {
       color: #8d97a8;
-      font-size: 15px;
-      margin-top: 4px;
-    }
-
-    .nm-ic {
-      width: 15px;
-      height: 15px;
+      white-space: nowrap;
       flex-shrink: 0;
-      color: #6b7585;
     }
 
-    .nm-link {
-      display: inline-block;
-      margin-top: 12px;
-      font-size: 15px;
-      color: #0186ff;
-    }
 
     .links {
       display: flex;
@@ -249,7 +184,6 @@
 
     <h1>Dmitrii Petukhov</h1>
 
-
     <nav class="links">
       <a href="https://github.com/donmutti">GitHub</a>
       <a href="https://linkedin.com/in/donmutti">LinkedIn</a>
@@ -263,16 +197,21 @@
     <p class="lede now">Now creating AI-native products end-to-end and organizing tech meetups.</p>
 
     <section>
-      <h2>Where to find me next</h2>
+      <div class="sec-head">
+        <h2>Where to find me next</h2>
+        <a class="sec-more src" href="/events/">See all events</a>
+      </div>
+<!-- next-event:start -->
       <div class="next-meetup">
         <div class="nm-head">
           <span class="nm-title">The Leap: From Employment to Ownership</span>
           <span class="nm-kind">Go Indie</span>
         </div>
-      <div class="nm-when"><svg class="nm-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg>26 November 2026, 18:00</div>
-      <div class="nm-where"><svg class="nm-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>Indie's, Luxembourg</div>
-          <a class="nm-link" href="https://www.meetup.com/goindie/">Details and RSVP on Meetup</a>
-      </a>
+        <div class="nm-when"><svg class="nm-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg>26 November 2026, 18:00</div>
+        <div class="nm-where"><svg class="nm-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>Indie's, Luxembourg</div>
+        <a class="nm-link" href="https://www.meetup.com/goindie/">Details and RSVP on Meetup<svg class="nm-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+      </div>
+<!-- next-event:end -->
     </section>
 
     <section>

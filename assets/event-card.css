@@ -1,0 +1,89 @@
+/* The event card, shared by the home page and /events/.
+   Both pages render it from events/build.py, so the markup and these
+   rules have to stay in step. Change it here, not in a page. */
+
+.next-meetup {
+  border: 1px solid #263044;
+  border-radius: 6px;
+  padding: 20px 22px 22px;
+  transition: box-shadow 0.14s ease;
+}
+
+/* lighten on hover with a full-coverage inset, the way Paragrapher does it:
+   a wash over whatever colour sits underneath, rather than a new background. */
+.next-meetup:hover {
+  box-shadow: inset 0 0 0 9999px rgba(255, 255, 255, 0.045);
+}
+
+.nm-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px 16px;
+}
+
+.nm-title {
+  font-weight: 700;
+  color: #fff;
+  font-size: 18px;
+}
+
+/* A label, so it never breaks: the row above wraps instead. */
+.nm-kind {
+  display: inline-block;
+  padding: 3px 10px 4px;
+  border: 1px solid #2b3647;
+  border-radius: 999px;
+  color: #aab3c2;
+  font-size: 13px;
+  line-height: 1.3;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.nm-when {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #cbd2dd;
+  margin-top: 8px;
+}
+
+.nm-where {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #8d97a8;
+  font-size: 15px;
+  margin-top: 4px;
+}
+
+.nm-ic {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  color: #6b7585;
+}
+
+.nm-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 12px;
+  font-size: 15px;
+  color: #0186ff;
+  text-decoration: none;
+}
+
+.nm-link:hover { text-decoration: underline; }
+
+.nm-arrow {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  margin-left: -3px;
+  transform: translateY(1.5px);
+}
+
+.nm-empty { color: #8d97a8; }
