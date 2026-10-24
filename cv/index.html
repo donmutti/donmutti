@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Dmitrii Petukhov — CV</title>
+<style>
+  @font-face {
+    font-family: 'Raleway';
+    src: url('../assets/fonts/Raleway-400.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: 'Raleway';
+    src: url('../assets/fonts/Raleway-700.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: 'Raleway';
+    src: url('../assets/fonts/Raleway-800.woff2') format('woff2');
+    font-weight: 800;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: 'Open Sans';
+    src: url('../assets/fonts/OpenSans-400.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: 'Open Sans';
+    src: url('../assets/fonts/OpenSans-700.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 595.92pt;
+    height: 842.88pt;
+    background: #fff;
+    color: #3e3e3e;
+    font-family: 'Open Sans', sans-serif;
+  }
+
+  .page {
+    width: 595.92pt;
+    height: 842.88pt;
+    padding: 24pt 35.7pt 20pt 36.2pt;
+    position: relative;
+  }
+
+  h1.name {
+    font-family: 'Raleway', sans-serif;
+    font-weight: 800;
+    font-size: 24.1pt;
+    color: #000;
+    margin: 0;
+    line-height: 1.05;
+  }
+
+  .headline {
+    font-family: 'Raleway', sans-serif;
+    font-weight: 700;
+    font-size: 12.1pt;
+    color: #0186ff;
+    margin: 3pt 0 0 0;
+  }
+
+  .contact-row {
+    display: flex;
+    align-items: center;
+    gap: 5pt;
+    margin-top: 10pt;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 700;
+    font-size: 7.6pt;
+    color: #3e3e3e;
+  }
+  .contact-item { display: flex; align-items: center; gap: 3.5pt; }
+  .contact-item .ic { color: #656a6d; font-size: 8.5pt; line-height: 1; }
+
+  .columns {
+    display: flex;
+    margin-top: 10pt;
+    gap: 24pt;
+  }
+
+  .col-left { width: 300pt; }
+  .col-right { width: 200pt; }
+
+  .section-title {
+    font-family: 'Raleway', sans-serif;
+    font-weight: 700;
+    font-size: 12.7pt;
+    color: #000;
+    margin: 0 0 6pt 0;
+    padding-bottom: 3pt;
+    border-bottom: 1.9pt solid #000;
+  }
+
+  .col-right .section-title { border-bottom-color: #000; }
+
+  .entry { margin-bottom: 3pt; }
+  .entry:last-child { margin-bottom: 0; }
+
+  .entry-title {
+    font-family: 'Raleway', sans-serif;
+    font-weight: 400;
+    font-size: 10.8pt;
+    color: #3e3e3e;
+    margin: 0;
+  }
+
+  .entry-org {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 700;
+    font-size: 9.5pt;
+    color: #0186ff;
+    margin: 2pt 0 0 0;
+  }
+
+  .entry-dates {
+    display: flex;
+    align-items: center;
+    gap: 4pt;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
+    font-size: 7.6pt;
+    color: #3e3e3e;
+    margin: 2pt 0 2.5pt 0;
+  }
+  .entry-dates .ic { color: #656a6d; font-size: 7.4pt; }
+
+  ul.bullets {
+    margin: 0;
+    padding: 0 0 0 10pt;
+    list-style: none;
+  }
+  ul.bullets li {
+    position: relative;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
+    font-size: 8.2pt;
+    color: #3e3e3e;
+    line-height: 1.3;
+    margin-bottom: 1.5pt;
+    padding-left: 2pt;
+  }
+  ul.bullets li::before {
+    content: "•";
+    position: absolute;
+    left: -10pt;
+    color: #3e3e3e;
+  }
+  ul.bullets li:last-child { margin-bottom: 0; }
+
+  .divider {
+    border: none;
+    border-top: 0.7pt solid #cccccc;
+    margin: 3.5pt 0;
+  }
+
+  .section-block { margin-bottom: 8pt; }
+  .section-block:last-child { margin-bottom: 0; }
+
+  /* SUMMARY */
+  .summary-text {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
+    font-size: 8.2pt;
+    line-height: 1.42;
+    color: #3e3e3e;
+    margin: 0;
+  }
+
+  /* SKILLS */
+  .skill-group { margin-bottom: 8pt; }
+  .skill-group:last-child { margin-bottom: 0; }
+  .skill-name {
+    font-family: 'Raleway', sans-serif;
+    font-weight: 700;
+    font-size: 9.5pt;
+    color: #0186ff;
+    margin: 0 0 3pt 0;
+  }
+  .skill-list {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
+    font-size: 8.9pt;
+    line-height: 1.36;
+    color: #3e3e3e;
+    margin: 0;
+  }
+
+  /* PERSONAL TENETS */
+  .tenet {
+    display: flex;
+    align-items: flex-start;
+    gap: 8pt;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
+    font-size: 8.2pt;
+    color: #3e3e3e;
+    padding: 3.5pt 0;
+  }
+  .tenet .ic { color: #0186ff; font-size: 12pt; line-height: 1; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <h1 class="name">Dmitrii Petukhov</h1>
+  <div class="headline">Senior/Lead Software Engineer – Java, AWS, AI</div>
+
+  <div class="contact-row">
+    <span class="contact-item"><span class="ic">&#9742;</span>+352 621 792 638</span>
+    <span class="contact-item"><span class="ic">&#9993;</span>donmutti@gmail.com</span>
+    <span class="contact-item"><span class="ic">&#128279;</span>linkedin.com/in/donmutti</span>
+    <span class="contact-item"><span class="ic">&#128279;</span>github.com/donmutti</span>
+    <span class="contact-item"><span class="ic">&#128205;</span>Luxembourg</span>
+  </div>
+
+  <div class="columns">
+    <div class="col-left">
+      <div class="section-title">EXPERIENCE</div>
+
+      <div class="entry">
+        <div class="entry-title">Independent Engineer</div>
+        <div class="entry-org">Self-employed</div>
+        <div class="entry-dates"><span class="ic">&#128197;</span>02/2026 - Present</div>
+        <ul class="bullets">
+          <li>Paragrapher (paragrapher.ai): AI book translator, in production with two authors. Sole engineer: domain, REST API, React frontend, infrastructure as code, 640+ tests. Java 21, Spring Boot 3, PostgreSQL, JOOQ, React, AWS CDK</li>
+          <li>Career Repo: open-source local-first job-hunt tool with agentic Gmail scanning and AI cover letter generation. Python, FastAPI, SQLite, React 19</li>
+        </ul>
+      </div>
+
+      <hr class="divider" />
+
+      <div class="entry">
+        <div class="entry-title">Software Development Engineer II (Lead Role)</div>
+        <div class="entry-org">Amazon</div>
+        <div class="entry-dates"><span class="ic">&#128197;</span>02/2018 - 02/2026</div>
+        <ul class="bullets">
+          <li>Supported 8 marketplace launches across EMEA and APAC, impacting 1,000+ services and enabling access for over 100 million new customers</li>
+          <li>Designed and delivered a dynamic configuration platform for 600+ services, reducing country launch coding effort from 50 engineer-weeks to one day</li>
+          <li>Introduced a meta-modeling technique adopted by 10+ teams, enhancing system clarity and coordination across development workstreams</li>
+          <li>Reduced operational incidents by 80% through enhanced monitoring, emergency automation, and production readiness reviews</li>
+          <li>Mentored 50+ engineers through workshops, design reviews, and 1:1 coaching, fostering productivity and technical growth</li>
+          <li>Honored with two Amazon EU awards for innovation and automation</li>
+        </ul>
+      </div>
+
+      <hr class="divider" />
+
+      <div class="entry">
+        <div class="entry-title">Senior Software Engineer</div>
+        <div class="entry-org">Upwork</div>
+        <div class="entry-dates"><span class="ic">&#128197;</span>02/2017 - 02/2018</div>
+        <ul class="bullets">
+          <li>Developed low-latency APIs in a 300+ microservice system, serving over 14 million clients on Upwork's web and mobile platforms</li>
+          <li>Increased deployment speed 15&times; by optimizing build scripts and tuning CI/CD pipelines</li>
+          <li>Accelerated new service creation down to one day via code-generated GraphQL schemas and declarative REST APIs</li>
+          <li>Established team-wide standards for 10+ mobile API services through Groovy-based configurations and scenario-driven integration tests</li>
+        </ul>
+      </div>
+
+      <hr class="divider" />
+
+      <div class="entry">
+        <div class="entry-title">Senior Software Engineer</div>
+        <div class="entry-org">ACI Worldwide</div>
+        <div class="entry-dates"><span class="ic">&#128197;</span>02/2015 - 02/2017</div>
+        <ul class="bullets">
+          <li>Developed payment solutions powering over 5,000 banks and billers</li>
+          <li>Refactored a large monolithic backend into modular services and modernized legacy UIs, enhancing maintainability and performance</li>
+          <li>Created a QA automation tool, reducing test data preparation time by 10x</li>
+          <li>Served as Certified Scrum Master for two agile teams, strengthening collaboration and delivery cadence</li>
+        </ul>
+      </div>
+
+      <div class="section-block" style="margin-top:8pt">
+        <div class="section-title">EDUCATION</div>
+        <div class="entry">
+          <div class="entry-title">Master's in Applied Mathematics and Computer Science</div>
+          <div class="entry-org">Kazan National Research Technical University</div>
+          <div class="entry-dates"><span class="ic">&#128197;</span>09/2002 - 06/2007</div>
+        </div>
+      </div>
+
+      <div class="section-block" style="margin-top:8pt">
+        <div class="section-title">PERSONAL TENETS</div>
+        <div class="tenet"><span class="ic">&#128142;</span>Business outcomes first</div>
+        <hr class="divider" style="margin:0" />
+        <div class="tenet"><span class="ic">&#128142;</span>There are no juniors&nbsp;&ndash;&nbsp;only those not trusted yet</div>
+        <hr class="divider" style="margin:0" />
+        <div class="tenet"><span class="ic">&#128142;</span>Know your tools&nbsp;&ndash;&nbsp;and their trade-offs</div>
+      </div>
+    </div>
+
+    <div class="col-right">
+      <div class="section-block">
+        <div class="section-title">SUMMARY</div>
+        <p class="summary-text">Senior/Lead Software Engineer with 20+ years building distributed systems across telecom, industry, fintech, and retail. Architected cloud-native microservices, low-code automation platforms, and developer tools. Led cross-team engineering initiatives, drove high-impact projects, and mentored 50+ engineers. Deeply experienced in agentic development flows. Focused on controlling complexity in large systems. Two EU-wide innovation awards. Co-organizer of Luxembourg's largest engineering community.</p>
+      </div>
+
+      <div class="section-block">
+        <div class="section-title">SKILLS</div>
+
+        <div class="skill-group">
+          <div class="skill-name">Backend</div>
+          <div class="skill-list">Java, Kotlin, Spring Boot, Spring AI, Spring Retry, Resilience4j, Ktor, Guice, Dagger, Quarkus, Micronaut, Keycloak, Consul, Testcontainers, LocalStack, JUnit, Mockito, Gradle, Maven</div>
+        </div>
+        <hr class="divider" />
+
+        <div class="skill-group">
+          <div class="skill-name">Frontend</div>
+          <div class="skill-list">TypeScript, React, TanStack, Radix UI, Tailwind, Axios, Vite, Astro, Vitest, Jest, Playwright</div>
+        </div>
+        <hr class="divider" />
+
+        <div class="skill-group">
+          <div class="skill-name">API &amp; Messaging</div>
+          <div class="skill-list">REST, GraphQL, gRPC, SSE, WebSockets, Kafka, Hermes, RabbitMQ, OpenAPI, AsyncAPI, Protobuf, JSON, JWT</div>
+        </div>
+        <hr class="divider" />
+
+        <div class="skill-group">
+          <div class="skill-name">Data &amp; Storage</div>
+          <div class="skill-list">PostgreSQL, Redis, Cassandra, MongoDB, Elasticsearch, Spark, SQL, JOOQ, Spring Data JPA, R2DBC, Flyway, Liquibase, Avro, Parquet</div>
+        </div>
+        <hr class="divider" />
+
+        <div class="skill-group">
+          <div class="skill-name">Cloud &amp; DevOps</div>
+          <div class="skill-list">AWS (ECS, Lambda, S3, RDS, DynamoDB, SQS, SNS, CloudWatch, CDK, CLI), Vercel, Upstash, Resend, Docker, Jenkins, GitHub Actions</div>
+        </div>
+        <hr class="divider" />
+
+        <div class="skill-group">
+          <div class="skill-name">Monitoring &amp; Reliability</div>
+          <div class="skill-list">Prometheus, OpenTelemetry, Grafana, Loki, ELK, Jaeger, Zipkin, Datadog, Dynatrace</div>
+        </div>
+        <hr class="divider" />
+
+        <div class="skill-group">
+          <div class="skill-name">AI &amp; LLM APIs</div>
+          <div class="skill-list">Anthropic API, xAI API, Gemini API, OpenAI API</div>
+        </div>
+        <hr class="divider" />
+
+        <div class="skill-group">
+          <div class="skill-name">Developer Tools</div>
+          <div class="skill-list">IntelliJ IDEA, Claude Code/Cowork/Routines, Codex, GitHub Copilot, Ollama, Python, uv, Jupyter, Git, Bash, iTerm2, Zellij, UML</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

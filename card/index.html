@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Dmitrii Petukhov — social card</title>
+<style>
+  @font-face {
+    font-family: 'Raleway';
+    src: url('../assets/fonts/Raleway-800.woff2') format('woff2');
+    font-weight: 800;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: 'Open Sans';
+    src: url('../assets/fonts/OpenSans-400.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 1200px;
+    height: 630px;
+  }
+
+  .card {
+    width: 1200px;
+    height: 630px;
+    padding: 72px 96px 64px;
+    background: #111827;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+  }
+
+  .portrait {
+    width: 132px;
+    height: 132px;
+    border-radius: 50%;
+    display: block;
+  }
+
+
+  h1 {
+    font-family: 'Raleway', sans-serif;
+    font-weight: 800;
+    font-size: 92px;
+    line-height: 1.05;
+    letter-spacing: -0.015em;
+    margin: 0 0 28px 0;
+  }
+
+  p {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
+    font-size: 33px;
+    line-height: 1.45;
+    color: #cbd2dd;
+    margin: 0;
+    max-width: 880px;
+  }
+
+
+  .domain {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
+    font-size: 28px;
+    color: #7a8496;
+    letter-spacing: 0.01em;
+  }
+
+  .body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: -24px;
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <img class="portrait" src="../assets/userpic.webp" width="132" height="132" alt="">
+
+    <div class="body">
+      <h1>Dmitrii Petukhov</h1>
+      <p>Creating AI-native products around storytelling, and infrastructure for moving from employment to ownership.</p>
+    </div>
+
+    <div class="domain">donmutti.com</div>
+  </div>
+</body>
+</html>
