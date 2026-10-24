@@ -71,13 +71,47 @@
       margin: 0 auto;
     }
 
+    .avatar {
+      position: relative;
+      width: 108px;
+      height: 108px;
+      margin-bottom: 32px;
+    }
+
+    .shades {
+      position: absolute;
+      left: 12px;
+      top: 44px;
+      width: 84px;
+      pointer-events: none;
+      opacity: 0;
+      transform: translateY(-52px);
+      transition: transform 0.36s cubic-bezier(0.3, 1.5, 0.55, 1), opacity 0.2s ease;
+    }
+
+    .avatar.is-on .shades {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .avatar.is-off .shades {
+      opacity: 0;
+      transform: translateY(74px);
+      transition: transform 0.28s cubic-bezier(0.5, 0, 0.9, 0.4), opacity 0.24s ease 0.04s;
+    }
+
+    .avatar.is-rewind .shades {
+      transition: none;
+    }
+
     .portrait {
       width: 108px;
       height: 108px;
       display: block;
-      margin-bottom: 32px;
       -webkit-mask-image: radial-gradient(circle closest-side at 50% 50%, #000 97%, rgba(0,0,0,0.5) 98.5%, transparent 100%);
       mask-image: radial-gradient(circle closest-side at 50% 50%, #000 97%, rgba(0,0,0,0.5) 98.5%, transparent 100%);
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
     }
 
     h1 {
@@ -90,10 +124,6 @@
       margin: 0 0 16px;
     }
 
-    /* Click the D and the name becomes the one the URLs use, and back again.
-       Both names sit in the same grid cell, so nothing reflows. The hidden one
-       is taken out of the text layer as well as made transparent: on opacity
-       alone, selecting the page would copy both names. */
     .name {
       display: inline-grid;
     }
@@ -104,16 +134,7 @@
       transition: opacity 0.26s ease;
     }
 
-    /* Only the initial is the handle. It carries the listener itself: marking
-       the rest pointer-events: none was not enough, because a click there
-       still fell through to the parent and toggled. */
-    .initial {
-      cursor: pointer;
-      -webkit-tap-highlight-color: transparent;
-    }
 
-    /* The name that is out of view: transparent, unclickable, unselectable.
-       visibility waits for the fade to finish before it hides. */
     .name-alias,
     .name.is-alias .name-given {
       opacity: 0;
@@ -122,7 +143,6 @@
       transition: opacity 0.26s ease, visibility 0s linear 0.26s;
     }
 
-    /* The name on show. */
     .name-given,
     .name.is-alias .name-alias {
       opacity: 1;
@@ -192,7 +212,6 @@
       flex-shrink: 0;
     }
 
-
     .links {
       display: flex;
       flex-wrap: wrap;
@@ -223,12 +242,49 @@
 </head>
 <body>
   <main>
-    <!-- Decorative: the name is in the heading beside it, so a screen reader
-         should skip the image rather than read the name twice. An empty alt
-         also keeps the name off the clipboard when the picture is copied. -->
-    <img class="portrait" src="/assets/userpic.webp" width="108" height="108" alt="">
+    <div class="avatar">
+      <img class="portrait" src="/assets/userpic.webp" width="108" height="108" alt="">
+      <svg class="shades" viewBox="0 0 26 5" fill="#17181c" shape-rendering="crispEdges" aria-hidden="true">
+        <rect x="0" y="0" width="26" height="1"/>
+        <rect x="0" y="1" width="2" height="1"/>
+        <rect x="2" y="1" width="1" height="1" fill="#fff"/>
+        <rect x="3" y="1" width="1" height="1"/>
+        <rect x="4" y="1" width="1" height="1" fill="#fff"/>
+        <rect x="5" y="1" width="7" height="1"/>
+        <rect x="14" y="1" width="2" height="2"/>
+        <rect x="16" y="1" width="1" height="1" fill="#fff"/>
+        <rect x="17" y="1" width="1" height="1"/>
+        <rect x="18" y="1" width="1" height="1" fill="#fff"/>
+        <rect x="19" y="1" width="7" height="1"/>
+        <rect x="1" y="2" width="2" height="1"/>
+        <rect x="3" y="2" width="1" height="1" fill="#fff"/>
+        <rect x="4" y="2" width="1" height="1"/>
+        <rect x="5" y="2" width="1" height="1" fill="#fff"/>
+        <rect x="6" y="2" width="6" height="1"/>
+        <rect x="16" y="2" width="1" height="3"/>
+        <rect x="17" y="2" width="1" height="1" fill="#fff"/>
+        <rect x="18" y="2" width="1" height="1"/>
+        <rect x="19" y="2" width="1" height="1" fill="#fff"/>
+        <rect x="20" y="2" width="5" height="1"/>
+        <rect x="2" y="3" width="2" height="1"/>
+        <rect x="4" y="3" width="1" height="1" fill="#fff"/>
+        <rect x="5" y="3" width="1" height="2"/>
+        <rect x="6" y="3" width="1" height="1" fill="#fff"/>
+        <rect x="7" y="3" width="4" height="1"/>
+        <rect x="15" y="3" width="1" height="1"/>
+        <rect x="17" y="3" width="1" height="2"/>
+        <rect x="18" y="3" width="1" height="1" fill="#fff"/>
+        <rect x="19" y="3" width="1" height="2"/>
+        <rect x="20" y="3" width="1" height="1" fill="#fff"/>
+        <rect x="21" y="3" width="3" height="1"/>
+        <rect x="3" y="4" width="2" height="1"/>
+        <rect x="6" y="4" width="4" height="1"/>
+        <rect x="18" y="4" width="1" height="1"/>
+        <rect x="20" y="4" width="3" height="1"/>
+      </svg>
+    </div>
 
-    <h1 class="name"><span class="name-given"><span class="initial">D</span>mitrii Petukhov</span></h1>
+    <h1 class="name"><span class="name-given">Dmitrii Petukhov</span></h1>
 
     <nav class="links">
       <a href="https://github.com/donmutti">GitHub</a>
@@ -292,34 +348,38 @@
 
   </main>
   <script>
-    // The D is the handle: click it and the name becomes the one the URLs use.
-    // Click again to go back.
     (function () {
       var name = document.querySelector('.name');
-      var given = name.querySelector('.name-given');
+      var portrait = document.querySelector('.portrait');
+      var avatar = portrait.parentElement;
 
-      // Built here rather than in the markup, so the page ships one name:
-      // the other would otherwise show up in search results and in the text
-      // any extractor pulls off the page.
       var alias = document.createElement('span');
       alias.className = 'name-alias';
       alias.setAttribute('aria-hidden', 'true');
-      alias.innerHTML = '<span class="initial">D</span>on Mutti \u{1F60E}';
+      alias.textContent = 'Don Mutti';
       name.appendChild(alias);
 
       function toggle() {
-        name.classList.toggle('is-alias');
+        var on = name.classList.toggle('is-alias');
+        if (on) {
+          avatar.classList.add('is-rewind');
+          avatar.classList.remove('is-off', 'is-on');
+          void avatar.offsetWidth;
+          avatar.classList.remove('is-rewind');
+          avatar.classList.add('is-on');
+        } else {
+          avatar.classList.remove('is-on');
+          avatar.classList.add('is-off');
+        }
       }
 
-      given.querySelector('.initial').addEventListener('click', toggle);
-      alias.querySelector('.initial').addEventListener('click', toggle);
+      portrait.addEventListener('click', toggle);
 
-      // Poking the D twice quickly is two toggles, not a word to select.
-      // Only the double-click's own selection is suppressed: dragging across
-      // the name, and selecting the whole page, still pick the letter up.
-      name.addEventListener('mousedown', function (e) {
+      function noDoubleClickSelect(e) {
         if (e.detail > 1) { e.preventDefault(); }
-      });
+      }
+
+      portrait.addEventListener('mousedown', noDoubleClickSelect);
     })();
   </script>
 </body>

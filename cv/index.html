@@ -4,10 +4,6 @@
 <meta charset="utf-8" />
 <title>Dmitrii Petukhov — CV</title>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-<!-- The two faces above the fold: the name and the body text. Relative, to
-     match the @font-face URLs below — an absolute path here would fetch the
-     same font twice, and would not resolve when Playwright renders the PDF
-     from the filesystem. -->
 <link rel="preload" href="../assets/fonts/Raleway-800.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="preload" href="../assets/fonts/OpenSans-400.woff2" as="font" type="font/woff2" crossorigin />
 <style>
@@ -52,11 +48,8 @@
     font-family: 'Open Sans', sans-serif;
   }
 
-  /* Hidden by default so it never reaches print or the PDF render;
-     the @media screen block below turns it back on. */
   .toolbar { display: none; }
 
-  /* Screen only: centre the sheet on a navy backdrop, show the toolbar. */
   @media screen {
     body {
       background: #111827;
@@ -232,7 +225,6 @@
   .section-block { margin-bottom: 8pt; }
   .section-block:last-child { margin-bottom: 0; }
 
-  /* SUMMARY */
   .summary-text {
     font-family: 'Open Sans', sans-serif;
     font-weight: 400;
@@ -242,7 +234,6 @@
     margin: 0;
   }
 
-  /* SKILLS */
   .skill-group { margin-bottom: 8pt; }
   .skill-group:last-child { margin-bottom: 0; }
   .skill-name {
@@ -261,7 +252,6 @@
     margin: 0;
   }
 
-  /* PERSONAL TENETS */
   .tenet {
     display: flex;
     align-items: flex-start;
