@@ -151,9 +151,10 @@
 
     .nm-head {
       display: flex;
+      flex-wrap: wrap;
       align-items: baseline;
       justify-content: space-between;
-      gap: 16px;
+      gap: 10px 16px;
     }
 
     .nm-label {
@@ -173,6 +174,8 @@
       color: #aab3c2;
       font-size: 13px;
       line-height: 1.3;
+      flex-shrink: 0;
+      white-space: nowrap;
     }
 
     .nm-title {
@@ -182,14 +185,27 @@
     }
 
     .nm-when {
+      display: flex;
+      align-items: center;
+      gap: 8px;
       color: #cbd2dd;
-      margin-top: 4px;
+      margin-top: 8px;
     }
 
     .nm-where {
+      display: flex;
+      align-items: center;
+      gap: 8px;
       color: #8d97a8;
       font-size: 15px;
-      margin-top: 2px;
+      margin-top: 4px;
+    }
+
+    .nm-ic {
+      width: 15px;
+      height: 15px;
+      flex-shrink: 0;
+      color: #6b7585;
     }
 
     .nm-link {
@@ -253,8 +269,8 @@
           <span class="nm-title">The Leap: From Employment to Ownership</span>
           <span class="nm-kind">Go Indie</span>
         </div>
-      <div class="nm-when">26 November 2026</div>
-      <div class="nm-where">Indie's, Luxembourg</div>
+      <div class="nm-when"><svg class="nm-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg>26 November 2026, 18:00</div>
+      <div class="nm-where"><svg class="nm-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>Indie's, Luxembourg</div>
           <a class="nm-link" href="https://www.meetup.com/goindie/">Details and RSVP on Meetup</a>
       </a>
     </section>
