@@ -10,4 +10,4 @@ Shipped:
 - **Paragrapher** — translates a book to publish-ready quality in a language the author cannot read, and proves it line by line.
 - **Career Repo** — a career copilot that stays on your machine and becomes the single place that knows your entire professional history.
 
-[Donmutti.com](https://donmutti.com) • [LinkedIn](https://linkedin.com/in/donmutti) • [X](https://x.com/donmutti0) • [short call](https://calendar.app.google/enz3DbqVSycBd6j47)
+[Donmutti.com](https://donmutti.com) • [LinkedIn](https://linkedin.com/in/donmutti) • [X](https://x.com/donmutti0) • [Short call](https://calendar.app.google/enz3DbqVSycBd6j47)
