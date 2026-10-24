@@ -116,18 +116,23 @@
     margin: 0;
   }
 
+  .entry-meta {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8pt;
+    margin: 2pt 0 0 0;
+  }
+
   .entry-org {
     font-family: 'Open Sans', sans-serif;
     font-weight: 700;
     font-size: 9.5pt;
     color: #0186ff;
-    margin: 2pt 0 0 0;
   }
 
   .entry-dates {
-    display: flex;
-    align-items: center;
-    gap: 4pt;
+    white-space: nowrap;
     font-family: 'Open Sans', sans-serif;
     font-weight: 400;
     font-size: 7.6pt;
@@ -218,11 +223,10 @@
   <div class="headline">Senior/Lead Software Engineer – Java, AWS, AI</div>
 
   <div class="contact-row">
-    <span class="contact-item"><span class="ic">&#9742;</span>+352 621 792 638</span>
-    <span class="contact-item"><span class="ic">&#9993;</span>donmutti@gmail.com</span>
-    <span class="contact-item"><span class="ic">&#128279;</span>linkedin.com/in/donmutti</span>
-    <span class="contact-item"><span class="ic">&#128279;</span>github.com/donmutti</span>
-    <span class="contact-item"><span class="ic">&#128205;</span>Luxembourg</span>
+    <span class="contact-item">donmutti@gmail.com</span>
+    <span class="contact-item"><span class="ic">&middot;</span>linkedin.com/in/donmutti</span>
+    <span class="contact-item"><span class="ic">&middot;</span>github.com/donmutti</span>
+    <span class="contact-item"><span class="ic">&middot;</span>Luxembourg</span>
   </div>
 
   <div class="columns">
@@ -231,11 +235,10 @@
 
       <div class="entry">
         <div class="entry-title">Independent Engineer</div>
-        <div class="entry-org">Self-employed</div>
-        <div class="entry-dates"><span class="ic">&#128197;</span>02/2026 - Present</div>
+        <div class="entry-meta"><span class="entry-org">Self-employed</span><span class="entry-dates">02/2026 - Present</span></div>
         <ul class="bullets">
-          <li>Paragrapher (paragrapher.ai): AI book translator, in production with two authors. Sole engineer: domain, REST API, React frontend, infrastructure as code, 640+ tests. Java 21, Spring Boot 3, PostgreSQL, JOOQ, React, AWS CDK</li>
-          <li>Career Repo: open-source local-first job-hunt tool with agentic Gmail scanning and AI cover letter generation. Python, FastAPI, SQLite, React 19</li>
+          <li>Paragrapher: AI book translator, in production with two authors. Sole engineer: domain, REST API, React frontend, infrastructure as code, 640+ tests</li>
+          <li>Career Repo: open-source local-first job-hunt tool with agentic Gmail scanning and AI cover letter generation</li>
         </ul>
       </div>
 
@@ -243,12 +246,10 @@
 
       <div class="entry">
         <div class="entry-title">Software Development Engineer II (Lead Role)</div>
-        <div class="entry-org">Amazon</div>
-        <div class="entry-dates"><span class="ic">&#128197;</span>02/2018 - 02/2026</div>
+        <div class="entry-meta"><span class="entry-org">Amazon</span><span class="entry-dates">02/2018 - 02/2026</span></div>
         <ul class="bullets">
           <li>Supported 8 marketplace launches across EMEA and APAC, impacting 1,000+ services and enabling access for over 100 million new customers</li>
           <li>Designed and delivered a dynamic configuration platform for 600+ services, reducing country launch coding effort from 50 engineer-weeks to one day</li>
-          <li>Introduced a meta-modeling technique adopted by 10+ teams, enhancing system clarity and coordination across development workstreams</li>
           <li>Reduced operational incidents by 80% through enhanced monitoring, emergency automation, and production readiness reviews</li>
           <li>Mentored 50+ engineers through workshops, design reviews, and 1:1 coaching, fostering productivity and technical growth</li>
           <li>Honored with two Amazon EU awards for innovation and automation</li>
@@ -259,8 +260,7 @@
 
       <div class="entry">
         <div class="entry-title">Senior Software Engineer</div>
-        <div class="entry-org">Upwork</div>
-        <div class="entry-dates"><span class="ic">&#128197;</span>02/2017 - 02/2018</div>
+        <div class="entry-meta"><span class="entry-org">Upwork</span><span class="entry-dates">02/2017 - 02/2018</span></div>
         <ul class="bullets">
           <li>Developed low-latency APIs in a 300+ microservice system, serving over 14 million clients on Upwork's web and mobile platforms</li>
           <li>Increased deployment speed 15&times; by optimizing build scripts and tuning CI/CD pipelines</li>
@@ -273,8 +273,7 @@
 
       <div class="entry">
         <div class="entry-title">Senior Software Engineer</div>
-        <div class="entry-org">ACI Worldwide</div>
-        <div class="entry-dates"><span class="ic">&#128197;</span>02/2015 - 02/2017</div>
+        <div class="entry-meta"><span class="entry-org">ACI Worldwide</span><span class="entry-dates">02/2015 - 02/2017</span></div>
         <ul class="bullets">
           <li>Developed payment solutions powering over 5,000 banks and billers</li>
           <li>Refactored a large monolithic backend into modular services and modernized legacy UIs, enhancing maintainability and performance</li>
@@ -287,18 +286,17 @@
         <div class="section-title">EDUCATION</div>
         <div class="entry">
           <div class="entry-title">Master's in Applied Mathematics and Computer Science</div>
-          <div class="entry-org">Kazan National Research Technical University</div>
-          <div class="entry-dates"><span class="ic">&#128197;</span>09/2002 - 06/2007</div>
+          <div class="entry-meta"><span class="entry-org">Kazan National Research Technical University</span><span class="entry-dates">09/2002 - 06/2007</span></div>
         </div>
       </div>
 
       <div class="section-block" style="margin-top:8pt">
         <div class="section-title">PERSONAL TENETS</div>
-        <div class="tenet"><span class="ic">&#128142;</span>Business outcomes first</div>
+        <div class="tenet"><span class="ic">&#9670;</span>Business outcomes first</div>
         <hr class="divider" style="margin:0" />
-        <div class="tenet"><span class="ic">&#128142;</span>There are no juniors&nbsp;&ndash;&nbsp;only those not trusted yet</div>
+        <div class="tenet"><span class="ic">&#9670;</span>There are no juniors, only those not trusted yet</div>
         <hr class="divider" style="margin:0" />
-        <div class="tenet"><span class="ic">&#128142;</span>Know your tools&nbsp;&ndash;&nbsp;and their trade-offs</div>
+        <div class="tenet"><span class="ic">&#9670;</span>Know your tools&nbsp;&ndash;&nbsp;and their trade-offs</div>
       </div>
     </div>
 
@@ -313,7 +311,7 @@
 
         <div class="skill-group">
           <div class="skill-name">Backend</div>
-          <div class="skill-list">Java, Kotlin, Spring Boot, Spring AI, Spring Retry, Resilience4j, Ktor, Guice, Dagger, Quarkus, Micronaut, Keycloak, Consul, Testcontainers, LocalStack, JUnit, Mockito, Gradle, Maven</div>
+          <div class="skill-list">Java, Kotlin, Spring Boot, Spring AI, Spring Retry, Resilience4j, Temporal, Ktor, Guice, Dagger, Quarkus, Micronaut, Keycloak, Consul, Testcontainers, LocalStack, JUnit, Mockito, Gradle, Maven</div>
         </div>
         <hr class="divider" />
 
