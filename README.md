@@ -4,7 +4,7 @@ Software engineer and community builder in Luxembourg. Twenty years on distribut
 
 Building:
 - **IncaTech** — an AI-first software company around storytelling.
-- **Go Indie** — a platform and club for people building their way from employment to ownership.
+- **Go Indie** — a community and a platform for people building their way from employment to ownership.
 
 Shipped:
 - **Paragrapher** — translates a book to publish-ready quality in a language the author cannot read, and proves it line by line.
