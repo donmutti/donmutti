@@ -1,7 +1,7 @@
 {
   "redirects": [
     {
-      "source": "/cv",
+      "source": "/cv/pdf",
       "destination": "/Dmitrii%20Petukhov%20%E2%80%93%20CV.pdf",
       "permanent": false
     },
