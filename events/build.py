@@ -3,6 +3,11 @@
 
 Both outputs are written between marker comments, so the surrounding
 hand-written HTML stays untouched.
+
+Whether an event is upcoming or past is derived from its dates, never stored:
+an event is past once its last day is behind the day this runs. That means the
+pages are only as current as the last build, so a scheduled rebuild keeps them
+honest.
 """
 import datetime
 import html
@@ -34,20 +39,61 @@ PIN_ICON = (
 )
 
 
+def parse(stamp):
+    """A date or a local timestamp with offset. Returns (date, time-or-None).
+
+    "2026-11-26"             -> an all-day event, no time to show
+    "2026-11-26T18:00:00+01:00" -> 18:00 at the venue, as written
+    """
+    if "T" not in stamp:
+        return datetime.date.fromisoformat(stamp), None
+    moment = datetime.datetime.fromisoformat(stamp)
+    return moment.date(), moment.strftime("%H:%M")
+
+
 def load():
     events = json.loads(EVENTS.read_text())
     for e in events:
-        e["_date"] = datetime.date.fromisoformat(e["date"])
+        e["_start"], e["_start_time"] = parse(e["start"])
+        if e.get("end"):
+            e["_end"], e["_end_time"] = parse(e["end"])
+        else:
+            e["_end"], e["_end_time"] = e["_start"], None
+        if e["_end"] < e["_start"]:
+            raise SystemExit(f"{e['title']}: end is before start")
     return events
 
 
 def when(event):
-    """26 November 2026, 18:00 — the time is optional."""
-    stamp = event["_date"].strftime("%-d %B %Y")
-    return f"{stamp}, {event['time']}" if event.get("time") else stamp
+    """The dates, then the times, in as few words as carry the meaning.
+
+    26 November 2026                 a day
+    26 November 2026, 18:00          an evening
+    26 November 2026, 18:00-21:00    an evening that ends
+    26-27 November 2026              two days in one month
+    30 November - 1 December 2026    two days across months
+    31 December 2026 - 1 January 2027  two days across years
+    """
+    start, end = event["_start"], event["_end"]
+    if start == end:
+        dates = start.strftime("%-d %B %Y")
+    elif (start.year, start.month) == (end.year, end.month):
+        dates = f"{start.day}-{end.strftime('%-d %B %Y')}"
+    elif start.year == end.year:
+        dates = f"{start.strftime('%-d %B')} - {end.strftime('%-d %B %Y')}"
+    else:
+        dates = f"{start.strftime('%-d %B %Y')} - {end.strftime('%-d %B %Y')}"
+
+    # A time range only reads as one when both ends are the same day.
+    opens, closes = event["_start_time"], event["_end_time"]
+    if opens and closes and start == end:
+        return f"{dates}, {opens}-{closes}"
+    if opens:
+        return f"{dates}, {opens}"
+    return dates
 
 
-def card(event, indent):
+def card(event, indent, past=False):
     """One event card. Identical markup on both pages."""
     pad = " " * indent
     esc = lambda key: html.escape(event[key], quote=False)
@@ -61,7 +107,7 @@ def card(event, indent):
         f'{pad}  <div class="nm-where">{PIN_ICON}{esc("venue")}</div>',
     ]
     if event.get("link"):
-        label = "Details and RSVP on Meetup" if event["status"] == "upcoming" else "See it on Meetup"
+        label = "See it on Meetup" if past else "Details and RSVP on Meetup"
         lines.append(f'{pad}  <a class="nm-link" href="{html.escape(event["link"])}">{label}{ARROW_ICON}</a>')
     lines.append(f"{pad}</div>")
     return "\n".join(lines)
@@ -80,8 +126,12 @@ def replace_block(path, name, body):
 
 def main():
     events = load()
-    upcoming = sorted([e for e in events if e["status"] == "upcoming"], key=lambda e: e["_date"])
-    past = sorted([e for e in events if e["status"] == "past"], key=lambda e: e["_date"], reverse=True)
+    today = datetime.date.today()
+
+    # Past once the last day is behind us: an event still shows as upcoming
+    # all through the day it happens, which is when people look it up.
+    upcoming = sorted([e for e in events if e["_end"] >= today], key=lambda e: e["_start"])
+    past = sorted([e for e in events if e["_end"] < today], key=lambda e: e["_start"], reverse=True)
 
     # Home: the next event only, or nothing at all.
     if upcoming:
@@ -97,7 +147,7 @@ def main():
         sections.extend(card(e, 6) for e in upcoming)
     if past:
         sections.append("      <h2>Past</h2>")
-        sections.extend(card(e, 6) for e in past)
+        sections.extend(card(e, 6, past=True) for e in past)
     if not sections:
         sections.append('      <p class="nm-empty">No events yet.</p>')
     replace_block(ARCHIVE, "all-events", "\n".join(sections))
