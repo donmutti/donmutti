@@ -146,6 +146,19 @@
     }
 
     a:hover { text-decoration: underline; }
+
+    a.src {
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 0.18em;
+      text-decoration-color: color-mix(in srgb, currentColor 45%, transparent);
+      transition: color 0.12s ease, text-decoration-color 0.12s ease;
+    }
+
+    a.src:hover {
+      color: #b4bdcb;
+      text-decoration-color: currentColor;
+    }
   </style>
 </head>
 <body>
