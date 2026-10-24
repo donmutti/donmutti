@@ -40,17 +40,69 @@
   html, body {
     margin: 0;
     padding: 0;
-    width: 595.92pt;
-    height: 842.88pt;
     background: #fff;
     color: #3e3e3e;
     font-family: 'Open Sans', sans-serif;
   }
 
+  /* Hidden by default so it never reaches print or the PDF render;
+     the @media screen block below turns it back on. */
+  .toolbar { display: none; }
+
+  /* Screen only: centre the sheet on a navy backdrop, show the toolbar. */
+  @media screen {
+    body {
+      background: #111827;
+      padding: 24px 16px 48px;
+    }
+
+    .page {
+      margin: 0 auto;
+      border-radius: 3px;
+      box-shadow: 0 2px 6px #00000040, 0 18px 48px #00000059;
+    }
+
+    .toolbar {
+      display: flex;
+      width: 595.92pt;
+      max-width: 100%;
+      margin: 0 auto 18px;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 13pt;
+    }
+
+    .toolbar a {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #8d97a8;
+      text-decoration: none;
+      transition: color 0.12s ease;
+    }
+
+    .toolbar-right {
+      display: inline-flex;
+      gap: 22px;
+    }
+
+    .toolbar svg {
+      width: 1.05em;
+      height: 1.05em;
+    }
+
+    .toolbar a:hover {
+      color: #0186ff;
+      text-decoration: underline;
+    }
+  }
+
   .page {
     width: 595.92pt;
     height: 842.88pt;
-    padding: 24pt 35.7pt 20pt 36.2pt;
+    background: #fff;
+    padding: 34pt 34.7pt 20pt 37.2pt;
     position: relative;
   }
 
@@ -86,7 +138,7 @@
 
   .columns {
     display: flex;
-    margin-top: 10pt;
+    margin-top: 18pt;
     gap: 24pt;
   }
 
@@ -217,6 +269,13 @@
 </style>
 </head>
 <body>
+<div class="toolbar">
+  <a href="/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>Back</a>
+  <span class="toolbar-right">
+    <a href="/Dmitrii%20Petukhov%20%E2%80%93%20CV.pdf" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg>Print PDF</a>
+    <a href="/Dmitrii%20Petukhov%20%E2%80%93%20CV.pdf" download="Dmitrii Petukhov &ndash; CV.pdf"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>Download PDF</a>
+  </span>
+</div>
 <div class="page">
 
   <h1 class="name">Dmitrii Petukhov</h1>
@@ -303,7 +362,7 @@
     <div class="col-right">
       <div class="section-block">
         <div class="section-title">SUMMARY</div>
-        <p class="summary-text">Senior/Lead Software Engineer with 20+ years building distributed systems across telecom, industry, fintech, and retail. Architected cloud-native microservices, low-code automation platforms, and developer tools. Led cross-team engineering initiatives, drove high-impact projects, and mentored 50+ engineers. Deeply experienced in agentic development flows. Focused on controlling complexity in large systems. Two EU-wide innovation awards. Co-organizer of Luxembourg's largest engineering community.</p>
+        <p class="summary-text">Senior/Lead Software Engineer with 20+ years building distributed systems across telecom, industry, fintech, and retail. Architected cloud-native microservices, low-code automation platforms, and developer tools. Led cross-team engineering initiatives, drove high-impact projects, and mentored 50+ engineers. Fluent in agentic development. Focused on controlling complexity in large systems. Two EU-wide innovation awards. Co-organizer of Luxembourg's largest engineering community.</p>
       </div>
 
       <div class="section-block">
@@ -335,7 +394,7 @@
 
         <div class="skill-group">
           <div class="skill-name">Cloud &amp; DevOps</div>
-          <div class="skill-list">AWS (ECS, Lambda, S3, RDS, DynamoDB, SQS, SNS, CloudWatch, CDK, CLI), Vercel, Upstash, Resend, Docker, Jenkins, GitHub Actions</div>
+          <div class="skill-list">AWS ECS, Lambda, S3, RDS, DynamoDB, SQS, SNS, CloudWatch, CDK, CLI. Vercel, Upstash, Resend, Docker, Jenkins, GitHub Actions</div>
         </div>
         <hr class="divider" />
 
@@ -353,7 +412,7 @@
 
         <div class="skill-group">
           <div class="skill-name">Developer Tools</div>
-          <div class="skill-list">IntelliJ IDEA, Claude Code/Cowork/Routines, Codex, GitHub Copilot, Ollama, Python, uv, Jupyter, Git, Bash, iTerm2, Zellij, UML</div>
+          <div class="skill-list">IntelliJ IDEA, Claude Code, Codex, GitHub Copilot, Ollama, Python, uv, Jupyter, Git, Bash, UML, BPMN</div>
         </div>
       </div>
     </div>
