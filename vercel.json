@@ -15,5 +15,16 @@
       "destination": "https://github.com/donmutti/donmutti",
       "permanent": false
     }
+  ],
+  "headers": [
+    {
+      "source": "/favicon.svg",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400, stale-while-revalidate=604800"
+        }
+      ]
+    }
   ]
 }
