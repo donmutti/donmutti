@@ -90,6 +90,47 @@
       margin: 0 0 16px;
     }
 
+    /* Click the D and the name becomes the one the URLs use, and back again.
+       Both names sit in the same grid cell, so nothing reflows. The hidden one
+       is taken out of the text layer as well as made transparent: on opacity
+       alone, selecting the page would copy both names. */
+    .name {
+      display: inline-grid;
+    }
+
+    .name-given,
+    .name-alias {
+      grid-area: 1 / 1;
+      transition: opacity 0.26s ease;
+    }
+
+    /* Only the initial is the handle. It carries the listener itself: marking
+       the rest pointer-events: none was not enough, because a click there
+       still fell through to the parent and toggled. */
+    .initial {
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* The name that is out of view: transparent, unclickable, unselectable.
+       visibility waits for the fade to finish before it hides. */
+    .name-alias,
+    .name.is-alias .name-given {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 0.26s ease, visibility 0s linear 0.26s;
+    }
+
+    /* The name on show. */
+    .name-given,
+    .name.is-alias .name-alias {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transition: opacity 0.26s ease, visibility 0s linear 0s;
+    }
+
     .lede {
       font-size: 19px;
       color: #e2e7ef;
@@ -182,9 +223,12 @@
 </head>
 <body>
   <main>
-    <img class="portrait" src="/assets/userpic.webp" width="108" height="108" alt="Dmitrii Petukhov">
+    <!-- Decorative: the name is in the heading beside it, so a screen reader
+         should skip the image rather than read the name twice. An empty alt
+         also keeps the name off the clipboard when the picture is copied. -->
+    <img class="portrait" src="/assets/userpic.webp" width="108" height="108" alt="">
 
-    <h1>Dmitrii Petukhov</h1>
+    <h1 class="name"><span class="name-given"><span class="initial">D</span>mitrii Petukhov</span></h1>
 
     <nav class="links">
       <a href="https://github.com/donmutti">GitHub</a>
@@ -247,5 +291,36 @@
     </section>
 
   </main>
+  <script>
+    // The D is the handle: click it and the name becomes the one the URLs use.
+    // Click again to go back.
+    (function () {
+      var name = document.querySelector('.name');
+      var given = name.querySelector('.name-given');
+
+      // Built here rather than in the markup, so the page ships one name:
+      // the other would otherwise show up in search results and in the text
+      // any extractor pulls off the page.
+      var alias = document.createElement('span');
+      alias.className = 'name-alias';
+      alias.setAttribute('aria-hidden', 'true');
+      alias.innerHTML = '<span class="initial">D</span>on Mutti \u{1F60E}';
+      name.appendChild(alias);
+
+      function toggle() {
+        name.classList.toggle('is-alias');
+      }
+
+      given.querySelector('.initial').addEventListener('click', toggle);
+      alias.querySelector('.initial').addEventListener('click', toggle);
+
+      // Poking the D twice quickly is two toggles, not a word to select.
+      // Only the double-click's own selection is suppressed: dragging across
+      // the name, and selecting the whole page, still pick the letter up.
+      name.addEventListener('mousedown', function (e) {
+        if (e.detail > 1) { e.preventDefault(); }
+      });
+    })();
+  </script>
 </body>
 </html>
