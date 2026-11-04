@@ -13,6 +13,6 @@ Shipped:
 Made for fun:
 - **Luxembourg City** – a GTA-style 3D game in real Luxembourg streets, drawn from OpenStreetMap data. Easter eggs are scattered on the map, find them all!
 - **Lava Jump** – a chicken crosses five levels of molten ground to rescue a cow.
-- **Telega** – a team Telegram bot (@GrokEbanutyiBot). Hang out in Двор Грока / Grok's Hood.
+- **Smart Telegram bot** – Сломаешь, с тебя пиво
 
 [Donmutti.com](https://donmutti.com) • [LinkedIn](https://linkedin.com/in/donmutti) • [X](https://x.com/donmutti0) • [30-min call](https://calendar.app.google/enz3DbqVSycBd6j47)
