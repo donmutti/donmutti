@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
-"""Render events.json into the home page panel and the events archive page.
+"""Render events.json into the English and Russian home and events pages.
 
-Both outputs are written between marker comments, so the surrounding
-hand-written HTML stays untouched.
+All four outputs are written between marker comments, so the surrounding
+hand-written HTML stays untouched. Titles, series and venues are copied as
+written in events.json. Russian pages get Russian month names and the
+surrounding labels; the English card text stays as it has been.
 
 Whether an event is upcoming or past is derived from its dates, never stored:
 an event is past once its last day is behind the day this runs. That means the
@@ -19,6 +21,25 @@ ROOT = pathlib.Path(__file__).parent.parent
 EVENTS = ROOT / "events.json"
 HOME = ROOT / "index.html"
 ARCHIVE = ROOT / "events" / "index.html"
+HOME_RU = ROOT / "ru" / "index.html"
+ARCHIVE_RU = ROOT / "ru" / "events" / "index.html"
+
+# Genitive month names, so the date does not depend on the machine locale.
+# The English dates stay on strftime, which is how they have always been formed.
+RU_MONTHS = (
+    "января",
+    "февраля",
+    "марта",
+    "апреля",
+    "мая",
+    "июня",
+    "июля",
+    "августа",
+    "сентября",
+    "октября",
+    "ноября",
+    "декабря",
+)
 
 CALENDAR_ICON = (
     '<svg class="nm-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" '
@@ -93,8 +114,35 @@ def when(event):
     return dates
 
 
-def card(event, indent, past=False):
-    """One event card. Identical markup on both pages."""
+def when_ru(event):
+    """The same date shapes as when(), with Russian month names."""
+    start, end = event["_start"], event["_end"]
+
+    def day_month(day, with_year):
+        month = RU_MONTHS[day.month - 1]
+        if with_year:
+            return f"{day.day} {month} {day.year}"
+        return f"{day.day} {month}"
+
+    if start == end:
+        dates = day_month(start, True)
+    elif (start.year, start.month) == (end.year, end.month):
+        dates = f"{start.day}-{end.day} {RU_MONTHS[end.month - 1]} {end.year}"
+    elif start.year == end.year:
+        dates = f"{day_month(start, False)} - {day_month(end, True)}"
+    else:
+        dates = f"{day_month(start, True)} - {day_month(end, True)}"
+
+    opens, closes = event["_start_time"], event["_end_time"]
+    if opens and closes and start == end:
+        return f"{dates}, {opens}-{closes}"
+    if opens:
+        return f"{dates}, {opens}"
+    return dates
+
+
+def card(event, indent, past=False, when_fn=when, rsvp="Details and RSVP on Meetup", seen="See it on Meetup"):
+    """One event card. The same markup on every page."""
     pad = " " * indent
     esc = lambda key: html.escape(event[key], quote=False)
     lines = [
@@ -103,11 +151,11 @@ def card(event, indent, past=False):
         f'{pad}    <span class="nm-title">{esc("title")}</span>',
         f'{pad}    <span class="nm-kind">{esc("series")}</span>',
         f'{pad}  </div>',
-        f'{pad}  <div class="nm-when">{CALENDAR_ICON}{html.escape(when(event), quote=False)}</div>',
+        f'{pad}  <div class="nm-when">{CALENDAR_ICON}{html.escape(when_fn(event), quote=False)}</div>',
         f'{pad}  <div class="nm-where">{PIN_ICON}{esc("venue")}</div>',
     ]
     if event.get("link"):
-        label = "See it on Meetup" if past else "Details and RSVP on Meetup"
+        label = seen if past else rsvp
         lines.append(f'{pad}  <a class="nm-link" href="{html.escape(event["link"])}">{label}{ARROW_ICON}</a>')
     lines.append(f"{pad}</div>")
     return "\n".join(lines)
@@ -124,6 +172,26 @@ def replace_block(path, name, body):
     path.write_text(pattern.sub(lambda m: m.group(1) + body + "\n" + m.group(2).lstrip("\n"), text))
 
 
+def fill(home, archive, upcoming, past, when_fn, upcoming_heading, past_heading, rsvp, seen, empty_next, empty_all):
+    """Write one language. home is the next event; archive is the full list."""
+    if upcoming:
+        home_body = card(upcoming[0], 6, when_fn=when_fn, rsvp=rsvp, seen=seen)
+    else:
+        home_body = f'      <p class="nm-empty">{empty_next}</p>'
+    replace_block(home, "next-event", home_body)
+
+    sections = []
+    if upcoming:
+        sections.append(f"      <h2>{upcoming_heading}</h2>")
+        sections.extend(card(e, 6, when_fn=when_fn, rsvp=rsvp, seen=seen) for e in upcoming)
+    if past:
+        sections.append(f"      <h2>{past_heading}</h2>")
+        sections.extend(card(e, 6, past=True, when_fn=when_fn, rsvp=rsvp, seen=seen) for e in past)
+    if not sections:
+        sections.append(f'      <p class="nm-empty">{empty_all}</p>')
+    replace_block(archive, "all-events", "\n".join(sections))
+
+
 def main():
     events = load()
     today = datetime.date.today()
@@ -133,26 +201,34 @@ def main():
     upcoming = sorted([e for e in events if e["_end"] >= today], key=lambda e: e["_start"])
     past = sorted([e for e in events if e["_end"] < today], key=lambda e: e["_start"], reverse=True)
 
-    # Home: the next event only, or nothing at all.
-    if upcoming:
-        home_body = card(upcoming[0], 6)
-    else:
-        home_body = '      <p class="nm-empty">Nothing scheduled right now.</p>'
-    replace_block(HOME, "next-event", home_body)
+    fill(
+        HOME,
+        ARCHIVE,
+        upcoming,
+        past,
+        when,
+        "Upcoming",
+        "Past",
+        "Details and RSVP on Meetup",
+        "See it on Meetup",
+        "Nothing scheduled right now.",
+        "No events yet.",
+    )
+    fill(
+        HOME_RU,
+        ARCHIVE_RU,
+        upcoming,
+        past,
+        when_ru,
+        "Ближайшие",
+        "Прошедшие",
+        "Подробности и регистрация на Meetup",
+        "Смотреть на Meetup",
+        "Сейчас ничего не запланировано.",
+        "Пока нет событий.",
+    )
 
-    # Archive: everything, upcoming first.
-    sections = []
-    if upcoming:
-        sections.append("      <h2>Upcoming</h2>")
-        sections.extend(card(e, 6) for e in upcoming)
-    if past:
-        sections.append("      <h2>Past</h2>")
-        sections.extend(card(e, 6, past=True) for e in past)
-    if not sections:
-        sections.append('      <p class="nm-empty">No events yet.</p>')
-    replace_block(ARCHIVE, "all-events", "\n".join(sections))
-
-    print(f"rendered {len(upcoming)} upcoming, {len(past)} past")
+    print(f"rendered {len(upcoming)} upcoming, {len(past)} past, en and ru")
 
 
 if __name__ == "__main__":
