@@ -7,6 +7,9 @@
   <title>Events — Dmitrii Petukhov</title>
   <meta name="description" content="Meetups and talks where you can find Dmitrii Petukhov.">
   <link rel="canonical" href="https://donmutti.com/events/">
+  <link rel="alternate" hreflang="en" href="https://donmutti.com/events/">
+  <link rel="alternate" hreflang="ru" href="https://donmutti.com/ru/events/">
+  <link rel="alternate" hreflang="x-default" href="https://donmutti.com/events/">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 
   <meta property="og:type" content="website">
@@ -16,6 +19,7 @@
   <meta property="og:image" content="https://donmutti.com/card.png">
 
   <link rel="stylesheet" href="/assets/event-card.css">
+  <link rel="stylesheet" href="/assets/lang.css">
 
   <style>
     @font-face {
@@ -49,7 +53,7 @@
 
     body {
       margin: 0;
-      padding: 32px 24px 96px;
+      padding: max(72px, calc(env(safe-area-inset-top) + 3.25rem)) max(24px, env(safe-area-inset-right)) 96px max(24px, env(safe-area-inset-left));
       background: #111827;
       color: #cbd2dd;
       font-family: 'Open Sans', system-ui, sans-serif;
@@ -124,6 +128,10 @@
   <script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
+  <nav class="lang" aria-label="Language">
+    <a href="/events/" hreflang="en" lang="en" aria-current="page">EN</a>
+    <a href="/ru/events/" hreflang="ru" lang="ru">RU</a>
+  </nav>
   <main>
     <nav class="toolbar">
       <a href="/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>Back</a>

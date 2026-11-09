@@ -1,0 +1,40 @@
+/* Language switch. The pages reserve a top band so this never covers content. */
+
+.lang {
+  position: fixed;
+  z-index: 2;
+  top: max(10px, env(safe-area-inset-top));
+  right: max(12px, env(safe-area-inset-right));
+  display: flex;
+  padding: 2px;
+  border: 1px solid #2b3647;
+  border-radius: 999px;
+  background: #111827;
+  font-family: 'Open Sans', system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.04em;
+}
+
+.lang a {
+  color: #8d97a8;
+  text-decoration: none;
+  padding: 4px 9px 5px;
+  border-radius: 999px;
+}
+
+.lang a[aria-current="page"] {
+  color: #fff;
+  background: #1c2536;
+}
+
+.lang a:hover {
+  color: #cbd2dd;
+  text-decoration: none;
+}
+
+.lang a:focus-visible {
+  outline: 2px solid #0186ff;
+  outline-offset: 2px;
+}

@@ -7,6 +7,9 @@
   <title>Dmitrii Petukhov</title>
   <meta name="description" content="Creating AI-native products around storytelling, and infrastructure for moving from employment to ownership.">
   <link rel="canonical" href="https://donmutti.com/">
+  <link rel="alternate" hreflang="en" href="https://donmutti.com/">
+  <link rel="alternate" hreflang="ru" href="https://donmutti.com/ru/">
+  <link rel="alternate" hreflang="x-default" href="https://donmutti.com/">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 
   <meta property="og:type" content="website">
@@ -25,6 +28,7 @@
   <link rel="preload" href="/assets/fonts/OpenSans-700.woff2" as="font" type="font/woff2" crossorigin>
 
   <link rel="stylesheet" href="/assets/event-card.css">
+  <link rel="stylesheet" href="/assets/lang.css">
 
   <style>
     @font-face {
@@ -58,7 +62,7 @@
 
     body {
       margin: 0;
-      padding: 72px 24px 96px;
+      padding: max(72px, calc(env(safe-area-inset-top) + 3.25rem)) max(24px, env(safe-area-inset-right)) 96px max(24px, env(safe-area-inset-left));
       background: #111827;
       color: #cbd2dd;
       font-family: 'Open Sans', system-ui, sans-serif;
@@ -203,6 +207,7 @@
       display: flex;
       align-items: baseline;
       justify-content: space-between;
+      flex-wrap: wrap;
       gap: 16px;
     }
 
@@ -246,6 +251,10 @@
   <script defer src="/_vercel/web-analytics/script.js"></script>
 </head>
 <body>
+  <nav class="lang" aria-label="Language">
+    <a href="/" hreflang="en" lang="en" aria-current="page">EN</a>
+    <a href="/ru/" hreflang="ru" lang="ru">RU</a>
+  </nav>
   <main>
     <div class="avatar">
       <img class="portrait" src="/assets/userpic.webp" width="108" height="108" alt="">

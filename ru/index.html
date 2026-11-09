@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Dmitrii Petukhov</title>
+  <meta name="description" content="Создаю продукты с ИИ для работы с историями. Развиваю сообщество и платформу для тех, кто хочет начать своё дело.">
+  <link rel="canonical" href="https://donmutti.com/ru/">
+  <link rel="alternate" hreflang="en" href="https://donmutti.com/">
+  <link rel="alternate" hreflang="ru" href="https://donmutti.com/ru/">
+  <link rel="alternate" hreflang="x-default" href="https://donmutti.com/">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://donmutti.com/ru/">
+  <meta property="og:title" content="Dmitrii Petukhov">
+  <meta property="og:description" content="Создаю продукты с ИИ для работы с историями. Развиваю сообщество и платформу для тех, кто хочет начать своё дело.">
+  <meta property="og:locale" content="ru_RU">
+  <meta property="og:image" content="https://donmutti.com/card.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Dmitrii Petukhov">
+  <meta name="twitter:description" content="Создаю продукты с ИИ для работы с историями. Развиваю сообщество и платформу для тех, кто хочет начать своё дело.">
+
+  <link rel="preload" href="/assets/fonts/Raleway-800.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/OpenSans-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/Raleway-700.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/OpenSans-700.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/DisplayCyr-800.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/OpenSans-400-cyr.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/DisplayCyr-700.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/OpenSans-700-cyr.woff2" as="font" type="font/woff2" crossorigin>
+
+  <link rel="stylesheet" href="/assets/event-card.css">
+  <link rel="stylesheet" href="/assets/lang.css">
+
+  <style>
+    @font-face {
+      font-family: 'Raleway';
+      src: url('/assets/fonts/Raleway-800.woff2') format('woff2');
+      font-weight: 800;
+      font-display: block;
+    }
+    @font-face {
+      font-family: 'Raleway';
+      src: url('/assets/fonts/Raleway-700.woff2') format('woff2');
+      font-weight: 700;
+      font-display: block;
+    }
+    @font-face {
+      font-family: 'Open Sans';
+      src: url('/assets/fonts/OpenSans-400.woff2') format('woff2');
+      font-weight: 400;
+      font-display: block;
+    }
+    @font-face {
+      font-family: 'Open Sans';
+      src: url('/assets/fonts/OpenSans-700.woff2') format('woff2');
+      font-weight: 700;
+      font-display: block;
+    }
+    @font-face {
+      font-family: 'Raleway';
+      src: url('/assets/fonts/DisplayCyr-800.woff2') format('woff2');
+      font-weight: 800;
+      font-display: block;
+      unicode-range: U+0400-045F;
+    }
+    @font-face {
+      font-family: 'Raleway';
+      src: url('/assets/fonts/DisplayCyr-700.woff2') format('woff2');
+      font-weight: 700;
+      font-display: block;
+      unicode-range: U+0400-045F;
+    }
+    @font-face {
+      font-family: 'Open Sans';
+      src: url('/assets/fonts/OpenSans-400-cyr.woff2') format('woff2');
+      font-weight: 400;
+      font-display: block;
+      unicode-range: U+0400-045F;
+    }
+    @font-face {
+      font-family: 'Open Sans';
+      src: url('/assets/fonts/OpenSans-700-cyr.woff2') format('woff2');
+      font-weight: 700;
+      font-display: block;
+      unicode-range: U+0400-045F;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { -webkit-text-size-adjust: 100%; }
+
+    body {
+      margin: 0;
+      padding: max(72px, calc(env(safe-area-inset-top) + 3.25rem)) max(24px, env(safe-area-inset-right)) 96px max(24px, env(safe-area-inset-left));
+      background: #111827;
+      color: #cbd2dd;
+      font-family: 'Open Sans', system-ui, sans-serif;
+      font-size: 17px;
+      line-height: 1.65;
+    }
+
+    main {
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .avatar {
+      position: relative;
+      width: 108px;
+      height: 108px;
+      margin-bottom: 32px;
+    }
+
+    .shades {
+      position: absolute;
+      left: 12px;
+      top: 44px;
+      width: 84px;
+      pointer-events: none;
+      opacity: 0;
+      transform: translateY(-52px);
+      transition: transform 0.36s cubic-bezier(0.3, 1.5, 0.55, 1), opacity 0.2s ease;
+    }
+
+    .avatar.is-on .shades {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .avatar.is-off .shades {
+      opacity: 0;
+      transform: translateY(74px);
+      transition: transform 0.28s cubic-bezier(0.5, 0, 0.9, 0.4), opacity 0.24s ease 0.04s;
+    }
+
+    .avatar.is-rewind .shades {
+      transition: none;
+    }
+
+    .portrait {
+      width: 108px;
+      height: 108px;
+      display: block;
+      -webkit-mask-image: radial-gradient(circle closest-side at 50% 50%, #000 97%, rgba(0,0,0,0.5) 98.5%, transparent 100%);
+      mask-image: radial-gradient(circle closest-side at 50% 50%, #000 97%, rgba(0,0,0,0.5) 98.5%, transparent 100%);
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    h1 {
+      font-family: 'Raleway', system-ui, sans-serif;
+      font-weight: 800;
+      font-size: clamp(38px, 8vw, 54px);
+      line-height: 1.05;
+      letter-spacing: -0.015em;
+      color: #fff;
+      margin: 0 0 16px;
+    }
+
+    .name {
+      display: inline-grid;
+    }
+
+    .name-given,
+    .name-alias {
+      grid-area: 1 / 1;
+      transition: opacity 0.26s ease;
+    }
+
+
+    .name-alias,
+    .name.is-alias .name-given {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 0.26s ease, visibility 0s linear 0.26s;
+    }
+
+    .name-given,
+    .name.is-alias .name-alias {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transition: opacity 0.26s ease, visibility 0s linear 0s;
+    }
+
+    .lede {
+      font-size: 19px;
+      color: #e2e7ef;
+      margin: 0 0 44px;
+    }
+
+    .now {
+      margin-top: -26px;
+      margin-bottom: 44px;
+    }
+
+    h2 {
+      font-family: 'Raleway', system-ui, sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #6b7585;
+      margin: 0 0 16px;
+    }
+
+    section { margin-bottom: 40px; }
+
+    dl { margin: 0; }
+
+    dt {
+      font-weight: 700;
+      color: #fff;
+      margin-top: 18px;
+    }
+
+    dt:first-child { margin-top: 0; }
+
+    dd {
+      margin: 2px 0 0;
+      color: #aab3c2;
+    }
+
+    .sep {
+      color: #4a5465;
+      font-weight: 400;
+    }
+
+    .src {
+      font-weight: 400;
+      color: #8d97a8;
+    }
+
+    .sec-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .sec-more {
+      color: #8d97a8;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 24px;
+      margin-bottom: 32px;
+    }
+
+    a {
+      color: #0186ff;
+      text-decoration: none;
+    }
+
+    a:hover { text-decoration: underline; }
+
+    a.src {
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 0.18em;
+      text-decoration-color: color-mix(in srgb, currentColor 45%, transparent);
+      transition: color 0.12s ease, text-decoration-color 0.12s ease;
+    }
+
+    a.src:hover {
+      color: #b4bdcb;
+      text-decoration-color: currentColor;
+    }
+  </style>
+  <script defer src="/_vercel/insights/script.js"></script>
+  <script>
+    window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+  </script>
+  <script defer src="/_vercel/web-analytics/script.js"></script>
+</head>
+<body>
+  <nav class="lang" aria-label="Язык">
+    <a href="/" hreflang="en" lang="en">EN</a>
+    <a href="/ru/" hreflang="ru" lang="ru" aria-current="page">RU</a>
+  </nav>
+  <main>
+    <div class="avatar">
+      <img class="portrait" src="/assets/userpic.webp" width="108" height="108" alt="">
+      <svg class="shades" viewBox="0 0 26 5" fill="#17181c" shape-rendering="crispEdges" aria-hidden="true">
+        <rect x="0" y="0" width="26" height="1"/>
+        <rect x="0" y="1" width="2" height="1"/>
+        <rect x="2" y="1" width="1" height="1" fill="#fff"/>
+        <rect x="3" y="1" width="1" height="1"/>
+        <rect x="4" y="1" width="1" height="1" fill="#fff"/>
+        <rect x="5" y="1" width="7" height="1"/>
+        <rect x="14" y="1" width="2" height="2"/>
+        <rect x="16" y="1" width="1" height="1" fill="#fff"/>
+        <rect x="17" y="1" width="1" height="1"/>
+        <rect x="18" y="1" width="1" height="1" fill="#fff"/>
+        <rect x="19" y="1" width="7" height="1"/>
+        <rect x="1" y="2" width="2" height="1"/>
+        <rect x="3" y="2" width="1" height="1" fill="#fff"/>
+        <rect x="4" y="2" width="1" height="1"/>
+        <rect x="5" y="2" width="1" height="1" fill="#fff"/>
+        <rect x="6" y="2" width="6" height="1"/>
+        <rect x="16" y="2" width="1" height="3"/>
+        <rect x="17" y="2" width="1" height="1" fill="#fff"/>
+        <rect x="18" y="2" width="1" height="1"/>
+        <rect x="19" y="2" width="1" height="1" fill="#fff"/>
+        <rect x="20" y="2" width="5" height="1"/>
+        <rect x="2" y="3" width="2" height="1"/>
+        <rect x="4" y="3" width="1" height="1" fill="#fff"/>
+        <rect x="5" y="3" width="1" height="2"/>
+        <rect x="6" y="3" width="1" height="1" fill="#fff"/>
+        <rect x="7" y="3" width="4" height="1"/>
+        <rect x="15" y="3" width="1" height="1"/>
+        <rect x="17" y="3" width="1" height="2"/>
+        <rect x="18" y="3" width="1" height="1" fill="#fff"/>
+        <rect x="19" y="3" width="1" height="2"/>
+        <rect x="20" y="3" width="1" height="1" fill="#fff"/>
+        <rect x="21" y="3" width="3" height="1"/>
+        <rect x="3" y="4" width="2" height="1"/>
+        <rect x="6" y="4" width="4" height="1"/>
+        <rect x="18" y="4" width="1" height="1"/>
+        <rect x="20" y="4" width="3" height="1"/>
+      </svg>
+    </div>
+
+    <h1 class="name"><span class="name-given">Dmitrii Petukhov</span></h1>
+
+    <nav class="links">
+      <a href="https://github.com/donmutti">GitHub</a>
+      <a href="https://linkedin.com/in/donmutti">LinkedIn</a>
+      <a href="https://x.com/donmutti0">X</a>
+      <a href="/cv">CV</a>
+      <a href="/call">Созвон</a>
+    </nav>
+
+    <p class="lede">Инженер-программист. Собираю митапы.</p>
+
+    <p class="lede">20 лет в распределенных системах: промышленное моделирование, телеком, финтех, и ритейл. Восемь лет в Amazon. Участвовал в запуске восьми маркетплейсов. Потрогал свыше 1000 сервисов, разлочил 100М+ новых покупателей. Две премии за инновации.</p>
+
+    <p class="lede now">Делаю и запускаю продукты на основе ИИ.</p>
+
+    <section>
+      <div class="sec-head">
+        <h2>Встречи и выступления</h2>
+        <a class="sec-more src" href="/ru/events/">Все события</a>
+      </div>
+<!-- next-event:start -->
+      <div class="next-meetup">
+        <div class="nm-head">
+          <span class="nm-title">The Leap: From Employment to Ownership</span>
+          <span class="nm-kind">Go Indie Club</span>
+        </div>
+        <div class="nm-when"><svg class="nm-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg>26 ноября 2026, 18:00</div>
+        <div class="nm-where"><svg class="nm-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>Indie's, Luxembourg</div>
+        <a class="nm-link" href="https://meetu.ps/e/QjZwQ/yfs8P/i">Подробности и запись на Meetup<svg class="nm-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+      </div>
+<!-- next-event:end -->
+    </section>
+
+    <section>
+      <h2>В работе</h2>
+      <dl>
+        <dt>IncaTech <span class="sep">&middot;</span> <a class="src" href="https://www.linkedin.com/company/inca-tech">LinkedIn</a></dt>
+        <dd>Программное обеспечение для улучшения сюжетных линий.</dd>
+        <dt>Go Indie <span class="sep">&middot;</span> <a class="src" href="https://www.meetup.com/goindie/">Meetup</a></dt>
+        <dd>Сообщество и платформа для тех, кто переходит от найма к своему делу.</dd>
+      </dl>
+    </section>
+
+    <section>
+      <h2>Выпущено</h2>
+      <dl>
+        <dt>Paragrapher <span class="sep">&middot;</span> <a class="src" href="https://paragrapher.ai">paragrapher.ai</a></dt>
+        <dd>Профессионально переводит вашу книгу на язык, которого вы не знаете, и доказывает это построчно.</dd>
+        <dt>Career Repo <span class="sep">&middot;</span> <a class="src" href="https://github.com/donmutti/career-repo">GitHub</a></dt>
+        <dd>Помощник по карьере на вашем компьютере. Вся ваша профессиональная история в одном месте.</dd>
+      </dl>
+    </section>
+
+    <section>
+      <h2>Для души</h2>
+      <dl>
+        <dt>Luxembourg City <span class="sep">&middot;</span> <a class="src" href="https://city.donmutti.com">city.donmutti.com</a></dt>
+        <dd>3D-игра в духе GTA на карте Люксембурга. Улицы воссозданы по данным OpenStreetMap. Найди все пасхалки на карте!</dd>
+        <dt>Lava Jump <span class="sep">&middot;</span> <a class="src" href="https://lavajump.donmutti.com">lavajump.donmutti.com</a></dt>
+        <dd>Цыпленок спасает корову в чужих мирах. Пять уровней платформера с лавой.</dd>
+        <dt>Умный Telegram-бот <span class="sep">&middot;</span> <a class="src" href="https://t.me/+-owVziYvSYk1Yjky">Telegram</a></dt>
+        <dd>Сломай бота, с нас пиво! 🍺</dd>
+      </dl>
+    </section>
+
+  </main>
+  <script>
+    (function () {
+      var name = document.querySelector('.name');
+      var portrait = document.querySelector('.portrait');
+      var avatar = portrait.parentElement;
+
+      var alias = document.createElement('span');
+      alias.className = 'name-alias';
+      alias.setAttribute('aria-hidden', 'true');
+      alias.textContent = 'Don Mutti';
+      name.appendChild(alias);
+
+      function toggle() {
+        var on = name.classList.toggle('is-alias');
+        if (on) {
+          avatar.classList.add('is-rewind');
+          avatar.classList.remove('is-off', 'is-on');
+          void avatar.offsetWidth;
+          avatar.classList.remove('is-rewind');
+          avatar.classList.add('is-on');
+        } else {
+          avatar.classList.remove('is-on');
+          avatar.classList.add('is-off');
+        }
+      }
+
+      portrait.addEventListener('click', toggle);
+
+      function noDoubleClickSelect(e) {
+        if (e.detail > 1) { e.preventDefault(); }
+      }
+
+      portrait.addEventListener('mousedown', noDoubleClickSelect);
+    })();
+  </script>
+</body>
+</html>
