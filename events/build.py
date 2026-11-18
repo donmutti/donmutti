@@ -6,6 +6,10 @@ hand-written HTML stays untouched. Titles, series and venues are copied as
 written in events.json. Russian pages get Russian month names and the
 surrounding labels; the English card text stays as it has been.
 
+The same pass writes a JSON-LD block on each page (Person and The Team on
+the home pages, Event nodes from events.json on the home and events pages)
+so a later rebuild keeps the structured data in sync with the cards.
+
 Whether an event is upcoming or past is derived from its dates, never stored:
 an event is past once its last day is behind the day this runs. That means the
 pages are only as current as the last build, so a scheduled rebuild keeps them
@@ -228,7 +232,218 @@ def main():
         "Пока нет событий.",
     )
 
+    write_json_ld(upcoming, past)
+
     print(f"rendered {len(upcoming)} upcoming, {len(past)} past, en and ru")
+
+
+PERSON_ID = "https://donmutti.com/#person"
+TEAM_ID = "https://donmutti.com/#the-team"
+SITE = "https://donmutti.com"
+
+# Public profile links already printed on the home pages.
+PERSON_SAME_AS = (
+    "https://github.com/donmutti",
+    "https://linkedin.com/in/donmutti",
+    "https://x.com/donmutti0",
+)
+
+# The Go Indie Club series is the meetup already linked from the Building section.
+GO_INDIE_CLUB_URL = "https://www.meetup.com/goindie/"
+
+
+def slugify(text):
+    """A stable fragment id from a title, for Event and EventSeries @id."""
+    return re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-")
+
+
+def person_node(lang, full=True):
+    """The site owner. Full node on home pages; a short pointer on events pages."""
+    if lang == "ru":
+        node = {
+            "@type": "Person",
+            "@id": PERSON_ID,
+            "name": "Дмитрий Петухов",
+            "alternateName": ["Dmitrii Petukhov", "donmutti"],
+            "url": SITE,
+            "inLanguage": "ru",
+        }
+        if full:
+            node.update({
+                "image": f"{SITE}/assets/userpic.webp",
+                "jobTitle": "Инженер-программист",
+                "description": (
+                    "Инженер-программист. Собираю митапы. "
+                    "Создаю продукты с ИИ для работы с историями. "
+                    "Развиваю сообщество и платформу для тех, кто хочет начать своё дело."
+                ),
+                "sameAs": list(PERSON_SAME_AS),
+                "affiliation": {
+                    "@type": "Organization",
+                    "name": "IncaTech",
+                    "description": (
+                        "Технологическая компания, создающая компаньонов "
+                        "на всю жизнь для историй, творчества и работы."
+                    ),
+                    "sameAs": "https://www.linkedin.com/company/inca-tech",
+                },
+                "owns": {"@id": TEAM_ID},
+            })
+        return node
+
+    node = {
+        "@type": "Person",
+        "@id": PERSON_ID,
+        "name": "Dmitrii Petukhov",
+        "alternateName": ["donmutti", "Дмитрий Петухов"],
+        "url": SITE,
+        "inLanguage": "en",
+    }
+    if full:
+        node.update({
+            "image": f"{SITE}/assets/userpic.webp",
+            "jobTitle": "Software engineer and community builder",
+            "description": (
+                "Software engineer and community builder in Luxembourg. "
+                "Creating AI-native products around storytelling, and "
+                "infrastructure for moving from employment to ownership."
+            ),
+            "sameAs": list(PERSON_SAME_AS),
+            "affiliation": {
+                "@type": "Organization",
+                "name": "IncaTech",
+                "description": (
+                    "A technology company building lifelong companions "
+                    "for storytelling, creativity and work."
+                ),
+                "sameAs": "https://www.linkedin.com/company/inca-tech",
+            },
+            "owns": {"@id": TEAM_ID},
+        })
+    return node
+
+
+def team_node(lang):
+    """The Team: an AI agent team, with only the two undeletable bots named."""
+    if lang == "ru":
+        description = (
+            "Команда ИИ-агентов на платформе Grok Bot. "
+            "Два её неудаляемых бота — Master и Envoy (Telega), "
+            "смекалистый Telegram-бот, который копает, рисует и снимает видео. "
+            "Интеграции: Telegram, GitHub, Google Drive и Vercel."
+        )
+        in_language = "ru"
+    else:
+        description = (
+            "An AI agent team running on Grok Bot. "
+            "Its two undeletable bots are Master and Envoy (Telega), "
+            "a street-smart Telegram bot that digs, draws and films. "
+            "It is integrated with Telegram, GitHub, Google Drive and Vercel."
+        )
+        in_language = "en"
+    return {
+        "@type": "SoftwareApplication",
+        "@id": TEAM_ID,
+        "name": "The Team",
+        "description": description,
+        "creator": {"@id": PERSON_ID},
+        "featureList": ["Telegram", "GitHub", "Google Drive", "Vercel"],
+        "inLanguage": in_language,
+    }
+
+
+def place_from_venue(venue):
+    """A Place from the venue string. No street address is invented.
+
+    "Indie's, Luxembourg" -> name Indie's, locality Luxembourg, country LU.
+    A venue that does not name Luxembourg is left as a bare Place name.
+    """
+    name = venue
+    locality = None
+    suffix = ", Luxembourg"
+    if venue.endswith(suffix):
+        name = venue[: -len(suffix)].rstrip()
+        locality = "Luxembourg"
+    place = {"@type": "Place", "name": name}
+    address = {"@type": "PostalAddress"}
+    if locality:
+        address["addressLocality"] = locality
+        address["addressCountry"] = "LU"
+    if len(address) > 1:
+        place["address"] = address
+    return place
+
+
+def event_node(event, past=False, lang="en"):
+    """One Event, using only fields present in events.json."""
+    node = {
+        "@type": "Event",
+        "@id": f"{SITE}/#event-{slugify(event['title'])}",
+        "name": event["title"],
+        "startDate": event["start"],
+        "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+        "eventStatus": (
+            "https://schema.org/EventCompleted"
+            if past
+            else "https://schema.org/EventScheduled"
+        ),
+        "location": place_from_venue(event["venue"]),
+        "organizer": {"@id": PERSON_ID},
+        "inLanguage": lang,
+    }
+    if event.get("end"):
+        node["endDate"] = event["end"]
+    if event.get("link"):
+        node["url"] = event["link"]
+    series = event.get("series")
+    if series:
+        super_event = {
+            "@type": "EventSeries",
+            "@id": f"{SITE}/#series-{slugify(series)}",
+            "name": series,
+        }
+        if series == "Go Indie Club":
+            super_event["url"] = GO_INDIE_CLUB_URL
+        node["superEvent"] = super_event
+    return node
+
+
+def json_ld_block(graph):
+    """One JSON-LD script tag. < is escaped so the block is safe in HTML."""
+    payload = {"@context": "https://schema.org", "@graph": graph}
+    dumped = json.dumps(payload, ensure_ascii=False, indent=2)
+    dumped = dumped.replace("<", "\\u003c")
+    return "  <script type=\"application/ld+json\">\n" + dumped + "\n  </script>\n"
+
+
+def write_json_ld(upcoming, past):
+    """Write the json-ld marker block on all four pages, then parse it back."""
+    next_en = [event_node(upcoming[0], lang="en")] if upcoming else []
+    next_ru = [event_node(upcoming[0], lang="ru")] if upcoming else []
+    archive_en = [event_node(e, lang="en") for e in upcoming] + [
+        event_node(e, past=True, lang="en") for e in past
+    ]
+    archive_ru = [event_node(e, lang="ru") for e in upcoming] + [
+        event_node(e, past=True, lang="ru") for e in past
+    ]
+
+    pages = (
+        (HOME, [person_node("en"), team_node("en"), *next_en]),
+        (HOME_RU, [person_node("ru"), team_node("ru"), *next_ru]),
+        (ARCHIVE, [person_node("en", full=False), *archive_en]),
+        (ARCHIVE_RU, [person_node("ru", full=False), *archive_ru]),
+    )
+    for path, graph in pages:
+        replace_block(path, "json-ld", json_ld_block(graph))
+        text = path.read_text()
+        match = re.search(
+            r'<script type="application/ld\+json">\s*(.*?)\s*</script>',
+            text,
+            re.S,
+        )
+        if not match:
+            raise SystemExit(f"json-ld script missing after write in {path}")
+        json.loads(match.group(1))
 
 
 if __name__ == "__main__":
