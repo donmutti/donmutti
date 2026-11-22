@@ -1,0 +1,22 @@
+[
+  {
+    "platform": "x",
+    "url": "https://x.com/donmutti0/status/1",
+    "comments": 12,
+    "collected": "2026-12-01",
+    "threads": [
+      {"handle": "@first", "summary": "Asks how the code tabs remember the language.", "url": "https://x.com/first/status/2"},
+      {"handle": "@second", "summary": "Suggests an RSS feed.", "url": "https://x.com/second/status/3"},
+      {"handle": "@third", "summary": "Shares a link to a similar setup.", "url": "https://x.com/third/status/4"}
+    ]
+  },
+  {
+    "platform": "linkedin",
+    "url": "https://www.linkedin.com/posts/donmutti-1",
+    "comments": 1,
+    "collected": "2026-12-01",
+    "threads": [
+      {"handle": "@fourth", "summary": "Likes the static approach.", "url": "https://www.linkedin.com/feed/update/1"}
+    ]
+  }
+]

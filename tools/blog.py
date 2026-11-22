@@ -884,9 +884,16 @@ def sitemap_entry(en_path: str, ru_path: str, loc_path: str, lastmod: str | None
             f'    <xhtml:link rel="alternate" hreflang="x-default" href="{en}"/>\n  </url>\n')
 
 
+SITEMAP_SHELL = (
+    '<?xml version="1.0" encoding="UTF-8"?>\n'
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" '
+    'xmlns:xhtml="http://www.w3.org/1999/xhtml">\n</urlset>\n'
+)
+
+
 def update_sitemap(out: pathlib.Path, published: list[Article]) -> None:
     src = ROOT / "sitemap.xml"
-    text = src.read_text(encoding="utf-8")
+    text = src.read_text(encoding="utf-8") if src.exists() else SITEMAP_SHELL
 
     def drop(m):
         loc = m.group(1)

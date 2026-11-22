@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Self-test of tools/blog.py. Works on a temporary copy of the repository, so
-the tree is never changed.  Run: python3 tools/blog_selftest.py"""
+the tree is never changed. The sample article comes from tools/blog_fixture/,
+not from blog/. Run: python3 tools/blog_selftest.py"""
 import pathlib
 import re
 import shutil
@@ -10,6 +11,12 @@ import tempfile
 import unittest
 
 REPO = pathlib.Path(__file__).resolve().parent.parent
+FIXTURE = pathlib.Path(__file__).resolve().parent / "blog_fixture"
+SITEMAP_SHELL = (
+    '<?xml version="1.0" encoding="UTF-8"?>\n'
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" '
+    'xmlns:xhtml="http://www.w3.org/1999/xhtml">\n</urlset>\n'
+)
 
 
 def run(cwd, *args, ok=True):
@@ -24,13 +31,22 @@ def run(cwd, *args, ok=True):
 class BlogTest(unittest.TestCase):
     def setUp(self):
         self.tmp = pathlib.Path(tempfile.mkdtemp(prefix="blogtest-"))
-        for name in ("tools", "blog", "assets", "sitemap.xml", "favicon.svg", "card.png"):
+        for name in ("tools", "assets", "sitemap.xml", "favicon.svg", "card.png"):
             src = REPO / name
+            if not src.exists():
+                continue
             if src.is_dir():
                 shutil.copytree(src, self.tmp / name, ignore=shutil.ignore_patterns("__pycache__"))
             else:
                 shutil.copy2(src, self.tmp / name)
-        self.demo = next((self.tmp / "blog").glob("0001_*"))
+        if not (self.tmp / "sitemap.xml").exists():
+            (self.tmp / "sitemap.xml").write_text(SITEMAP_SHELL, encoding="utf-8")
+        self.had_events = "https://donmutti.com/events/</loc>" in (self.tmp / "sitemap.xml").read_text(encoding="utf-8")
+        demo_src = FIXTURE / "0001_blog-features-demo"
+        if not demo_src.is_dir():
+            raise AssertionError(f"missing fixture {demo_src}")
+        self.demo = self.tmp / "blog" / "0001_blog-features-demo"
+        shutil.copytree(demo_src, self.demo)
 
     def tearDown(self):
         shutil.rmtree(self.tmp, ignore_errors=True)
@@ -73,7 +89,8 @@ class BlogTest(unittest.TestCase):
         sm = self.read("sitemap.xml")
         self.assertIn("https://donmutti.com/blog/0001-blog-features-demo/", sm)
         self.assertIn("https://donmutti.com/ru/blog/tags/demo/", sm)
-        self.assertEqual(sm.count("https://donmutti.com/events/</loc>"), 1)
+        if self.had_events:
+            self.assertEqual(sm.count("https://donmutti.com/events/</loc>"), 1)
         run(self.tmp, "build")
         self.assertEqual(self.read("sitemap.xml"), sm, "build is idempotent")
 

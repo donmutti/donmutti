@@ -1,0 +1,27 @@
+{
+  "en": [
+    {
+      "title": "Python-Markdown documentation",
+      "url": "https://python-markdown.github.io/",
+      "source": "python-markdown.github.io",
+      "date": "2026-11-01",
+      "why": "The Markdown library the blog tool uses."
+    },
+    {
+      "title": "Pygments documentation",
+      "url": "https://pygments.org/docs/",
+      "source": "pygments.org",
+      "date": "2026-11-01",
+      "why": "The build-time syntax highlighter."
+    }
+  ],
+  "ru": [
+    {
+      "title": "Документация Python-Markdown",
+      "url": "https://python-markdown.github.io/",
+      "source": "python-markdown.github.io",
+      "date": "2026-11-01",
+      "why": "Библиотека Markdown, которую использует инструмент блога."
+    }
+  ]
+}
