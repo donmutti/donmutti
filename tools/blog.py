@@ -536,6 +536,8 @@ class Renderer:
                 new = new.replace(f'src="{attrs["src"]}"', f'src="{esc(self.article.url(self.lang) + src)}"', 1)
             if "loading=" not in new:
                 new = new.replace("<img", '<img loading="lazy" decoding="async"', 1)
+            if "draggable=" not in new:
+                new = new.replace("<img", '<img draggable="false"', 1)
             return new
         return re.sub(r"<img\b[^>]*>", img, out)
 

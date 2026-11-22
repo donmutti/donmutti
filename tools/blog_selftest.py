@@ -93,6 +93,7 @@ class BlogTest(unittest.TestCase):
             self.assertIn('class="headerlink"', page)
             self.assertIn('target="_blank" rel="noopener"', page)
             self.assertIn('loading="lazy"', page)
+            self.assertIn('draggable="false"', page)
             self.assertIn('class="hl"', page)
             self.assertTrue((self.tmp / f"{lang_prefix}blog/0001-blog-features-demo/cover.png").exists())
         for rel in ("blog/index.html", "ru/blog/index.html", "blog/tags/demo/index.html", "ru/blog/tags/blog/index.html"):
