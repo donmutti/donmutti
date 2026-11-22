@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Page not found — Dmitrii Petukhov</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="preload" href="/assets/fonts/Raleway-800.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/OpenSans-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/lang.css">
+  <link rel="stylesheet" href="/assets/blog.css">
+  <script>
+    if (/^\/ru(\/|$)/.test(location.pathname)) {
+      document.documentElement.lang = 'ru';
+      document.addEventListener('DOMContentLoaded', function () {
+        document.title = 'Страница не найдена — Дмитрий Петухов';
+        var t = {
+          'nf-blog': ['Блог', '/ru/blog/'], 'nf-home': ['На главную', '/ru/'],
+          'nf-blog2': ['Блог', '/ru/blog/']
+        };
+        for (var id in t) { var a = document.getElementById(id); a.textContent = t[id][0]; a.href = t[id][1]; }
+        document.getElementById('nf-title').textContent = 'Страница не найдена';
+        document.getElementById('nf-text').textContent = 'Такой страницы нет. Возможно, её перенесли или адрес набран с ошибкой.';
+      });
+    }
+  </script>
+</head>
+<body>
+  <div class="topnav">
+    <a class="topnav-blog" id="nf-blog" href="/blog/">Blog</a>
+    <nav class="lang" aria-label="Language">
+    <a href="/" hreflang="en" lang="en">EN</a>
+    <a href="/ru/" hreflang="ru" lang="ru">RU</a>
+    </nav>
+  </div>
+  <main>
+    <h1 class="list-title" id="nf-title">Page not found</h1>
+    <p class="list-empty" id="nf-text">This page doesn’t exist. It may have moved, or the address has a typo.</p>
+    <p class="list-home"><a id="nf-home" href="/">Home</a> · <a id="nf-blog2" href="/blog/">Blog</a></p>
+  </main>
+</body>
+</html>
