@@ -1,0 +1,3 @@
+# Build-time dependencies of tools/blog.py. Everything else is the Python standard library.
+Markdown==3.11.3
+Pygments==2.21.0
