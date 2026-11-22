@@ -29,9 +29,12 @@
 {{jsonld}}
 </head>
 <body>
-  <nav class="lang" aria-label="{{lang_label}}">
+  <div class="topnav">
+    <a class="topnav-blog" href="{{blog_href}}"{{blog_current}}>{{blog_label}}</a>
+    <nav class="lang" aria-label="{{lang_label}}">
 {{lang_links}}
-  </nav>
+    </nav>
+  </div>
   <main>
 {{content}}
   </main>

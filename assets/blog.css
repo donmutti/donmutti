@@ -112,7 +112,8 @@ a.tag:hover { color: #fff; border-color: #3a4960; text-decoration: none; }
 .post-card-title:hover { color: #0186ff; text-decoration: none; }
 .post-card .post-meta { margin-top: 4px; }
 .post-card-desc { margin: 8px 0 0; color: #aab3c2; }
-.list-empty { color: #8d97a8; }
+.list-empty { color: #8d97a8; margin: 0 0 16px; }
+.list-home { margin: 0; }
 
 /* ---- article body ---- */
 

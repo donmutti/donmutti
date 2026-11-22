@@ -27,4 +27,16 @@
   <url>
     <loc>https://donmutti.com/cv</loc>
   </url>
+  <url>
+    <loc>https://donmutti.com/blog/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://donmutti.com/blog/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://donmutti.com/ru/blog/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://donmutti.com/blog/"/>
+  </url>
+  <url>
+    <loc>https://donmutti.com/ru/blog/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://donmutti.com/blog/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://donmutti.com/ru/blog/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://donmutti.com/blog/"/>
+  </url>
 </urlset>

@@ -49,7 +49,7 @@ EN_MONTHS = ("January", "February", "March", "April", "May", "June", "July",
 S = {
     "en": {
         "lang_label": "Language", "back_home": "Back", "back_list": "Blog", "blog": "Blog",
-        "list_description": "Articles by Dmitrii Petukhov.", "empty": "No articles yet.",
+        "list_description": "Articles by Dmitrii Petukhov.", "empty": "The first article is on its way.", "empty_home": "Home",
         "tag": "Tag", "updated": "Updated", "see_also": "See also", "discussion": "Discussion",
         "thread": "Thread", "copy": "Copy", "copied": "Copied", "draft": "Draft",
         "target": "Target", "anchor": "Link to this section", "table": "Table",
@@ -58,7 +58,7 @@ S = {
     },
     "ru": {
         "lang_label": "Язык", "back_home": "Назад", "back_list": "Блог", "blog": "Блог",
-        "list_description": "Статьи Дмитрия Петухова.", "empty": "Статей пока нет.",
+        "list_description": "Статьи Дмитрия Петухова.", "empty": "Первая статья уже в работе.", "empty_home": "На главную",
         "tag": "Тег", "updated": "Обновлено", "see_also": "Читайте также", "discussion": "Обсуждение",
         "thread": "Тред", "copy": "Копировать", "copied": "Скопировано", "draft": "Черновик",
         "target": "Цель", "anchor": "Ссылка на этот раздел", "table": "Таблица",
@@ -654,7 +654,9 @@ def page(lang: str, title: str, description: str, canonical_path: str, en_path: 
         "page.html", lang=lang, title=esc(title), description=esc(description), robots=robots,
         canonical=esc(SITE + canonical_path), hreflang=hreflang_block(en_path, ru_path),
         social=social, jsonld=jsonld, lang_label=esc(s["lang_label"]),
-        lang_links=lang_links(en_path, ru_path, lang), content=content)
+        lang_links=lang_links(en_path, ru_path, lang),
+        blog_href=s["prefix"] + "/blog/", blog_label=esc(s["blog"]),
+        blog_current=' aria-current="page"', content=content)
 
 
 def social_block(lang: str, kind: str, url: str, title: str, description: str, image: str,
@@ -809,10 +811,19 @@ def render_article_page(article: Article, lang: str, errors: list[str]) -> str:
 def render_list_page(lang: str, articles: list[Article], tag: str | None) -> str:
     s = S[lang]
     prefix = s["prefix"]
-    items = "\n".join(
-        render_template("card.html", href=esc(a.url(lang)), title=esc(a.title(lang)), meta=meta_line(a, lang),
-                        description=esc(a.text[lang]["description"]))
-        for a in articles) or f'      <li class="list-empty">{esc(s["empty"])}</li>'
+    if articles:
+        cards = "\n".join(
+            render_template("card.html", href=esc(a.url(lang)), title=esc(a.title(lang)), meta=meta_line(a, lang),
+                            description=esc(a.text[lang]["description"]))
+            for a in articles)
+        body = f'    <ul class="post-list">\n{cards}\n    </ul>\n'
+    elif tag:
+        body = f'    <p class="list-empty">{esc(s["empty"])}</p>\n'
+    else:
+        body = (
+            f'    <p class="list-empty">{esc(s["empty"])}</p>\n'
+            f'    <p class="list-home"><a href="{esc(s["home"])}">{esc(s["empty_home"])}</a></p>\n'
+        )
     if tag:
         title_text = f'{s["tag"]}: {tag}'
         en_path, ru_path = f"/blog/tags/{tag}/", f"/ru/blog/tags/{tag}/"
@@ -825,7 +836,7 @@ def render_list_page(lang: str, articles: list[Article], tag: str | None) -> str
         back = s["home"]
         back_label = s["back_home"]
         desc = s["list_description"]
-    content = render_template("list.html", back_href=back, back_label=esc(back_label), title=esc(title_text), intro="", items=items)
+    content = render_template("list.html", back_href=back, back_label=esc(back_label), title=esc(title_text), body=body)
     canonical = en_path if lang == "en" else ru_path
     social = social_block(lang, "website", SITE + canonical, f"{title_text} — Dmitrii Petukhov", desc, SITE + "/card.png")
     return page(lang, f"{title_text} — Dmitrii Petukhov", desc, canonical, en_path, ru_path, social, "", content)
@@ -901,9 +912,9 @@ def update_sitemap(out: pathlib.Path, published: list[Article]) -> None:
 
     text = re.sub(r"[ \t]*<url>\s*<loc>([^<]*)</loc>.*?</url>\n?", drop, text, flags=re.S)
     entries = ""
+    entries += sitemap_entry("/blog/", "/ru/blog/", "/blog/", None)
+    entries += sitemap_entry("/blog/", "/ru/blog/", "/ru/blog/", None)
     if published:
-        entries += sitemap_entry("/blog/", "/ru/blog/", "/blog/", None)
-        entries += sitemap_entry("/blog/", "/ru/blog/", "/ru/blog/", None)
         for tag in sorted({str(t) for a in published for t in a.tags}):
             entries += sitemap_entry(f"/blog/tags/{tag}/", f"/ru/blog/tags/{tag}/", f"/blog/tags/{tag}/", None)
             entries += sitemap_entry(f"/blog/tags/{tag}/", f"/ru/blog/tags/{tag}/", f"/ru/blog/tags/{tag}/", None)
@@ -936,10 +947,10 @@ def build(out: pathlib.Path | None = None, number: int | None = None) -> list[st
         copy_images(a, site_out)
         report.append(f"article {a.key}: published {a.published}, en + ru, {len(a.images())} image file(s)")
 
+    for lang in LANGS:
+        write(site_out / S[lang]["prefix"].strip("/") / "blog" / "index.html", render_list_page(lang, published, None))
+    report.append(f"lists: /blog/ and /ru/blog/ with {len(published)} article(s)")
     if published:
-        for lang in LANGS:
-            write(site_out / S[lang]["prefix"].strip("/") / "blog" / "index.html", render_list_page(lang, published, None))
-        report.append(f"lists: /blog/ and /ru/blog/ with {len(published)} article(s)")
         tags = sorted({str(t) for a in published for t in a.tags})
         for tag in tags:
             having = [a for a in published if tag in [str(t) for t in a.tags]]
@@ -947,7 +958,7 @@ def build(out: pathlib.Path | None = None, number: int | None = None) -> list[st
                 write(site_out / S[lang]["prefix"].strip("/") / "blog" / "tags" / tag / "index.html", render_list_page(lang, having, tag))
         report.append(f"tag pages: {len(tags)} tag(s) x 2 languages")
     else:
-        report.append("lists and tag pages: none, no published articles")
+        report.append("tag pages: none, no published articles")
 
     update_sitemap(site_out, published)
     report.append(f"sitemap.xml: {len(published)} published article(s) listed")
