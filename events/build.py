@@ -14,6 +14,12 @@ Whether an event is upcoming or past is derived from its dates, never stored:
 an event is past once its last day is behind the day this runs. That means the
 pages are only as current as the last build, so a scheduled rebuild keeps them
 honest.
+
+Each event in events.json has these fields: title, series, start (ISO time
+with offset), venue, link (optional, the Meetup page), and backdrop
+(optional, an image URL). The backdrop is linked by its URL, never copied
+into this repo, and is drawn behind that event's card under a dark tint;
+a card without one keeps the plain background.
 """
 import datetime
 import html
@@ -145,12 +151,20 @@ def when_ru(event):
     return dates
 
 
+def backdrop_open(event, pad):
+    """The card's opening tag, with the event's backdrop URL when it has one."""
+    if not event.get("backdrop"):
+        return f'{pad}<div class="next-meetup">'
+    url = event["backdrop"].replace('"', "%22")
+    return f'{pad}<div class="next-meetup has-backdrop" style="--nm-backdrop: url(&quot;{html.escape(url)}&quot;)">'
+
+
 def card(event, indent, past=False, when_fn=when, rsvp="Details and RSVP on Meetup", seen="See it on Meetup"):
     """One event card. The same markup on every page."""
     pad = " " * indent
     esc = lambda key: html.escape(event[key], quote=False)
     lines = [
-        f'{pad}<div class="next-meetup">',
+        backdrop_open(event, pad),
         f'{pad}  <div class="nm-head">',
         f'{pad}    <span class="nm-title">{esc("title")}</span>',
         f'{pad}    <span class="nm-kind">{esc("series")}</span>',
@@ -271,9 +285,9 @@ def person_node(lang, full=True):
         if full:
             node.update({
                 "image": f"{SITE}/assets/userpic.webp",
-                "jobTitle": "Инженер-программист",
+                "jobTitle": "Инженер-программист и организатор сообществ",
                 "description": (
-                    "Инженер-программист. Собираю митапы. "
+                    "Инженер-программист и организатор сообществ в Люксембурге. "
                     "Создаю продукты с ИИ для работы с историями. "
                     "Развиваю сообщество и платформу для тех, кто хочет начать своё дело."
                 ),

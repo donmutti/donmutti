@@ -87,3 +87,11 @@
 }
 
 .nm-empty { color: #8d97a8; }
+
+/* Backdrop: the event's image behind the text, under a dark tint that is
+   heaviest on the left, where the text sits. */
+.next-meetup.has-backdrop {
+  background:
+    linear-gradient(90deg, rgba(15, 21, 34, 0.96) 0%, rgba(15, 21, 34, 0.84) 55%, rgba(15, 21, 34, 0.55) 100%),
+    var(--nm-backdrop) right center / cover no-repeat;
+}
