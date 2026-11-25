@@ -304,3 +304,27 @@ v10_en.ogg — not posted to Telegram — English track of the same calibrated d
   Phrase 6: Okay, okay. Will you grab some coffee?
   Markup 6: ((o){3}(ka+y){5})[0.8] ((o){3}(ka+y){5})[0.8] ||| (will you grab some){4,2} (coffee){2,6}
   Metrics: WER 2.5% (Whisper base, en; 40 words), CER 2.0%; audio 17.204 s (lines 1.336 + 1.422 + 1.490 + 2.188 + 3.544 + 3.218 s, plus five 0.800 s gaps); speech-only 13.198 s; audio_gen RTF 0.48 (6.3 s over 13.236 s of one-shot re-rendered speech). Tempo vs XTTS not measured (no natural reference of this dialog). This WER is not comparable to the 13.3% on the older «Hello, I am Grok from the Hood…» sentence: the text is different. Whisper hypothesis: «How you seen my keys? They're in your jacket pocket. Really? That can't be. I told you yesterday where I put them. Oh, come on. You keep moving my stuff around. Okay, okay. Will you grab some coffee?» (one substitution: Have → How).
+v11_m-001.ogg — v11 calibration set, not posted to Telegram — Russian calibration line in robot v11 (team 34eb643: default intonation rules for unmarked text plus the English fix), approved by the Founder as Perfect and re-rendered from live, identical to the approved take.
+  Phrase: Знаешь, вчера я полчаса искал ключи, а они лежали в кармане.
+  Markup: (зна+){2,4}ешь | вчера я (полчаса){5,2} (искал ключи){2,4} | (а они лежали в карма+не){5,1} (the Founder's own markup)
+  Metrics: audio 4.73 s, render 1.8 s. Set-level: English WER on 8 calibration texts 24.4% -> 14.0%; Russian long unmarked text WER 46.9%, RTF 0.37; long pause || is 580 ms. Known flaw: Queen is heard as "clean".
+v11_m-002.ogg — v11 calibration set, not posted to Telegram — Russian calibration line in robot v11 (team 34eb643: default intonation rules for unmarked text plus the English fix), approved by the Founder as Perfect and re-rendered from live, identical to the approved take.
+  Phrase: Ракета Starship садится на собственные клешни, и это красивее любого кино.
+  Markup: (ракета Starship садится на собственные кле+шни){2,5} | (и это краси+){4,5}(вее любого кино){5,1}
+  Metrics: audio 5.27 s, render 1.9 s. Set-level: English WER on 8 calibration texts 24.4% -> 14.0%; Russian long unmarked text WER 46.9%, RTF 0.37; long pause || is 580 ms. Known flaw: Queen is heard as "clean".
+v11_m-003.ogg — v11 calibration set, not posted to Telegram — Russian calibration line in robot v11 (team 34eb643: default intonation rules for unmarked text plus the English fix), approved by the Founder as Perfect and re-rendered from live, identical to the approved take.
+  Phrase: Сколько стоит чашка кофе в Люксембурге?
+  Markup: (ско+лько){3,5} (стоит чашка кофе в Люксембу+рге){5,2}
+  Metrics: audio 2.75 s, render 1.0 s. Set-level: English WER on 8 calibration texts 24.4% -> 14.0%; Russian long unmarked text WER 46.9%, RTF 0.37; long pause || is 580 ms. Known flaw: Queen is heard as "clean".
+v11_m-004.ogg — v11 calibration set, not posted to Telegram — Russian calibration line in robot v11 (team 34eb643: default intonation rules for unmarked text plus the English fix), approved by the Founder as Perfect and re-rendered from live, identical to the approved take.
+  Phrase: Дороже, чем вам кажется.
+  Markup: (доро+){2,5}(же){5,4} (чем вам ка+жется){4,1} (the Founder removed the comma pause)
+  Metrics: audio 1.75 s, render 0.8 s. Set-level: English WER on 8 calibration texts 24.4% -> 14.0%; Russian long unmarked text WER 46.9%, RTF 0.37; long pause || is 580 ms. Known flaw: Queen is heard as "clean".
+v11_en-m-005.ogg — v11 calibration set, not posted to Telegram — English calibration line in robot v11 (team 34eb643: default intonation rules for unmarked text plus the English fix), approved by the Founder as Perfect and re-rendered from live, identical to the approved take.
+  Phrase: Hello, I am Grok from the Hood, the robot voice of the Team.
+  Markup: ((hello){2,5})[0.8] | (i am grok from the){2,3} (hood){3,5} | (the robot voice of the){4,3} (team){3,1}
+  Metrics: audio 4.11 s (3.57 s before the English fix), render 1.9 s. Set-level: English WER on 8 calibration texts 24.4% -> 14.0%; Russian long unmarked text WER 46.9%, RTF 0.37; long pause || is 580 ms. Known flaw: Queen is heard as "clean".
+v11_en-m-006.ogg — v11 calibration set, not posted to Telegram — English calibration line in robot v11 (team 34eb643: default intonation rules for unmarked text plus the English fix), approved by the Founder as Perfect and re-rendered from live, identical to the approved take.
+  Phrase: Today the weather in Luxembourg is fine, and I am reading a short story about a cat.
+  Markup: (to+day){2,4} | (the weather){2,4} (in lu+xembourg){4,3} (is fine){3,5} | (and i am reading a short story){4,3} (about a cat){3,1} (the Founder's own markup)
+  Metrics: audio 5.70 s (4.67 s before the English fix), render 2.6 s. Set-level: English WER on 8 calibration texts 24.4% -> 14.0%; Russian long unmarked text WER 46.9%, RTF 0.37; long pause || is 580 ms. Known flaw: Queen is heard as "clean".
