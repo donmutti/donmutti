@@ -121,6 +121,13 @@ ru: https://example.com/ru.ogg
 en: https://example.com/en.ogg
 ```
 
+A recording without a language uses one `src` source instead of `ru` and `en`, and renders as a single player without tabs.
+
+```audio
+src: quack.ogg
+caption: A recording without a language.
+```
+
 ## Table
 
 A table scrolls horizontally on narrow screens and keeps the column alignment.

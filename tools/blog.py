@@ -487,7 +487,7 @@ def image_size(path: pathlib.Path):
 # ----------------------------------------------------------------------------
 
 AUDIO_FENCE_RE = re.compile(r'<pre><code class="language-audio">(.*?)</code></pre>', re.S)
-AUDIO_KEY_RE = re.compile(r'^(ru|en|caption)\s*:\s*(.*)$', re.I)
+AUDIO_KEY_RE = re.compile(r'^(ru|en|src|caption)\s*:\s*(.*)$', re.I)
 
 
 def parse_audio_fence(text: str) -> tuple[dict[str, str], str | None]:
@@ -516,6 +516,10 @@ def parse_audio_fence(text: str) -> tuple[dict[str, str], str | None]:
         if "caption" in fields:
             return fields, "fenced audio has unexpected text"
         fields["caption"] = " ".join(leftover)
+    if fields.get("src"):
+        if fields.get("ru") or fields.get("en"):
+            return fields, "fenced audio has src together with ru or en"
+        return fields, None
     if not fields.get("ru"):
         return fields, "fenced audio is missing a ru source"
     if not fields.get("en"):
@@ -585,7 +589,7 @@ def referenced_audio(article: Article, media: pathlib.Path | None = None) -> lis
             fields, err = parse_audio_fence(m.group(1))
             if err:
                 continue
-            for key in ("ru", "en"):
+            for key in ("ru", "en", "src"):
                 src = (fields.get(key) or "").strip()
                 file = find_audio_file(article, src, media)
                 if file is None:
@@ -712,7 +716,8 @@ class Renderer:
                 self.errors.append(err)
                 return m.group(0)
             srcs = {}
-            for key in ("ru", "en"):
+            keys = ("src",) if fields.get("src") else ("ru", "en")
+            for key in keys:
                 raw = fields[key]
                 url = resolve_audio_src(raw, self.article, self.lang)
                 if url is None:
@@ -724,10 +729,17 @@ class Renderer:
                         where += " or the media directory"
                     self.errors.append(f"audio {raw} is not in {where}")
                 srcs[key] = url
-            if "ru" not in srcs or "en" not in srcs:
+            if any(key not in srcs for key in keys):
                 return m.group(0)
-            n += 1
             caption = (fields.get("caption") or "").strip()
+            cap = f'\n<figcaption>{esc(caption)}</figcaption>' if caption else ""
+            if keys == ("src",):
+                return (
+                    f'<figure class="audio-figure"><div class="audio audio-single">'
+                    f'<audio controls preload="metadata" src="{esc(srcs["src"])}">{esc(s["audio_fallback"])}</audio>'
+                    f'</div>{cap}</figure>'
+                )
+            n += 1
             order = [self.lang, "en" if self.lang != "en" else "ru"]
             labels = {"ru": "RU", "en": "EN"}
             tabs = []
@@ -749,7 +761,6 @@ class Renderer:
                     f'<audio controls preload="metadata" src="{esc(srcs[lang])}">{esc(s["audio_fallback"])}</audio>'
                     f'</div>'
                 )
-            cap = f'\n<figcaption>{esc(caption)}</figcaption>' if caption else ""
             return (
                 f'<figure class="audio-figure">'
                 f'<div class="audio audio-tabs">'

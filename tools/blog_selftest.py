@@ -50,6 +50,7 @@ class BlogTest(unittest.TestCase):
         # Placeholder audio lives only in the temporary copy, never in the repository.
         (self.demo / "v1_ru.ogg").write_bytes(b"fixture-ru")
         (self.demo / "v1_en.ogg").write_bytes(b"fixture-en")
+        (self.demo / "quack.ogg").write_bytes(b"fixture-quack")
 
     def tearDown(self):
         shutil.rmtree(self.tmp, ignore_errors=True)
@@ -186,6 +187,25 @@ class BlogTest(unittest.TestCase):
             self.assertEqual((built / "v1_ru.ogg").read_bytes(), (self.demo / "v1_ru.ogg").read_bytes())
             self.assertEqual((built / "v1_en.ogg").read_bytes(), (self.demo / "v1_en.ogg").read_bytes())
             self.assertFalse((built / "leftover.ogg").exists())
+
+    def test_audio_single_source_renders_without_tabs(self):
+        run(self.tmp, "build", "--number", "1")
+        for lang_prefix, caption in (("", "A recording without a language."), ("ru/", "Запись без языка.")):
+            page = self.read(f".blog-preview/{lang_prefix}blog/0001-blog-features-demo/index.html")
+            self.assertEqual(page.count('class="audio audio-single"'), 1)
+            single = page.split('class="audio audio-single"', 1)[1].split("</figure>", 1)[0]
+            self.assertIn(f'src="/{lang_prefix}blog/0001-blog-features-demo/quack.ogg"', single)
+            self.assertNotIn('role="tab"', single)
+            self.assertIn(f"<figcaption>{caption}</figcaption>", single)
+            built = self.tmp / ".blog-preview" / f"{lang_prefix}blog/0001-blog-features-demo"
+            self.assertEqual((built / "quack.ogg").read_bytes(), b"fixture-quack")
+
+    def test_audio_src_with_language_source_fails_published_build(self):
+        run(self.tmp, "publish", "--number", "1", "--date", "2026-12-05")
+        en = self.demo / "en.md"
+        en.write_text(en.read_text(encoding="utf-8") + "\n\n```audio\nsrc: quack.ogg\nru: v1_ru.ogg\n```\n", encoding="utf-8")
+        p = run(self.tmp, "build", ok=False)
+        self.assertIn("src together with ru or en", p.stderr)
 
     def test_audio_missing_source_fails_published_build(self):
         run(self.tmp, "publish", "--number", "1", "--date", "2026-12-05")
