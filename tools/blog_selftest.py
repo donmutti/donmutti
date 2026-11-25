@@ -47,6 +47,9 @@ class BlogTest(unittest.TestCase):
             raise AssertionError(f"missing fixture {demo_src}")
         self.demo = self.tmp / "blog" / "0001_blog-features-demo"
         shutil.copytree(demo_src, self.demo)
+        # Placeholder audio lives only in the temporary copy, never in the repository.
+        (self.demo / "v1_ru.ogg").write_bytes(b"fixture-ru")
+        (self.demo / "v1_en.ogg").write_bytes(b"fixture-en")
 
     def tearDown(self):
         shutil.rmtree(self.tmp, ignore_errors=True)
@@ -150,6 +153,143 @@ class BlogTest(unittest.TestCase):
         (self.demo / "figure.png").unlink()
         p = run(self.tmp, "build", ok=False)
         self.assertIn("figure.png", p.stderr)
+
+    def test_audio_tabs_follow_page_language(self):
+        run(self.tmp, "build", "--number", "1")
+        en = self.read(".blog-preview/blog/0001-blog-features-demo/index.html")
+        ru = self.read(".blog-preview/ru/blog/0001-blog-features-demo/index.html")
+        self.assertEqual(en.count('class="audio audio-tabs"'), 2)
+        self.assertEqual(ru.count('class="audio audio-tabs"'), 2)
+        self.assertIn('src="/blog/0001-blog-features-demo/v1_ru.ogg"', en)
+        self.assertIn('src="/blog/0001-blog-features-demo/v1_en.ogg"', en)
+        self.assertIn('src="/ru/blog/0001-blog-features-demo/v1_ru.ogg"', ru)
+        self.assertIn('src="/ru/blog/0001-blog-features-demo/v1_en.ogg"', ru)
+        self.assertIn('src="https://example.com/ru.ogg"', en)
+        self.assertIn('src="https://example.com/en.ogg"', ru)
+        self.assertIn("<figcaption>A short caption under the player.</figcaption>", en)
+        self.assertIn("<figcaption>Короткая подпись под плеером.</figcaption>", ru)
+        self.assertIn('aria-label="Audio language"', en)
+        self.assertIn('aria-label="Язык записи"', ru)
+        en_first = en.split('class="audio audio-tabs"', 1)[1]
+        ru_first = ru.split('class="audio audio-tabs"', 1)[1]
+        en_tab = re.search(r'<button type="button" role="tab"[^>]*>', en_first).group(0)
+        ru_tab = re.search(r'<button type="button" role="tab"[^>]*>', ru_first).group(0)
+        self.assertIn('data-lang="en"', en_tab)
+        self.assertIn('aria-selected="true"', en_tab)
+        self.assertIn('data-lang="ru"', ru_tab)
+        self.assertIn('aria-selected="true"', ru_tab)
+        self.assertIn('role="tablist"', en)
+        self.assertIn('role="tabpanel"', en)
+        self.assertNotIn('class="language-audio"', en)
+        for lang_prefix in ("", "ru/"):
+            built = self.tmp / ".blog-preview" / f"{lang_prefix}blog/0001-blog-features-demo"
+            self.assertEqual((built / "v1_ru.ogg").read_bytes(), (self.demo / "v1_ru.ogg").read_bytes())
+            self.assertEqual((built / "v1_en.ogg").read_bytes(), (self.demo / "v1_en.ogg").read_bytes())
+            self.assertFalse((built / "leftover.ogg").exists())
+
+    def test_audio_missing_source_fails_published_build(self):
+        run(self.tmp, "publish", "--number", "1", "--date", "2026-12-05")
+        en = self.demo / "en.md"
+        en.write_text(en.read_text(encoding="utf-8") + "\n\n```audio\nru: only-ru.ogg\n```\n", encoding="utf-8")
+        p = run(self.tmp, "build", ok=False)
+        self.assertIn("missing an en source", p.stderr)
+
+    def test_audio_files_are_copied_on_publish_and_unreferenced_are_not(self):
+        (self.demo / "leftover.ogg").write_bytes(b"unused")
+        run(self.tmp, "publish", "--number", "1", "--date", "2026-12-05")
+        for lang_prefix in ("", "ru/"):
+            built = self.tmp / f"{lang_prefix}blog/0001-blog-features-demo"
+            self.assertEqual((built / "v1_ru.ogg").read_bytes(), (self.demo / "v1_ru.ogg").read_bytes())
+            self.assertEqual((built / "v1_en.ogg").read_bytes(), (self.demo / "v1_en.ogg").read_bytes())
+            self.assertFalse((built / "leftover.ogg").exists())
+
+    def test_missing_audio_fails_published_build(self):
+        run(self.tmp, "publish", "--number", "1", "--date", "2026-12-05")
+        (self.demo / "v1_ru.ogg").unlink()
+        p = run(self.tmp, "build", ok=False)
+        self.assertIn("v1_ru.ogg", p.stderr)
+        self.assertIn("is not in", p.stderr)
+
+    def test_media_requires_out_or_number(self):
+        p = run(self.tmp, "build", "--media", str(self.tmp / "media"), ok=False)
+        self.assertIn("--media requires --out", p.stderr)
+
+    def test_media_must_be_an_absolute_directory(self):
+        p = run(self.tmp, "build", "--number", "1", "--out", str(self.tmp / "out"), "--media", "media", ok=False)
+        self.assertIn("absolute path", p.stderr)
+        p = run(self.tmp, "build", "--number", "1", "--out", str(self.tmp / "out"), "--media", str(self.tmp / "missing-media"), ok=False)
+        self.assertIn("is not a directory", p.stderr)
+
+    def test_media_supplies_audio_missing_from_source_into_out_only(self):
+        (self.demo / "v1_ru.ogg").unlink()
+        (self.demo / "v1_en.ogg").unlink()
+        media = self.tmp / "media"
+        media.mkdir()
+        (media / "v1_ru.ogg").write_bytes(b"from-media-ru")
+        (media / "v1_en.ogg").write_bytes(b"from-media-en")
+        out = self.tmp / "out"
+        run(self.tmp, "build", "--number", "1", "--out", str(out), "--media", str(media))
+        for lang_prefix in ("", "ru/"):
+            built = out / f"{lang_prefix}blog/0001-blog-features-demo"
+            self.assertEqual((built / "v1_ru.ogg").read_bytes(), b"from-media-ru")
+            self.assertEqual((built / "v1_en.ogg").read_bytes(), b"from-media-en")
+        self.assertFalse((self.demo / "v1_ru.ogg").exists())
+        self.assertFalse((self.demo / "v1_en.ogg").exists())
+        self.assertFalse((self.tmp / "blog" / "0001-blog-features-demo" / "v1_ru.ogg").exists())
+
+    def test_media_prefers_source_folder_over_media_dir(self):
+        media = self.tmp / "media"
+        media.mkdir()
+        (media / "v1_ru.ogg").write_bytes(b"from-media-ru")
+        (media / "v1_en.ogg").write_bytes(b"from-media-en")
+        out = self.tmp / "out"
+        run(self.tmp, "build", "--number", "1", "--out", str(out), "--media", str(media))
+        built = out / "blog/0001-blog-features-demo"
+        self.assertEqual((built / "v1_ru.ogg").read_bytes(), b"fixture-ru")
+        self.assertEqual((built / "v1_en.ogg").read_bytes(), b"fixture-en")
+
+    def test_media_with_number_writes_only_to_blog_preview(self):
+        (self.demo / "v1_ru.ogg").unlink()
+        (self.demo / "v1_en.ogg").unlink()
+        media = self.tmp / "media"
+        media.mkdir()
+        (media / "v1_ru.ogg").write_bytes(b"preview-ru")
+        (media / "v1_en.ogg").write_bytes(b"preview-en")
+        run(self.tmp, "build", "--number", "1", "--media", str(media))
+        built = self.tmp / ".blog-preview/blog/0001-blog-features-demo"
+        self.assertEqual((built / "v1_ru.ogg").read_bytes(), b"preview-ru")
+        self.assertEqual((built / "v1_en.ogg").read_bytes(), b"preview-en")
+        self.assertFalse((self.demo / "v1_ru.ogg").exists())
+        self.assertFalse((self.tmp / "blog/0001-blog-features-demo").exists())
+
+    def test_media_does_not_copy_into_repo_when_building_published_without_out(self):
+        run(self.tmp, "publish", "--number", "1", "--date", "2026-12-05")
+        (self.demo / "v1_ru.ogg").unlink()
+        (self.demo / "v1_en.ogg").unlink()
+        media = self.tmp / "media"
+        media.mkdir()
+        (media / "v1_ru.ogg").write_bytes(b"media-ru")
+        (media / "v1_en.ogg").write_bytes(b"media-en")
+        p = run(self.tmp, "build", "--number", "1", "--media", str(media), ok=False)
+        self.assertIn("v1_ru.ogg", p.stderr)
+        built = self.tmp / "blog/0001-blog-features-demo"
+        self.assertFalse((built / "v1_ru.ogg").exists() and (built / "v1_ru.ogg").read_bytes() == b"media-ru")
+        self.assertFalse((self.demo / "v1_ru.ogg").exists())
+
+    def test_published_missing_audio_succeeds_with_media_and_out(self):
+        run(self.tmp, "publish", "--number", "1", "--date", "2026-12-05")
+        (self.demo / "v1_ru.ogg").unlink()
+        (self.demo / "v1_en.ogg").unlink()
+        media = self.tmp / "media"
+        media.mkdir()
+        (media / "v1_ru.ogg").write_bytes(b"out-ru")
+        (media / "v1_en.ogg").write_bytes(b"out-en")
+        out = self.tmp / "out"
+        run(self.tmp, "build", "--out", str(out), "--media", str(media))
+        built = out / "blog/0001-blog-features-demo"
+        self.assertEqual((built / "v1_ru.ogg").read_bytes(), b"out-ru")
+        self.assertEqual((built / "v1_en.ogg").read_bytes(), b"out-en")
+        self.assertFalse((self.demo / "v1_ru.ogg").exists())
 
 
 if __name__ == "__main__":

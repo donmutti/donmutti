@@ -6,7 +6,7 @@ into blog/<nnnn>-<slug>/ and ru/blog/<nnnn>-<slug>/ (hyphen), together with
 the lists, the tag pages and the blog entries of sitemap.xml.
 
     python3 tools/blog.py start <slug> --target 2026-12-xx --title "..." --title-ru "..."
-    python3 tools/blog.py build [--number N] [--out DIR]
+    python3 tools/blog.py build [--number N] [--out DIR] [--media DIR]
     python3 tools/blog.py publish --number N [--date YYYY-MM-DD]
     python3 tools/blog.py new-draft --number N --platform x|linkedin [--lang en|ru] [--target DATE]
     python3 tools/blog.py post-published --number N --file NAME --url URL [--date YYYY-MM-DD]
@@ -53,6 +53,7 @@ S = {
         "tag": "Tag", "updated": "Updated", "see_also": "See also", "discussion": "Discussion",
         "thread": "Thread", "copy": "Copy", "copied": "Copied", "draft": "Draft",
         "target": "Target", "anchor": "Link to this section", "table": "Table",
+        "audio": "Audio language", "audio_fallback": "The browser cannot play this audio.",
         "footnote_back": "Jump back to footnote %d in the text", "author": "Dmitrii Petukhov",
         "locale": "en_US", "home": "/", "prefix": "",
     },
@@ -62,6 +63,7 @@ S = {
         "tag": "Тег", "updated": "Обновлено", "see_also": "Читайте также", "discussion": "Обсуждение",
         "thread": "Тред", "copy": "Копировать", "copied": "Скопировано", "draft": "Черновик",
         "target": "Цель", "anchor": "Ссылка на этот раздел", "table": "Таблица",
+        "audio": "Язык записи", "audio_fallback": "Браузер не может воспроизвести это аудио.",
         "footnote_back": "Вернуться к сноске %d в тексте", "author": "Дмитрий Петухов",
         "locale": "ru_RU", "home": "/ru/", "prefix": "/ru",
     },
@@ -479,12 +481,133 @@ def image_size(path: pathlib.Path):
     return None
 
 
+
+# ----------------------------------------------------------------------------
+# Audio tabs
+# ----------------------------------------------------------------------------
+
+AUDIO_FENCE_RE = re.compile(r'<pre><code class="language-audio">(.*?)</code></pre>', re.S)
+AUDIO_KEY_RE = re.compile(r'^(ru|en|caption)\s*:\s*(.*)$', re.I)
+
+
+def parse_audio_fence(text: str) -> tuple[dict[str, str], str | None]:
+    """Parse the body of a fenced audio element. Returns (fields, error)."""
+    fields: dict[str, str] = {}
+    leftover: list[str] = []
+    for raw in html.unescape(text).splitlines():
+        line = raw.strip()
+        if not line:
+            continue
+        m = AUDIO_KEY_RE.match(line)
+        if not m:
+            if re.match(r"^[A-Za-z_][\w-]*\s*:", line):
+                key = line.split(":", 1)[0].strip()
+                return fields, f"fenced audio has unknown key {key}"
+            leftover.append(line)
+            continue
+        key = m.group(1).lower()
+        value = m.group(2).strip()
+        if len(value) >= 2 and value[0] == value[-1] and value[0] in "\"'":
+            value = value[1:-1]
+        if key in fields:
+            return fields, f"fenced audio has two {key} lines"
+        fields[key] = value
+    if leftover:
+        if "caption" in fields:
+            return fields, "fenced audio has unexpected text"
+        fields["caption"] = " ".join(leftover)
+    if not fields.get("ru"):
+        return fields, "fenced audio is missing a ru source"
+    if not fields.get("en"):
+        return fields, "fenced audio is missing an en source"
+    return fields, None
+
+
+def resolve_audio_src(src: str, article: Article, lang: str) -> str | None:
+    src = src.strip()
+    if not src:
+        return None
+    if re.match(r"^https?://", src, re.I) or (src.startswith("/") and not src.startswith("//")):
+        return src
+    if re.match(r"^[a-z][a-z0-9+.-]*:", src, re.I) or src.startswith("//"):
+        return None
+    path = pathlib.PurePosixPath(src)
+    if ".." in path.parts:
+        return None
+    return article.url(lang) + src
+
+
+def is_source_audio_path(src: str) -> bool:
+    """True when src should be a file in the article source folder."""
+    src = src.strip()
+    if not src:
+        return False
+    if re.match(r"^https?://", src, re.I) or src.startswith("/") or src.startswith("//"):
+        return False
+    if re.match(r"^[a-z][a-z0-9+.-]*:", src, re.I):
+        return False
+    return ".." not in pathlib.PurePosixPath(src).parts
+
+
+AUDIO_MD_FENCE_RE = re.compile(r"^```audio[ \t]*\n(.*?)(?:^```[ \t]*\n?|\Z)", re.M | re.S)
+
+
+def find_audio_file(article: Article, src: str, media: pathlib.Path | None = None) -> pathlib.Path | None:
+    """A relative audio path from the source folder, or from --media if it is missing there."""
+    if not is_source_audio_path(src):
+        return None
+    local = article.dir / src
+    if local.is_file():
+        return local
+    if media is None:
+        return None
+    try:
+        root = media.resolve()
+        resolved = (media / src).resolve()
+    except OSError:
+        return None
+    if not resolved.is_file():
+        return None
+    if resolved != root and root not in resolved.parents:
+        return None
+    return resolved
+
+
+def referenced_audio(article: Article, media: pathlib.Path | None = None) -> list[tuple[str, pathlib.Path]]:
+    """Relative audio sources in en.md and ru.md that resolve from the source folder or --media."""
+    out: list[tuple[str, pathlib.Path]] = []
+    seen: set[pathlib.Path] = set()
+    for lang in LANGS:
+        t = article.text[lang]
+        if not t:
+            continue
+        for m in AUDIO_MD_FENCE_RE.finditer(t["body"]):
+            fields, err = parse_audio_fence(m.group(1))
+            if err:
+                continue
+            for key in ("ru", "en"):
+                src = (fields.get(key) or "").strip()
+                file = find_audio_file(article, src, media)
+                if file is None:
+                    continue
+                try:
+                    key_path = file.resolve()
+                except OSError:
+                    continue
+                if key_path in seen:
+                    continue
+                seen.add(key_path)
+                out.append((src, file))
+    return out
+
+
 class Renderer:
     """Turns one article body into HTML with the article components."""
 
-    def __init__(self, article: Article, lang: str):
+    def __init__(self, article: Article, lang: str, media: pathlib.Path | None = None):
         self.article = article
         self.lang = lang
+        self.media = media
         self.errors: list[str] = []
 
     def render(self, body: str) -> str:
@@ -503,6 +626,7 @@ class Renderer:
         out = self._images(out)
         out = self._links(out)
         out = self._tables(out)
+        out = self._audio(out)
         out = self._code(out)
         return out
 
@@ -573,6 +697,70 @@ class Renderer:
         label = esc(S[self.lang]["table"])
         out = re.sub(r"<table>", f'<div class="table-wrap" tabindex="0" role="region" aria-label="{label}">\n<table>', out)
         return out.replace("</table>", "</table>\n</div>")
+
+
+    # audio tabs
+
+    def _audio(self, out: str) -> str:
+        s = S[self.lang]
+        n = 0
+
+        def repl(m):
+            nonlocal n
+            fields, err = parse_audio_fence(m.group(1))
+            if err:
+                self.errors.append(err)
+                return m.group(0)
+            srcs = {}
+            for key in ("ru", "en"):
+                raw = fields[key]
+                url = resolve_audio_src(raw, self.article, self.lang)
+                if url is None:
+                    self.errors.append(f"fenced audio has a bad {key} source {raw!r}")
+                    continue
+                if is_source_audio_path(raw) and find_audio_file(self.article, raw, self.media) is None:
+                    where = f"{self.article.dir.name}/"
+                    if self.media is not None:
+                        where += " or the media directory"
+                    self.errors.append(f"audio {raw} is not in {where}")
+                srcs[key] = url
+            if "ru" not in srcs or "en" not in srcs:
+                return m.group(0)
+            n += 1
+            caption = (fields.get("caption") or "").strip()
+            order = [self.lang, "en" if self.lang != "en" else "ru"]
+            labels = {"ru": "RU", "en": "EN"}
+            tabs = []
+            panels = []
+            for i, lang in enumerate(order):
+                selected = i == 0
+                tab_id = f"audio-{n}-tab-{lang}"
+                panel_id = f"audio-{n}-panel-{lang}"
+                tabs.append(
+                    f'<button type="button" role="tab" class="audio-tab" id="{tab_id}" '
+                    f'data-lang="{lang}" aria-controls="{panel_id}" '
+                    f'aria-selected="{"true" if selected else "false"}" '
+                    f'tabindex="{0 if selected else -1}">{labels[lang]}</button>'
+                )
+                panels.append(
+                    f'<div class="audio-panel{" is-active" if selected else ""}" role="tabpanel" '
+                    f'id="{panel_id}" data-lang="{lang}" aria-labelledby="{tab_id}">'
+                    f'<div class="audio-panel-label">{labels[lang]}</div>'
+                    f'<audio controls preload="metadata" src="{esc(srcs[lang])}">{esc(s["audio_fallback"])}</audio>'
+                    f'</div>'
+                )
+            cap = f'\n<figcaption>{esc(caption)}</figcaption>' if caption else ""
+            return (
+                f'<figure class="audio-figure">'
+                f'<div class="audio audio-tabs">'
+                f'<div class="audio-bar"><div class="audio-tablist" role="tablist" '
+                f'aria-label="{esc(s["audio"])}">{"".join(tabs)}</div></div>'
+                f'{"".join(panels)}</div>'
+                f'{cap}</figure>'
+            )
+
+        return AUDIO_FENCE_RE.sub(repl, out)
+
 
     # code and code tabs
 
@@ -771,10 +959,10 @@ def discussion_section(article: Article, lang: str) -> str:
     return render_template("section.html", cls="discussion", heading=esc(s["discussion"]), content="\n".join(blocks))
 
 
-def render_article_page(article: Article, lang: str, errors: list[str]) -> str:
+def render_article_page(article: Article, lang: str, errors: list[str], media: pathlib.Path | None = None) -> str:
     s = S[lang]
     t = article.text[lang]
-    r = Renderer(article, lang)
+    r = Renderer(article, lang, media)
     body = r.render(t["body"])
     errors.extend(f"{article.key} {lang}: {e}" for e in r.errors)
     sections = "".join((updates_section(article, lang), see_also_section(article, lang), discussion_section(article, lang)))
@@ -888,6 +1076,16 @@ def copy_images(article: Article, out: pathlib.Path) -> None:
             shutil.copy2(img, dest / img.name)
 
 
+def copy_audio(article: Article, out: pathlib.Path, media: pathlib.Path | None = None) -> None:
+    for lang in LANGS:
+        dest = out / article.url(lang).strip("/")
+        dest.mkdir(parents=True, exist_ok=True)
+        for rel, file in referenced_audio(article, media):
+            target = dest / rel
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(file, target)
+
+
 def sitemap_entry(en_path: str, ru_path: str, loc_path: str, lastmod: str | None) -> str:
     en, ru, loc = SITE + en_path, SITE + ru_path, SITE + loc_path
     lm = f"\n    <lastmod>{lastmod}</lastmod>" if lastmod else ""
@@ -928,7 +1126,7 @@ def update_sitemap(out: pathlib.Path, published: list[Article]) -> None:
     write(out / "sitemap.xml", text)
 
 
-def build(out: pathlib.Path | None = None, number: int | None = None) -> list[str]:
+def build(out: pathlib.Path | None = None, number: int | None = None, media: pathlib.Path | None = None) -> list[str]:
     articles = load_articles()
     report: list[str] = []
     errors: list[str] = []
@@ -942,11 +1140,13 @@ def build(out: pathlib.Path | None = None, number: int | None = None) -> list[st
         if probs:
             raise BlogError(f"{a.dir.name}: " + "; ".join(probs))
 
+    site_media = media if out is not None else None
     clean_built(site_out)
     for a in published:
         for lang in LANGS:
-            write(site_out / a.url(lang).strip("/") / "index.html", render_article_page(a, lang, errors))
+            write(site_out / a.url(lang).strip("/") / "index.html", render_article_page(a, lang, errors, site_media))
         copy_images(a, site_out)
+        copy_audio(a, site_out, site_media)
         report.append(f"article {a.key}: published {a.published}, en + ru, {len(a.images())} image file(s)")
 
     for lang in LANGS:
@@ -976,8 +1176,9 @@ def build(out: pathlib.Path | None = None, number: int | None = None) -> list[st
             prev = out.resolve() if out is not None else ROOT / PREVIEW
             link_site_assets(prev)
             for lang in LANGS:
-                write(prev / a.url(lang).strip("/") / "index.html", render_article_page(a, lang, errors))
+                write(prev / a.url(lang).strip("/") / "index.html", render_article_page(a, lang, errors, media))
             copy_images(a, prev)
+            copy_audio(a, prev, media)
             report.append(f"draft {a.key}: rendered to {prev.relative_to(ROOT) if prev.is_relative_to(ROOT) else prev}"
                           f"{a.url('en')} and {a.url('ru')} (noindex, not in lists or sitemap)")
     if errors:
@@ -1025,9 +1226,23 @@ def cmd_start(args) -> None:
         print(f"  {p.name}")
 
 
+def parse_media_dir(raw: str | None, out, number: int | None) -> pathlib.Path | None:
+    if not raw:
+        return None
+    if not out and number is None:
+        raise BlogError("--media requires --out, or --number to preview into .blog-preview/")
+    path = pathlib.Path(raw)
+    if not path.is_absolute():
+        raise BlogError("--media must be an absolute path")
+    if not path.is_dir():
+        raise BlogError(f"--media {path} is not a directory")
+    return path.resolve()
+
+
 def cmd_build(args) -> None:
     out = pathlib.Path(args.out).resolve() if args.out else None
-    for line in build(out, args.number):
+    media = parse_media_dir(args.media, out, args.number)
+    for line in build(out, args.number, media):
         print(line)
 
 
@@ -1163,6 +1378,7 @@ def main(argv=None) -> int:
     p = sub.add_parser("build", help="build published articles, lists, tags and the sitemap")
     p.add_argument("--number", type=int, help="also render this article, a draft goes to a preview folder")
     p.add_argument("--out", help="write into this folder instead of the repository")
+    p.add_argument("--media", help="absolute directory used for relative audio missing from the source folder")
     p.set_defaults(fn=cmd_build)
 
     p = sub.add_parser("publish", help="set an article to published and build")

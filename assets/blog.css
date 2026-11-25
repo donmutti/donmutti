@@ -279,9 +279,10 @@ sup[id^="fnref"] a { padding: 0 1px; }
 
 .footnote-backref { margin-left: 4px; }
 
-/* code block and code tabs */
+/* code block, code tabs and audio tabs */
 
-.code {
+.code,
+.audio {
   margin: 0 0 1.4em;
   border: 1px solid #263044;
   border-radius: 6px;
@@ -289,7 +290,8 @@ sup[id^="fnref"] a { padding: 0 1px; }
   overflow: hidden;
 }
 
-.code-bar {
+.code-bar,
+.audio-bar {
   display: flex;
   align-items: stretch;
   justify-content: space-between;
@@ -300,7 +302,8 @@ sup[id^="fnref"] a { padding: 0 1px; }
 }
 
 .code-lang,
-.code-panel-label {
+.code-panel-label,
+.audio-panel-label {
   align-self: center;
   padding: 0 14px;
   color: #8d97a8;
@@ -310,7 +313,8 @@ sup[id^="fnref"] a { padding: 0 1px; }
   text-transform: uppercase;
 }
 
-.code-panel-label {
+.code-panel-label,
+.audio-panel-label {
   display: block;
   padding: 7px 14px;
   border-bottom: 1px solid #1c2536;
@@ -318,12 +322,16 @@ sup[id^="fnref"] a { padding: 0 1px; }
 }
 
 .code-panel-label:first-child { border-top: 0; }
-.js .code-panel-label { display: none; }
+.js .code-panel-label,
+.js .audio-panel-label { display: none; }
 .code-tabs .code-bar .code-lang { display: none; }
-.code-tablist { display: none; }
-.js .code-tablist { display: flex; overflow-x: auto; min-width: 0; }
+.code-tablist,
+.audio-tablist { display: none; }
+.js .code-tablist,
+.js .audio-tablist { display: flex; overflow-x: auto; min-width: 0; }
 
-.code-tab {
+.code-tab,
+.audio-tab {
   appearance: none;
   border: 0;
   border-bottom: 2px solid transparent;
@@ -340,9 +348,12 @@ sup[id^="fnref"] a { padding: 0 1px; }
   cursor: pointer;
 }
 
-.code-tab:hover { color: #cbd2dd; }
-.code-tab[aria-selected="true"] { color: #fff; border-bottom-color: #0186ff; }
+.code-tab:hover,
+.audio-tab:hover { color: #cbd2dd; }
+.code-tab[aria-selected="true"],
+.audio-tab[aria-selected="true"] { color: #fff; border-bottom-color: #0186ff; }
 .code-tab:focus-visible,
+.audio-tab:focus-visible,
 .code-copy:focus-visible { outline: 2px solid #0186ff; outline-offset: -2px; }
 
 .code-copy {
@@ -364,8 +375,10 @@ sup[id^="fnref"] a { padding: 0 1px; }
 .code-copy[data-state="copied"] { color: #4ade80; border-color: #1f5a37; }
 .code-copy { display: none; }
 .js .code-copy { display: inline-block; }
-.code-tabs .code-bar { display: none; }
-.js .code-tabs .code-bar { display: flex; }
+.code-tabs .code-bar,
+.audio-tabs .audio-bar { display: none; }
+.js .code-tabs .code-bar,
+.js .audio-tabs .audio-bar { display: flex; }
 
 .code pre {
   margin: 0;
@@ -380,8 +393,21 @@ sup[id^="fnref"] a { padding: 0 1px; }
 }
 
 .code pre code { font: inherit; }
-.js .code-panel { display: none; }
-.js .code-panel.is-active { display: block; }
+.js .code-panel,
+.js .audio-panel { display: none; }
+.js .code-panel.is-active,
+.js .audio-panel.is-active { display: block; }
+
+
+.post-body figure.audio-figure { margin: 0 0 1.4em; }
+.post-body figure.audio-figure .audio { margin: 0; }
+
+.audio audio {
+  display: block;
+  width: 100%;
+  padding: 12px 14px 14px;
+  color-scheme: dark;
+}
 
 /* highlighting, static classes from Pygments */
 

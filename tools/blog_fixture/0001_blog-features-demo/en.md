@@ -104,6 +104,23 @@ print("hello")
 console.log("hello");
 ```
 
+## Audio
+
+A fenced `audio` element with `ru` and `en` source URLs renders as one player with a tab per language. The default tab is the language of the page. An optional `caption` is shown under the player.
+
+```audio
+ru: v1_ru.ogg
+en: v1_en.ogg
+caption: A short caption under the player.
+```
+
+A second player can use absolute URLs, which the build leaves unchanged.
+
+```audio
+ru: https://example.com/ru.ogg
+en: https://example.com/en.ogg
+```
+
 ## Table
 
 A table scrolls horizontally on narrow screens and keeps the column alignment.

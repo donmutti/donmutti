@@ -1,6 +1,7 @@
-/* Blog article behaviour: copy buttons, code tabs and the image lightbox.
+/* Blog article behaviour: copy buttons, code tabs, audio tabs and the image lightbox.
    No framework, no server. The chosen code language is kept in localStorage
-   and shared by every tabbed block on every page of the site. */
+   and shared by every tabbed block on every page of the site. Audio tabs
+   default to the page language and are not remembered across pages. */
 (function () {
   var KEY = 'blog.codeLang';
   var MOVE = 8;
@@ -33,6 +34,32 @@
   function selectAll(lang) {
     var blocks = document.querySelectorAll('.code-tabs');
     for (var i = 0; i < blocks.length; i++) { select(blocks[i], lang); }
+  }
+
+  function audioSelect(block, lang) {
+    var tabs = block.querySelectorAll('.audio-tab');
+    var panels = block.querySelectorAll('.audio-panel');
+    var found = false;
+    for (var i = 0; i < tabs.length; i++) {
+      if (tabs[i].getAttribute('data-lang') === lang) { found = true; }
+    }
+    if (!found) { return false; }
+    for (var j = 0; j < tabs.length; j++) {
+      var on = tabs[j].getAttribute('data-lang') === lang;
+      tabs[j].setAttribute('aria-selected', on ? 'true' : 'false');
+      tabs[j].tabIndex = on ? 0 : -1;
+      panels[j].classList.toggle('is-active', on);
+      if (!on) {
+        var nodes = panels[j].querySelectorAll('audio');
+        for (var k = 0; k < nodes.length; k++) { nodes[k].pause(); }
+      }
+    }
+    return true;
+  }
+
+  function audioSelectAll(lang) {
+    var blocks = document.querySelectorAll('.audio-tabs');
+    for (var i = 0; i < blocks.length; i++) { audioSelect(blocks[i], lang); }
   }
 
   function activeText(block) {
@@ -327,12 +354,26 @@
       if (!done && first) { select(block, first.getAttribute('data-lang')); }
     }
 
+    var pageLang = (document.documentElement.lang || 'en').slice(0, 2);
+    var audioBlocks = document.querySelectorAll('.audio-tabs');
+    for (var a = 0; a < audioBlocks.length; a++) {
+      var audioBlock = audioBlocks[a];
+      var audioFirst = audioBlock.querySelector('.audio-tab');
+      var audioDone = audioSelect(audioBlock, pageLang);
+      if (!audioDone && audioFirst) { audioSelect(audioBlock, audioFirst.getAttribute('data-lang')); }
+    }
+
     document.addEventListener('click', function (event) {
       var tab = event.target.closest ? event.target.closest('.code-tab') : null;
       if (tab) {
         var lang = tab.getAttribute('data-lang');
         store(lang);
         selectAll(lang);
+        return;
+      }
+      var audioTab = event.target.closest ? event.target.closest('.audio-tab') : null;
+      if (audioTab) {
+        audioSelectAll(audioTab.getAttribute('data-lang'));
         return;
       }
       var btn = event.target.closest ? event.target.closest('.code-copy') : null;
@@ -350,9 +391,11 @@
     });
 
     document.addEventListener('keydown', function (event) {
-      var tab = event.target.closest ? event.target.closest('.code-tab') : null;
-      if (!tab || (event.key !== 'ArrowRight' && event.key !== 'ArrowLeft')) { return; }
-      var tabs = Array.prototype.slice.call(tab.parentNode.querySelectorAll('.code-tab'));
+      if (event.key !== 'ArrowRight' && event.key !== 'ArrowLeft') { return; }
+      var tab = event.target.closest ? event.target.closest('.code-tab, .audio-tab') : null;
+      if (!tab) { return; }
+      var sel = tab.classList.contains('audio-tab') ? '.audio-tab' : '.code-tab';
+      var tabs = Array.prototype.slice.call(tab.parentNode.querySelectorAll(sel));
       var at = tabs.indexOf(tab);
       var next = tabs[(at + (event.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length];
       next.focus();
