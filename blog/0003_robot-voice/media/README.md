@@ -268,3 +268,11 @@ v8.1_en.ogg — fixed English comparison phrase, not posted to Telegram — The 
   Phrase: Hello, I am Grok from the Hood, the robot voice of the Team. Today the weather in Luxembourg is fine, and I am reading a short story about a cat
   Markup: (empty)
   Metrics: WER 13.3% (Whisper base, en), audio 8.472 s
+v9.2_ru.ogg — Founder DM msg 4554 — Russian track of the same monologue in robot v9.2 (team commit 2e45d85, approved by the Founder: «9.2 збс. Пушим»). The markup rules are unchanged from v8.1. On the ear: м, н, л and р now enter and leave the vowel cleanly, ф and в hiss softly and evenly instead of sounding like с, and л is fuller and darker. «кофе», «лежали» and «Сколько стоит чашка» are now recognized.
+  Phrase: Знаешь, вчера я полчаса искал ключи, а они лежали в кармане. Ракета Starship садится на собственные клешни, и это красивее любого кино. Сколько стоит чашка кофе в Люксембурге? Дороже, чем вам кажется
+  Markup: same as v8.1_ru.ogg
+  Metrics: WER 37.5% (v8.1 46.9%, v7.2 40.6%, XTTS 16%), CER 14.9% (v8.1 26.7%); 13-phrase corpus average WER 74.7%, CER 35.8% (v8 82.0% and 40.1%); RTF 0.37; audio 15.715 s; tempo and pauses as in v8.1
+v9.2_en.ogg — fixed English comparison phrase, not posted to Telegram — The same sentence in robot v9.2. Not posted to Telegram.
+  Phrase: Hello, I am Grok from the Hood, the robot voice of the Team. Today the weather in Luxembourg is fine, and I am reading a short story about a cat
+  Markup: (empty)
+  Metrics: WER 13.3% (Whisper base, en), audio 8.472 s
