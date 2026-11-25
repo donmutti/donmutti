@@ -40,11 +40,6 @@ caption: The whole Russian inventory, end of day one.
 
 The next morning I asked for a poem "in the robot voice", and the bot sent its ordinary neural voice with the caption "robot style". I pointed out that this was its normal voice and I wanted the synthesizer. For a couple of messages it insisted it had no speech synth at all, until I pointed at yesterday's alphabet: "Come on, do it with phonemes!" Since then these are two separate tools.
 
-```audio
-src: 11_xtts-mistaken-robot.ogg
-caption: Not the robot. The bot's normal neural voice, sent by mistake.
-```
-
 The robot also got a tiny markup language: each word can be given its own pitch and speed. That's enough to act out surprise.
 
 ```audio
