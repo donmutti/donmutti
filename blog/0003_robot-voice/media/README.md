@@ -203,30 +203,48 @@ Robot voice evolution — audio for the blog. One line per file: filename, link,
 v1_ru.ogg — Founder DM msg 4554 — Russian track of the keys-and-coffee monologue in robot v1, the formant voice before the later naturalness work. This is a copy of the take first sent as Founder DM message 4557. It is the baseline Russian file for the bilingual player. Ordinary punctuation sets the pauses; there is no expressive markup.
   Phrase: Знаешь, вчера я полчаса искал ключи, а они лежали в кармане. Ракета Starship садится на собственные клешни, и это красивее любого кино. Сколько стоит чашка кофе в Люксембурге? Дороже, чем вам кажется
   Markup: (empty)
+  Metrics: WER 87.5% (Whisper base, ru), RTF unknown, audio 20.232 s
 v1_en.ogg — fixed English comparison phrase, not posted to Telegram — Robot v1 reading the constant English sentence used so later versions can be compared on the same text. Latin text goes through the engine's built-in English path (CMUdict and letter-to-sound). The name Grok is not in CMUdict; letter-to-sound gives the expected [grɑk]. Whisper base heard «Brock from the hood», split the first sentence, and missed «Luxembourg». Not sent to Telegram.
   Phrase: Hello, I am Grok from the Hood, the robot voice of the Team. Today the weather in Luxembourg is fine, and I am reading a short story about a cat
   Markup: (empty)
+  Metrics: WER 26.7% (Whisper base, en), RTF 0.7598 (generation time / audio length), audio 10.422 s
 v2_ru.ogg — Founder DM msg 4554 — Russian track of the same monologue in robot v2, the first naturalness pass: reduced unstressed vowels, reshaped sh and ch, and shorter comma pauses. This is a copy of the after take from that first round. It should sound a little more spoken than v1. No expressive markup.
   Phrase: Знаешь, вчера я полчаса искал ключи, а они лежали в кармане. Ракета Starship садится на собственные клешни, и это красивее любого кино. Сколько стоит чашка кофе в Люксембурге? Дороже, чем вам кажется
   Markup: (empty)
+  Metrics: WER 84.4% (Whisper base, ru), RTF unknown, audio 19.526 s
 v2_en.ogg — fixed English comparison phrase, not posted to Telegram — The same sentence in robot v2, the first naturalness pass. Whisper base heard «Brock from the road» and slightly misheard the weather line. Not posted to Telegram.
   Phrase: Hello, I am Grok from the Hood, the robot voice of the Team. Today the weather in Luxembourg is fine, and I am reading a short story about a cat
   Markup: (empty)
+  Metrics: WER 23.3% (Whisper base, en), RTF 0.7178 (generation time / audio length), audio 9.973 s
 v3_ru.ogg — Founder DM msg 4554 — Russian track of the same monologue in robot v3: wider intonation, a livelier tempo, smoother joins, and a slightly uneven source. This take was shared in the app, not on Telegram. Dmitrii found it better than the earlier robot, but said every sound hissed as if white noise sat under the voice. No expressive markup.
   Phrase: Знаешь, вчера я полчаса искал ключи, а они лежали в кармане. Ракета Starship садится на собственные клешни, и это красивее любого кино. Сколько стоит чашка кофе в Люксембурге? Дороже, чем вам кажется
   Markup: (empty)
+  Metrics: WER 68.8% (Whisper base, ru), RTF unknown, audio 17.794 s
 v3_en.ogg — fixed English comparison phrase, not posted to Telegram — The same sentence in robot v3, with the wider pitch range and quicker tempo of that version. Whisper base WER is 13.3%: the name was heard as «Brock from the book», and «a» became «the» twice; Luxembourg was correct. Not posted to Telegram.
   Phrase: Hello, I am Grok from the Hood, the robot voice of the Team. Today the weather in Luxembourg is fine, and I am reading a short story about a cat
   Markup: (empty)
+  Metrics: WER 13.3% (Whisper base, en), RTF 0.7549 (generation time / audio length), audio 9.973 s
 v4_ru.ogg — Founder DM msg 4554 — Russian track of the same monologue in robot v4, after the hiss under the voice was removed. The vowels are clean; the hissing consonants are left intact. This take was also shared in the app, not on Telegram. No expressive markup.
   Phrase: Знаешь, вчера я полчаса искал ключи, а они лежали в кармане. Ракета Starship садится на собственные клешни, и это красивее любого кино. Сколько стоит чашка кофе в Люксембурге? Дороже, чем вам кажется
   Markup: (empty)
+  Metrics: WER 65.6% (Whisper base, ru), RTF 0.73 (generation time / audio length; earlier session, not re-timed with the English method), audio 17.794 s
 v4_en.ogg — fixed English comparison phrase, not posted to Telegram — The same sentence in robot v4, without the breath-noise layer under the vowels. Whisper base WER is 13.3%: the name was heard as «Brock from the road»; the rest of the second sentence is correct except «the» for «a». Not posted to Telegram.
   Phrase: Hello, I am Grok from the Hood, the robot voice of the Team. Today the weather in Luxembourg is fine, and I am reading a short story about a cat
   Markup: (empty)
-v5_ru.ogg — Founder DM msg 4554 — Russian track of the same monologue in robot v5, which adds regressive voicing assimilation, so neighbouring consonants influence one another inside a phrase. In this text that is audible in words such as «вчера», «в кармане», and «собственные». It is the latest Russian robot take in this bilingual set. No expressive markup.
+  Metrics: WER 13.3% (Whisper base, en), RTF 0.7894 (generation time / audio length), audio 9.973 s
+v5_ru.ogg — Founder DM msg 4554 — Russian track of the same monologue in robot v5, which adds regressive voicing assimilation, so neighbouring consonants influence one another inside a phrase. In this text that is audible in words such as «вчера», «в кармане», and «собственные». No expressive markup.
   Phrase: Знаешь, вчера я полчаса искал ключи, а они лежали в кармане. Ракета Starship садится на собственные клешни, и это красивее любого кино. Сколько стоит чашка кофе в Люксембурге? Дороже, чем вам кажется
   Markup: (empty)
+  Metrics: WER 43.8% (Whisper base, ru), RTF 0.77 (generation time / audio length; same session as v6 0.48, from the v6 notes); earlier session 0.71, audio 17.890 s
 v5_en.ogg — fixed English comparison phrase, not posted to Telegram — The same sentence in robot v5. For this English phrase the audio is identical to v4_en: the new assimilation rules did not change these sounds. Whisper produced the same transcript as v4_en. Not posted to Telegram.
   Phrase: Hello, I am Grok from the Hood, the robot voice of the Team. Today the weather in Luxembourg is fine, and I am reading a short story about a cat
   Markup: (empty)
+  Metrics: WER 13.3% (Whisper base, en), RTF 0.8072 (generation time / audio length), audio 9.973 s
+v6_ru.ogg — Founder DM msg 4554 — Russian track of the same monologue in robot v6, which removes the metallic buzz by giving harmonics the phase of the F1 and F2 resonators. A single render pass replaces the earlier two-pass peak probe, so generation is roughly 1.6× faster. No expressive markup.
+  Phrase: Знаешь, вчера я полчаса искал ключи, а они лежали в кармане. Ракета Starship садится на собственные клешни, и это красивее любого кино. Сколько стоит чашка кофе в Люксембурге? Дороже, чем вам кажется
+  Markup: (empty)
+  Metrics: WER 56.2% (Whisper base, ru), RTF 0.48 (generation time / audio length; same session as v5 0.77, from the v6 notes), audio 17.890 s
+v6_en.ogg — fixed English comparison phrase, not posted to Telegram — The same sentence in robot v6, with the resonator-phase change and the single render pass. Whisper base WER is 33.3%: the name was heard as «Rock from the road», and the weather and reading lines were partly misheard. Not posted to Telegram.
+  Phrase: Hello, I am Grok from the Hood, the robot voice of the Team. Today the weather in Luxembourg is fine, and I am reading a short story about a cat
+  Markup: (empty)
+  Metrics: WER 33.3% (Whisper base, en), RTF 0.4739 (generation time / audio length), audio 9.973 s
