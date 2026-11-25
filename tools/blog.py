@@ -37,6 +37,7 @@ LANGS = ("en", "ru")
 PLATFORMS = ("x", "linkedin")
 IMAGE_EXT = (".png", ".jpg", ".jpeg", ".gif", ".webp", ".svg", ".avif")
 SLUG_RE = re.compile(r"^[a-z0-9]+(-[a-z0-9]+)*$")
+TAG_RE = re.compile(r"^[A-Za-z0-9]+(-[A-Za-z0-9]+)*$")
 SRC_DIR_RE = re.compile(r"^(\d{4})_([a-z0-9]+(?:-[a-z0-9]+)*)$")
 MASK_RE = re.compile(r"^\d{4}-(\d{2}|xx)-(\d{2}|xx)$")
 DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
@@ -51,8 +52,8 @@ S = {
         "lang_label": "Language", "back_home": "Back", "back_list": "Blog", "blog": "Blog",
         "list_description": "Articles by Dmitrii Petukhov.", "empty": "The first article is on its way.", "empty_home": "Home",
         "tag": "Tag", "updated": "Updated", "see_also": "See also", "discussion": "Discussion",
-        "thread": "Thread", "copy": "Copy", "copied": "Copied", "draft": "Draft",
-        "target": "Target", "anchor": "Link to this section", "table": "Table",
+        "thread": "Thread", "copy": "Copy", "copied": "Copied",
+        "anchor": "Link to this section", "table": "Table",
         "audio": "Audio language", "audio_fallback": "The browser cannot play this audio.",
         "footnote_back": "Jump back to footnote %d in the text", "author": "Dmitrii Petukhov",
         "locale": "en_US", "home": "/", "prefix": "",
@@ -61,8 +62,8 @@ S = {
         "lang_label": "Язык", "back_home": "Назад", "back_list": "Блог", "blog": "Блог",
         "list_description": "Статьи Дмитрия Петухова.", "empty": "Первая статья уже в работе.", "empty_home": "На главную",
         "tag": "Тег", "updated": "Обновлено", "see_also": "Читайте также", "discussion": "Обсуждение",
-        "thread": "Тред", "copy": "Копировать", "copied": "Скопировано", "draft": "Черновик",
-        "target": "Цель", "anchor": "Ссылка на этот раздел", "table": "Таблица",
+        "thread": "Тред", "copy": "Копировать", "copied": "Скопировано",
+        "anchor": "Ссылка на этот раздел", "table": "Таблица",
         "audio": "Язык записи", "audio_fallback": "Браузер не может воспроизвести это аудио.",
         "footnote_back": "Вернуться к сноске %d в тексте", "author": "Дмитрий Петухов",
         "locale": "ru_RU", "home": "/ru/", "prefix": "/ru",
@@ -337,9 +338,13 @@ class Article:
             out.append(f"meta slug {self.meta.get('slug')!r} does not match folder slug {self.slug!r}")
         if self.is_published and not (self.published and DATE_RE.match(str(self.published))):
             out.append("published needs an exact date YYYY-MM-DD")
+        seen_tags = set()
         for t in self.tags:
-            if not SLUG_RE.match(str(t)):
+            if not TAG_RE.match(str(t)):
                 out.append(f"tag {t!r} is not kebab-case")
+            elif tag_slug(t) in seen_tags:
+                out.append(f"tag {t!r} repeats another tag")
+            seen_tags.add(tag_slug(t))
         if self.cover and not (self.dir / str(self.cover)).exists():
             out.append(f"cover {self.cover} does not exist")
         for lang in LANGS:
@@ -893,25 +898,37 @@ def jsonld_block(data: dict) -> str:
     return f'  <script type="application/ld+json">\n{text}\n  </script>'
 
 
+def tag_slug(tag) -> str:
+    """The URL form of a tag: the tag as written, in lower case."""
+    return str(tag).lower()
+
+
+def tag_names(articles) -> dict[str, str]:
+    """Tag URL form to its display spelling, the first one met in number order."""
+    names: dict[str, str] = {}
+    for a in sorted(articles, key=lambda x: x.number):
+        for t in a.tags:
+            names.setdefault(tag_slug(t), str(t))
+    return dict(sorted(names.items()))
+
+
 def tags_html(tags, lang: str, linked: bool = True) -> str:
     if not tags:
         return ""
     prefix = S[lang]["prefix"]
     chips = "".join(
-        (f'<a class="tag" href="{prefix}/blog/tags/{esc(t)}/">{esc(t)}</a>' if linked else f'<span class="tag">{esc(t)}</span>')
+        (f'<a class="tag" href="{prefix}/blog/tags/{esc(tag_slug(t))}/">{esc(t)}</a>' if linked else f'<span class="tag">{esc(t)}</span>')
         for t in tags)
     return f'<span class="tags">{chips}</span>'
 
 
 def meta_line(article: Article, lang: str) -> str:
-    s = S[lang]
     parts = []
-    if article.is_published:
-        parts.append(f'<time datetime="{esc(article.published)}">{esc(fmt_date(article.published, lang))}</time>')
-    else:
-        parts.append(f'<span class="draft-badge">{esc(s["draft"])}</span>')
-        if article.target:
-            parts.append(f'<span>{esc(s["target"])} {esc(article.target)}</span>')
+    date = str(article.published if article.is_published else (article.target or ""))
+    if DATE_RE.match(date):
+        parts.append(f'<time datetime="{esc(date)}">{esc(fmt_date(date, lang))}</time>')
+    elif date:
+        parts.append(f'<time>{esc(date)}</time>')
     t = tags_html(article.tags, lang)
     if t:
         parts.append(t)
@@ -1009,7 +1026,7 @@ def render_article_page(article: Article, lang: str, errors: list[str], media: p
                 jsonld_block(ld), content, noindex=not article.is_published)
 
 
-def render_list_page(lang: str, articles: list[Article], tag: str | None) -> str:
+def render_list_page(lang: str, articles: list[Article], tag: str | None, tag_name: str | None = None) -> str:
     s = S[lang]
     prefix = s["prefix"]
     if articles:
@@ -1026,11 +1043,11 @@ def render_list_page(lang: str, articles: list[Article], tag: str | None) -> str
             f'    <p class="list-home"><a href="{esc(s["home"])}">{esc(s["empty_home"])}</a></p>\n'
         )
     if tag:
-        title_text = f'{s["tag"]}: {tag}'
+        title_text = f'{s["tag"]}: {tag_name or tag}'
         en_path, ru_path = f"/blog/tags/{tag}/", f"/ru/blog/tags/{tag}/"
         back = f"{prefix}/blog/"
         back_label = s["back_list"]
-        desc = f'{s["blog"]}: {tag}'
+        desc = f'{s["blog"]}: {tag_name or tag}'
     else:
         title_text = s["blog"]
         en_path, ru_path = "/blog/", "/ru/blog/"
@@ -1126,7 +1143,7 @@ def update_sitemap(out: pathlib.Path, published: list[Article]) -> None:
     entries += sitemap_entry("/blog/", "/ru/blog/", "/blog/", None)
     entries += sitemap_entry("/blog/", "/ru/blog/", "/ru/blog/", None)
     if published:
-        for tag in sorted({str(t) for a in published for t in a.tags}):
+        for tag in tag_names(published):
             entries += sitemap_entry(f"/blog/tags/{tag}/", f"/ru/blog/tags/{tag}/", f"/blog/tags/{tag}/", None)
             entries += sitemap_entry(f"/blog/tags/{tag}/", f"/ru/blog/tags/{tag}/", f"/ru/blog/tags/{tag}/", None)
         for a in published:
@@ -1164,11 +1181,11 @@ def build(out: pathlib.Path | None = None, number: int | None = None, media: pat
         write(site_out / S[lang]["prefix"].strip("/") / "blog" / "index.html", render_list_page(lang, published, None))
     report.append(f"lists: /blog/ and /ru/blog/ with {len(published)} article(s)")
     if published:
-        tags = sorted({str(t) for a in published for t in a.tags})
-        for tag in tags:
-            having = [a for a in published if tag in [str(t) for t in a.tags]]
+        tags = tag_names(published)
+        for tag, name in tags.items():
+            having = [a for a in published if tag in [tag_slug(t) for t in a.tags]]
             for lang in LANGS:
-                write(site_out / S[lang]["prefix"].strip("/") / "blog" / "tags" / tag / "index.html", render_list_page(lang, having, tag))
+                write(site_out / S[lang]["prefix"].strip("/") / "blog" / "tags" / tag / "index.html", render_list_page(lang, having, tag, name))
         report.append(f"tag pages: {len(tags)} tag(s) x 2 languages")
     else:
         report.append("tag pages: none, no published articles")

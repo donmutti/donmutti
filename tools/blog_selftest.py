@@ -207,6 +207,44 @@ class BlogTest(unittest.TestCase):
         p = run(self.tmp, "build", ok=False)
         self.assertIn("src together with ru or en", p.stderr)
 
+    def test_tags_keep_case_and_use_lower_case_urls(self):
+        meta = self.demo / "meta.yml"
+        meta.write_text(meta.read_text(encoding="utf-8").replace("tags: [demo, blog]", "tags: [AI, Voice]"), encoding="utf-8")
+        run(self.tmp, "build", "--number", "1")
+        draft = self.read(".blog-preview/blog/0001-blog-features-demo/index.html")
+        self.assertIn('href="/blog/tags/ai/">AI</a>', draft)
+        run(self.tmp, "publish", "--number", "1", "--date", "2026-12-05")
+        en = self.read("blog/0001-blog-features-demo/index.html")
+        ru = self.read("ru/blog/0001-blog-features-demo/index.html")
+        self.assertIn('<a class="tag" href="/blog/tags/ai/">AI</a>', en)
+        self.assertIn('<a class="tag" href="/ru/blog/tags/voice/">Voice</a>', ru)
+        self.assertIn("Tag: AI", self.read("blog/tags/ai/index.html"))
+        self.assertTrue((self.tmp / "ru/blog/tags/voice/index.html").exists())
+        sitemap = self.read("sitemap.xml")
+        self.assertIn("https://donmutti.com/blog/tags/ai/</loc>", sitemap)
+        self.assertNotIn("/blog/tags/AI/", sitemap)
+
+    def test_tags_differing_only_in_case_fail(self):
+        meta = self.demo / "meta.yml"
+        meta.write_text(meta.read_text(encoding="utf-8").replace("tags: [demo, blog]", "tags: [AI, ai]"), encoding="utf-8")
+        p = run(self.tmp, "build", "--number", "1", ok=False)
+        self.assertIn("repeats another tag", p.stderr)
+
+    def test_draft_header_shows_target_date(self):
+        run(self.tmp, "build", "--number", "1")
+        en = self.read(".blog-preview/blog/0001-blog-features-demo/index.html")
+        self.assertIn("<time>2026-12-xx</time>", en)
+        self.assertNotIn("draft-badge", en)
+        meta = self.demo / "meta.yml"
+        meta.write_text(meta.read_text(encoding="utf-8").replace("target: 2026-12-xx", "target: 2026-11-25"), encoding="utf-8")
+        run(self.tmp, "build", "--number", "1")
+        en = self.read(".blog-preview/blog/0001-blog-features-demo/index.html")
+        ru = self.read(".blog-preview/ru/blog/0001-blog-features-demo/index.html")
+        self.assertIn('<time datetime="2026-11-25">25 November 2026</time>', en)
+        self.assertIn('<time datetime="2026-11-25">', ru)
+        self.assertIn("noindex, nofollow", en)
+        self.assertNotIn("0001-blog-features-demo", self.read("blog/index.html"))
+
     def test_audio_missing_source_fails_published_build(self):
         run(self.tmp, "publish", "--number", "1", "--date", "2026-12-05")
         en = self.demo / "en.md"
