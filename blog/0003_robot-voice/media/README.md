@@ -256,3 +256,15 @@ v7.2_en.ogg — fixed English comparison phrase, not posted to Telegram — The 
   Phrase: Hello, I am Grok from the Hood, the robot voice of the Team. Today the weather in Luxembourg is fine, and I am reading a short story about a cat
   Markup: (empty)
   Metrics: WER 13.3% (Whisper base, en), RTF 0.50 (generation time / audio length), audio 8.472 s
+v8.1_ru.ogg — Founder DM msg 4554 — Russian track of the same monologue in robot v8.1. The melody is now written by Grok from the Hood as markup before synthesis, and the synthesizer only plays it. A pitch vector is one integer (flat) or two integers (a smooth glide), levels 0 to 6, base 2, 3 semitones per step; a rise-fall inside a word is split into glued pieces. On the ear: it used to be flat, now there is melody, statements end with a fall and questions rise. Timing is the same as v7.2.
+  Phrase: Знаешь, вчера я полчаса искал ключи, а они лежали в кармане. Ракета Starship садится на собственные клешни, и это красивее любого кино. Сколько стоит чашка кофе в Люксембурге? Дороже, чем вам кажется
+  Markup: (Зна+){3}(ешь){3,2}, вчера+ я полчаса+ иска+л (ключи+){3,1}, а они+ лежа+ли в (карма+){2,3}(не){3,1}. (Раке+){4}(та){4,3} Starship сади+тся на со+бственные (клешни+){3,1}, и э+то (краси+){2,3}(вее){3,4} любо+го (кино+){3,1}. (Ско+){4}(лько){4,2} сто+ит ча+шка ко+фе в (Люксембу+){2}(рге){2,1}? (Доро+){4}(же){4,2}, че+м ва+м (ка+){3}(жется){3,1}
+  Metrics: WER 46.9% (v7.2 40.6% in the same run, XTTS 16%); 13-phrase corpus measured on v8 (477c36d): average WER 82.0%, CER 40.1% (v7.2 75.7% and 39.9%); RTF 0.37; audio 15.715 s (XTTS 15.1 s); tempo 0.90 of XTTS, pauses 1.04 of XTTS; pitch range p5–p95 12.8 st (XTTS 12.1, v7.2 9.1); phrase endings fall 3 to 7 st (XTTS 2.5 to 9)
+v8.1_ru_question.ogg — yes/no question test — Two yes/no questions in robot v8.1, showing the rise on the focus word's stressed vowel.
+  Phrase: Ты правда купил билеты на завтра? А Маша об этом знает?
+  Markup: Ты пра+вда купи+л биле+ты на (за+){2,5}(втра){5,3}? А Ма+ша об э+том (зна+){2,5}(ет){5,4}?
+  Metrics: audio 4.141 s
+v8.1_en.ogg — fixed English comparison phrase, not posted to Telegram — The same sentence in robot v8.1. Not posted to Telegram.
+  Phrase: Hello, I am Grok from the Hood, the robot voice of the Team. Today the weather in Luxembourg is fine, and I am reading a short story about a cat
+  Markup: (empty)
+  Metrics: WER 13.3% (Whisper base, en), audio 8.472 s
