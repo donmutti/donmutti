@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Pew-pew: how we built a robot a voice out of formulas — Dmitrii Petukhov</title>
+  <meta name="description" content="How a Donald Duck joke turned, over one evening and one long day, into a formant speech synthesizer with its own intonation markup language.">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="canonical" href="https://donmutti.com/blog/0001-robot-voice/">
+  <link rel="alternate" hreflang="en" href="https://donmutti.com/blog/0001-robot-voice/">
+  <link rel="alternate" hreflang="ru" href="https://donmutti.com/ru/blog/0001-robot-voice/">
+  <link rel="alternate" hreflang="x-default" href="https://donmutti.com/blog/0001-robot-voice/">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://donmutti.com/blog/0001-robot-voice/">
+  <meta property="og:title" content="Pew-pew: how we built a robot a voice out of formulas">
+  <meta property="og:description" content="How a Donald Duck joke turned, over one evening and one long day, into a formant speech synthesizer with its own intonation markup language.">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:locale:alternate" content="ru_RU">
+  <meta property="og:image" content="https://donmutti.com/card.png">
+  <meta property="article:tag" content="AI">
+  <meta property="article:tag" content="Voice">
+  <meta property="article:tag" content="Bots">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Pew-pew: how we built a robot a voice out of formulas">
+  <meta name="twitter:description" content="How a Donald Duck joke turned, over one evening and one long day, into a formant speech synthesizer with its own intonation markup language.">
+  <meta name="twitter:image" content="https://donmutti.com/card.png">
+
+  <link rel="preload" href="/assets/fonts/Raleway-800.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/OpenSans-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/Raleway-700.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/OpenSans-700.woff2" as="font" type="font/woff2" crossorigin>
+
+  <link rel="stylesheet" href="/assets/lang.css">
+  <link rel="stylesheet" href="/assets/blog.css">
+  <script>document.documentElement.classList.add('js');</script>
+  <script defer src="/assets/blog.js"></script>
+  <script defer src="/_vercel/insights/script.js"></script>
+  <script>
+    window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+  </script>
+  <script defer src="/_vercel/web-analytics/script.js"></script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "@id": "https://donmutti.com/blog/0001-robot-voice/#article",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://donmutti.com/blog/0001-robot-voice/"
+  },
+  "headline": "Pew-pew: how we built a robot a voice out of formulas",
+  "description": "How a Donald Duck joke turned, over one evening and one long day, into a formant speech synthesizer with its own intonation markup language.",
+  "inLanguage": "en",
+  "url": "https://donmutti.com/blog/0001-robot-voice/",
+  "image": "https://donmutti.com/card.png",
+  "author": {
+    "@type": "Person",
+    "@id": "https://donmutti.com/#person",
+    "name": "Dmitrii Petukhov",
+    "url": "https://donmutti.com"
+  },
+  "publisher": {
+    "@type": "Person",
+    "@id": "https://donmutti.com/#person",
+    "name": "Dmitrii Petukhov"
+  },
+  "keywords": "AI, Voice, Bots"
+}
+  </script>
+</head>
+<body>
+  <div class="topnav">
+    <a class="topnav-blog" href="/blog/" aria-current="page">Blog</a>
+    <nav class="lang" aria-label="Language">
+    <a href="/blog/0001-robot-voice/" hreflang="en" lang="en" aria-current="page">EN</a>
+    <a href="/ru/blog/0001-robot-voice/" hreflang="ru" lang="ru">RU</a>
+    </nav>
+  </div>
+  <main>
+    <nav class="toolbar">
+      <a href="/blog/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>Blog</a>
+    </nav>
+
+    <article class="post">
+      <header class="post-head">
+        <h1>Pew-pew: how we built a robot a voice out of formulas</h1>
+        <div class="post-meta"><time datetime="2026-11-25">25 November 2026</time><span class="tags"><a class="tag" href="/blog/tags/ai/">AI</a><a class="tag" href="/blog/tags/voice/">Voice</a><a class="tag" href="/blog/tags/bots/">Bots</a></span></div>
+      </header>
+
+      <div class="post-body">
+<p>My bot, Grok from the Hood, has an ordinary neural voice: smooth, almost human. Now it has a second one too, a robot we built ourselves, from scratch, out of sine waves, noise and filters. This post is about how it was born, how many times it broke, and why the prettiest number at the end turned out not to be the most honest one.</p>
+<p>We're writing this together. The main text is mine, and Grok's lines are in quotes.</p>
+<h2 id="act-one-the-duck">Act one. The duck<a class="headerlink" href="#act-one-the-duck" title="Link to this section">#</a></h2>
+<p>It started with mischief. I asked Grok to say one classic three-word Russian phrase in Donald Duck's voice. It refused to copy the character's voice and offered to quack with a synthesizer instead. I said: go ahead, if you can.</p>
+<figure class="audio-figure"><div class="audio audio-single"><audio controls preload="metadata" src="/blog/0001-robot-voice/01_duck-beep.ogg">The browser cannot play this audio.</audio></div>
+<figcaption>The first &quot;quack&quot;. A thin beep sliding down, the &quot;pew&quot; that gave the experiment its nickname.</figcaption></figure>
+<p>That was a beeper, not a duck. So I kept pushing: give me FM and AM, give me a starting pitch around 450 Hz and sixteen harmonics, I want duck <em>speech</em>, not a speaker tone. Grok added a throat, then the rhythm of the phrase as four quacks, then two nasal formants like a cartoon duck's. We got a crow, then a cartoon duck, but still no words.</p>
+<p>Then I changed the task: forget the duck, say the phrase as a chain of phonemes, in order, and we'll fix durations and articulation later.</p>
+<figure class="audio-figure"><div class="audio audio-single"><audio controls preload="metadata" src="/blog/0001-robot-voice/07_first-phonemes.ogg">The browser cannot play this audio.</audio></div>
+<figcaption>The formant engine&#x27;s first speech. Staccato and crude, but those are words.</figcaption></figure>
+<blockquote>
+<p><strong>Grok:</strong> Every sound was a set of sine waves on formants, and the hissing consonants were just noise. The "kh" came out as a burst of white noise, and Dmitrii heard it right away. I ran the noise through the formants of "o", and the consonant got darker.</p>
+</blockquote>
+<p>Then the formants learned to glide, stressed vowels went up and the end of the phrase went down. I called that version the best so far. By the end of the evening Grok ran through the whole Russian alphabet: vowels, syllables, soft syllables and "privet, shef" ("hi, boss").</p>
+<figure class="audio-figure"><div class="audio audio-single"><audio controls preload="metadata" src="/blog/0001-robot-voice/10_russian-alphabet.ogg">The browser cannot play this audio.</audio></div>
+<figcaption>The whole Russian alphabet. End of the first evening.</figcaption></figure>
+<h2 id="a-bit-of-physics">A bit of physics<a class="headerlink" href="#a-bit-of-physics" title="Link to this section">#</a></h2>
+<p>Your vocal cords produce a buzz at a base pitch with lots of overtones. Your mouth and throat act as filters that boost a few frequency bands, the formants. Their positions are what make an "a" different from an "o". Formant synthesis recreates this with rules, without recordings of a live voice. The classic of the genre is Dennis Klatt's synthesizer from MIT, published in 1980<sup id="fnref:klatt"><a class="footnote-ref" href="#fn:klatt">1</a></sup>. His KlattTalk system became the commercial DECtalk, and its Perfect Paul voice was based on Klatt's own voice<sup id="fnref:jasa"><a class="footnote-ref" href="#fn:jasa">2</a></sup>. Stephen Hawking spoke through a Speech Plus CallText 5010, also a descendant of Klatt's MITalk<sup id="fnref:chm"><a class="footnote-ref" href="#fn:chm">3</a></sup>.</p>
+<p>Here is how ours works. Text becomes phonemes, and phonemes become an ffmpeg filter graph. The voiced source is a sum of harmonics of the base pitch up to 5 kHz, and each harmonic's loudness is set by the F1, F2 and F3 resonances, which glide piecewise-linearly from phoneme to phoneme. Consonants are made from noise with envelopes. Each pause-free stretch of speech is one <code>aevalsrc</code> formula. For "Ты ключи не видел?" ("Have you seen my keys?"), 1.3 seconds long, the graph is 12,430 characters. The sound is computed by formulas. Neural networks play no part in it: one only places stresses (ruaccent), and another acts as the judge (Whisper).</p>
+<h2 id="act-two-the-morning-and-the-impostor">Act two. The morning and the impostor<a class="headerlink" href="#act-two-the-morning-and-the-impostor" title="Link to this section">#</a></h2>
+<p>The next morning I asked in the chat for a little rhyme about a boy on a sofa, read by the robot. Grok sent a recording, but it wasn't the robot. It was its ordinary neural voice.</p>
+<figure class="audio-figure"><div class="audio audio-single"><audio controls preload="metadata" src="/blog/0001-robot-voice/11_xtts-mistaken-robot.ogg">The browser cannot play this audio.</audio></div>
+<figcaption>The impostor. Not the robot, just the bot&#x27;s ordinary neural voice.</figcaption></figure>
+<p>I caught it, and from then on "the robot voice" became a separate tool. The morning went to phonetics. "D" and "k" clicked, so the stops were softened. Russian vowel reduction was missing, so unstressed "o" now leans toward "a", and stresses are now placed automatically. Tongue twisters showed that "g" sounded like "d" and that unstressed endings got swallowed. By 09:35 English had arrived: the CMUdict dictionary, letter-to-sound rules for words that aren't in it, and our own formant table for ARPAbet phonemes. Latin script is read as English, Cyrillic as Russian, and you can mix them in one sentence.</p>
+<figure class="audio-figure"><div class="audio audio-single"><audio controls preload="metadata" src="/blog/0001-robot-voice/18_poem-akanye-final.ogg">The browser cannot play this audio.</audio></div>
+<figcaption>Vowel reduction and automatic stress. The rhyme finally sounds like spoken Russian.</figcaption></figure>
+<h2 id="act-three-a-question-mark-is-just-a-symbol">Act three. A question mark is just a symbol<a class="headerlink" href="#act-three-a-question-mark-is-just-a-symbol" title="Link to this section">#</a></h2>
+<p>Next came Nekrasov: "Otkuda drovishki?" ("Where's the firewood from?"). The robot read the question flat, like a statement.</p>
+<blockquote>
+<p><strong>Grok:</strong> To the synthesizer, a question mark was just a symbol. Unless the pitch was set explicitly, the voice didn't raise it. I lifted the last syllable by six semitones, and the question became a question.</p>
+</blockquote>
+<figure class="audio-figure"><div class="audio audio-single"><audio controls preload="metadata" src="/blog/0001-robot-voice/30_otkuda-question-rise.ogg">The browser cannot play this audio.</audio></div>
+<figcaption>&quot;Otkuda drovishki?&quot; with a rise at the end.</figcaption></figure>
+<p>Then we spent a whole morning conducting a single stanza: nine full readings, each from a new score. First we tried carets <code>^</code> over letters, then glissandos, and by 12:28 a markup language had taken shape:</p>
+<ul>
+<li><code>(text){n,m}</code>: the pitch glides smoothly from level n to level m. Levels go from 0 to 6, the normal voice is 2, and one step is 3 semitones.</li>
+<li><code>(text)[k]</code>: speed, where k &gt; 1 is faster.</li>
+<li><code>+</code> after a vowel marks stress. <code>|</code>, <code>||</code> and <code>|||</code> are pauses of 200, 500 and 750 ms.</li>
+</ul>
+<figure class="audio-figure"><div class="audio audio-single"><audio controls preload="metadata" src="/blog/0001-robot-voice/48_da-ty-chto.ogg">The browser cannot play this audio.</audio></div>
+<figcaption>&quot;Da ty chto? Ne mozhet byt&#x27;!&quot; (&quot;No way? That can&#x27;t be!&quot;) (д+а){1,5} (ты){5,4} (что+){3,6}| (не){4,5} (мо+жет){2,6} (бы+ть){6,0}</figcaption></figure>
+<h2 id="act-four-the-version-race">Act four. The version race<a class="headerlink" href="#act-four-the-version-race" title="Link to this section">#</a></h2>
+<p>"Sounds nice" isn't a metric. So every version read the same Russian monologue about keys, a Starship rocket and coffee in Luxembourg, plus the same English sentence, "Hello, I am Grok from the Hood…". The judge was Whisper base, and we measured WER, the share of misheard words<sup id="fnref:wer"><a class="footnote-ref" href="#fn:wer">4</a></sup>. The bot's ordinary neural voice scores 16% on the same monologue.</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Table">
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>What changed</th>
+<th>WER RU</th>
+<th>WER EN</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v1</td>
+<td>the original robot</td>
+<td>87.5%</td>
+<td>26.7%</td>
+</tr>
+<tr>
+<td>v3</td>
+<td>stress, wider melody, livelier tempo, light breath</td>
+<td>68.8%</td>
+<td>13.3%</td>
+</tr>
+<tr>
+<td>v4</td>
+<td>noise under the vowels removed</td>
+<td>65.6%</td>
+<td>13.3%</td>
+</tr>
+<tr>
+<td>v5</td>
+<td>consonant assimilation</td>
+<td>43.8%</td>
+<td>13.3%</td>
+</tr>
+<tr>
+<td>v6</td>
+<td>harmonic phases, one render pass</td>
+<td>56.2%</td>
+<td>33.3%</td>
+</tr>
+<tr>
+<td>v7.2</td>
+<td>live-voice tempo, stresses</td>
+<td>56.2%</td>
+<td>13.3%</td>
+</tr>
+<tr>
+<td>v8.1</td>
+<td>melody only from markup</td>
+<td>46.9%</td>
+<td>13.3%</td>
+</tr>
+<tr>
+<td>v9.2</td>
+<td>sonorants, "f" and "v", "l"</td>
+<td>37.5%</td>
+<td>13.3%</td>
+</tr>
+</tbody>
+</table>
+</div>
+<figure class="audio-figure"><div class="audio audio-tabs"><div class="audio-bar"><div class="audio-tablist" role="tablist" aria-label="Audio language"><button type="button" role="tab" class="audio-tab" id="audio-1-tab-en" data-lang="en" aria-controls="audio-1-panel-en" aria-selected="true" tabindex="0">EN</button><button type="button" role="tab" class="audio-tab" id="audio-1-tab-ru" data-lang="ru" aria-controls="audio-1-panel-ru" aria-selected="false" tabindex="-1">RU</button></div></div><div class="audio-panel is-active" role="tabpanel" id="audio-1-panel-en" data-lang="en" aria-labelledby="audio-1-tab-en"><div class="audio-panel-label">EN</div><audio controls preload="metadata" src="/blog/0001-robot-voice/v1_en.ogg">The browser cannot play this audio.</audio></div><div class="audio-panel" role="tabpanel" id="audio-1-panel-ru" data-lang="ru" aria-labelledby="audio-1-tab-ru"><div class="audio-panel-label">RU</div><audio controls preload="metadata" src="/blog/0001-robot-voice/v1_ru.ogg">The browser cannot play this audio.</audio></div></div>
+<figcaption>v1, the starting point. Whisper hears &quot;Brock from the hood&quot;.</figcaption></figure>
+<p><strong>White noise.</strong> v3 sounded livelier, but I wrote back: "каждый звук шипит будто белый шум" ("every sound hisses like white noise"). The culprit was a breath layer at −28 dB under the vowels. v4 removed it, and the vowels' noise floor in the 5.5–8 kHz band dropped from −41 to −79 dB. The real "s" and "sh" were left alone.</p>
+<p><strong>Consonants.</strong> v5 learned regressive voicing assimilation: "вчера" sounds like [fch], "сделать" like [zd], "к дому" like [gd], while "свет" and "в Москве" stay intact. Russian WER fell from 65.6% to 43.8%. The English file came out byte-for-byte identical to v4's: in that sentence the rules had nothing to change.</p>
+<p><strong>Metal.</strong> All harmonics started in the same phase and rang before every glottal pulse. v6 gave each harmonic the phase of the F1 and F2 resonators, and also rendered in one pass instead of two, so RTF (generation time divided by audio length) dropped from 0.77 to 0.48. The metal was gone, but intelligibility fell: Russian went from 43.8% to 56.2%, English from 13.3% to 33.3%, and "Grok" turned into "Rock from the road".</p>
+<p><strong>Random stresses.</strong> v7 matched the tempo to the live voice, and Russian WER on one of the measurements shot up to 75%. The stresses sounded random. It turned out the sample had been rendered in a working copy without the stress model, so every word was stressed on its last syllable. v7.1 fixed that and added a rule: the stressed vowel is the longest and the highest in its word. In v7.2 the Russian tempo reached 0.9 of the live voice. I called it the best version so far.</p>
+<p><strong>The punctuation dead end.</strong> At 19:31 the synthesizer was taught to build its own melody from full stops and question marks, and at 19:46 that was thrown out. We decided the renderer only plays pitches, and Grok itself writes the melody, as markup. In v8.1 a pitch vector is one or two integers, and three numbers or a decimal is an error with exit code 1. A rise-fall inside a word is written as glued pieces: <code>(ви+){2,5}(дел){5,2}</code>.</p>
+<p><strong>Sonorants.</strong> In v9 "m", "n", "l" and "r" started entering the vowel in 6 ms instead of the old smooth 35–75 ms transition, and stopped sounding like stops. In v9.2 "f" and "v" stopped being heard as "s", and "l" as "r" or "n". Russian WER fell from 46.9% to 37.5%. My verdict: "9.2 збс. Пушим" (roughly, "9.2 is f-ing great. Push it").</p>
+<figure class="audio-figure"><div class="audio audio-tabs"><div class="audio-bar"><div class="audio-tablist" role="tablist" aria-label="Audio language"><button type="button" role="tab" class="audio-tab" id="audio-2-tab-en" data-lang="en" aria-controls="audio-2-panel-en" aria-selected="true" tabindex="0">EN</button><button type="button" role="tab" class="audio-tab" id="audio-2-tab-ru" data-lang="ru" aria-controls="audio-2-panel-ru" aria-selected="false" tabindex="-1">RU</button></div></div><div class="audio-panel is-active" role="tabpanel" id="audio-2-panel-en" data-lang="en" aria-labelledby="audio-2-tab-en"><div class="audio-panel-label">EN</div><audio controls preload="metadata" src="/blog/0001-robot-voice/v9.2_en.ogg">The browser cannot play this audio.</audio></div><div class="audio-panel" role="tabpanel" id="audio-2-panel-ru" data-lang="ru" aria-labelledby="audio-2-tab-ru"><div class="audio-panel-label">RU</div><audio controls preload="metadata" src="/blog/0001-robot-voice/v9.2_ru.ogg">The browser cannot play this audio.</audio></div></div>
+<figcaption>v9.2. The same monologue and the same English sentence.</figcaption></figure>
+<blockquote>
+<p><strong>Grok:</strong> One failure won't make the table. A friend in the chat asked for the melodies of four languages over his voice. I sent a clip and described it confidently. When he asked for a graph of the contours, it turned out there was no pitch analysis behind the clip at all. I admitted it right there in the chat.</p>
+</blockquote>
+<h2 id="act-five-card-by-card">Act five. Card by card<a class="headerlink" href="#act-five-card-by-card" title="Link to this section">#</a></h2>
+<p>The last step was done by hand. Six lines of an everyday dialog about keys and coffee, in Russian and in English. Each line comes as a separate card with markup and audio: I listen and either approve it or fix the numbers. Russian lines 3, 4 and 5 took two or three of my corrections each, and line 6 passed on the first try. English line 6 was rendered 22 times.</p>
+<div class="code" data-lang=""><div class="code-bar"><span class="code-lang"></span><button type="button" class="code-copy" data-label="Copy" data-copied="Copied">Copy</button></div><pre><code class="hl">(да ско+лько){3,6} (мо+жно){6,3} || (опя+ть){2,5} (ты всё перекла+дываешь){5,1}
+((o){3}(ka+y){5})[0.8] ((o){3}(ka+y){5})[0.8] ||| (will you grab some){4,2} (coffee){2,6}</code></pre></div>
+<p>That English line 6 surfaced a bug. Each "okay" was marked to go up, but it fell from 139 to 123 Hz. An English word as a whole got the class of its first mark, so "kay" never got its own pitch. After fix 74f9d36, "okay" rises from 139 to 184 Hz. Two more things came out along the way. Pitch and speed on one group can only be set by nesting, <code>((x){a,b})[k]</code>, and a double suffix <code>(x){a,b}[k]</code> is silently ignored. And level 7 once slipped into an approved markup by mistake. Back then the renderer quietly clipped it to 6; now it's an error.</p>
+<h2 id="finale-v10">Finale: v10<a class="headerlink" href="#finale-v10" title="Link to this section">#</a></h2>
+<figure class="audio-figure"><div class="audio audio-tabs"><div class="audio-bar"><div class="audio-tablist" role="tablist" aria-label="Audio language"><button type="button" role="tab" class="audio-tab" id="audio-3-tab-en" data-lang="en" aria-controls="audio-3-panel-en" aria-selected="true" tabindex="0">EN</button><button type="button" role="tab" class="audio-tab" id="audio-3-tab-ru" data-lang="ru" aria-controls="audio-3-panel-ru" aria-selected="false" tabindex="-1">RU</button></div></div><div class="audio-panel is-active" role="tabpanel" id="audio-3-panel-en" data-lang="en" aria-labelledby="audio-3-tab-en"><div class="audio-panel-label">EN</div><audio controls preload="metadata" src="/blog/0001-robot-voice/v10_en.ogg">The browser cannot play this audio.</audio></div><div class="audio-panel" role="tabpanel" id="audio-3-panel-ru" data-lang="ru" aria-labelledby="audio-3-tab-ru"><div class="audio-panel-label">RU</div><audio controls preload="metadata" src="/blog/0001-robot-voice/v10_ru.ogg">The browser cannot play this audio.</audio></div></div>
+<figcaption>v10. The calibrated dialog, about 17.2 s in each language.</figcaption></figure>
+<p>The v10 numbers: Russian WER 36.7% and CER 13.0%, English WER 2.5% and CER 2.0%, RTF 0.43 and 0.48. The text here is different, so it can't be compared with the monologue in the table. Whisper got one English word wrong, "Have" → "How". In Russian it heard «Котя кутишь?» instead of «Кофе купишь?» ("Will you buy coffee?").</p>
+<p>And here's the honest part. By the numbers, the English is nearly perfect. By ear, in the next calibration round "fine" sounded like "vine" and the tempo was too fast, and I couldn't fix that with markup. So English is the next priority: how sounds join, "f" heard as "v", and tempo. And Russian must not get worse in the process.</p>
+<p>The robot is deterministic, too. The random pitch drift is seeded with a SHA-256 hash of the text, so the same markup gives a byte-identical ogg. I checked: two renders of "Ты ключи не видел?" matched down to the byte. The timbre will stay synthetic, and that's not a bug: this voice doesn't pretend to be human.</p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:klatt">
+<p>D. H. Klatt, <a href="https://www.fon.hum.uva.nl/david/ma_ssp/2009/klatt-1980-JAS000971.pdf" target="_blank" rel="noopener">"Software for a cascade/parallel formant synthesizer"</a>, <em>JASA</em> 67(3), 1980.&#160;<a class="footnote-backref" href="#fnref:klatt" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn:jasa">
+<p><a href="https://pubs.aip.org/asa/jasa/article/148/1/R1/966268/Speech-synthesizer-produced-voices-for-disabled" target="_blank" rel="noopener">"Speech synthesizer produced voices for disabled, including Stephen Hawking"</a>, <em>JASA</em>, 2020.&#160;<a class="footnote-backref" href="#fnref:jasa" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+<li id="fn:chm">
+<p>Computer History Museum, <a href="https://computerhistory.org/blog/how-dectalk-gave-voice-to-a-genius-engineering-stephen-hawkings-wheelchair/" target="_blank" rel="noopener">"Bringing A New Voice to Genius — MITalk, the CallText 5010, and Stephen Hawking's Wheelchair"</a>.&#160;<a class="footnote-backref" href="#fnref:chm" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+</li>
+<li id="fn:wer">
+<p>Whisper base, temperature 0. WER is the share of words recognized wrong (substitutions, deletions, insertions); CER is the same per character. Numbers from different runs can differ a little: in the v8.1 run the same v7.2 scored 40.6%.&#160;<a class="footnote-backref" href="#fnref:wer" title="Jump back to footnote 4 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+      </div>
+
+    </article>
+
+  </main>
+</body>
+</html>

@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Пиу-пиу: как мы собрали роботу голос из формул — Dmitrii Petukhov</title>
+  <meta name="description" content="Как шутка про Дональда Дака за вечер и один длинный день превратилась в формантный синтезатор речи с собственным языком интонационной разметки.">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="canonical" href="https://donmutti.com/ru/blog/0001-robot-voice/">
+  <link rel="alternate" hreflang="en" href="https://donmutti.com/blog/0001-robot-voice/">
+  <link rel="alternate" hreflang="ru" href="https://donmutti.com/ru/blog/0001-robot-voice/">
+  <link rel="alternate" hreflang="x-default" href="https://donmutti.com/blog/0001-robot-voice/">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://donmutti.com/ru/blog/0001-robot-voice/">
+  <meta property="og:title" content="Пиу-пиу: как мы собрали роботу голос из формул">
+  <meta property="og:description" content="Как шутка про Дональда Дака за вечер и один длинный день превратилась в формантный синтезатор речи с собственным языком интонационной разметки.">
+  <meta property="og:locale" content="ru_RU">
+  <meta property="og:locale:alternate" content="en_US">
+  <meta property="og:image" content="https://donmutti.com/card.png">
+  <meta property="article:tag" content="AI">
+  <meta property="article:tag" content="Voice">
+  <meta property="article:tag" content="Bots">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Пиу-пиу: как мы собрали роботу голос из формул">
+  <meta name="twitter:description" content="Как шутка про Дональда Дака за вечер и один длинный день превратилась в формантный синтезатор речи с собственным языком интонационной разметки.">
+  <meta name="twitter:image" content="https://donmutti.com/card.png">
+
+  <link rel="preload" href="/assets/fonts/Raleway-800.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/OpenSans-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/Raleway-700.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/OpenSans-700.woff2" as="font" type="font/woff2" crossorigin>
+
+  <link rel="stylesheet" href="/assets/lang.css">
+  <link rel="stylesheet" href="/assets/blog.css">
+  <script>document.documentElement.classList.add('js');</script>
+  <script defer src="/assets/blog.js"></script>
+  <script defer src="/_vercel/insights/script.js"></script>
+  <script>
+    window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+  </script>
+  <script defer src="/_vercel/web-analytics/script.js"></script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "@id": "https://donmutti.com/ru/blog/0001-robot-voice/#article",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://donmutti.com/ru/blog/0001-robot-voice/"
+  },
+  "headline": "Пиу-пиу: как мы собрали роботу голос из формул",
+  "description": "Как шутка про Дональда Дака за вечер и один длинный день превратилась в формантный синтезатор речи с собственным языком интонационной разметки.",
+  "inLanguage": "ru",
+  "url": "https://donmutti.com/ru/blog/0001-robot-voice/",
+  "image": "https://donmutti.com/card.png",
+  "author": {
+    "@type": "Person",
+    "@id": "https://donmutti.com/#person",
+    "name": "Дмитрий Петухов",
+    "url": "https://donmutti.com"
+  },
+  "publisher": {
+    "@type": "Person",
+    "@id": "https://donmutti.com/#person",
+    "name": "Дмитрий Петухов"
+  },
+  "keywords": "AI, Voice, Bots"
+}
+  </script>
+</head>
+<body>
+  <div class="topnav">
+    <a class="topnav-blog" href="/ru/blog/" aria-current="page">Блог</a>
+    <nav class="lang" aria-label="Язык">
+    <a href="/blog/0001-robot-voice/" hreflang="en" lang="en">EN</a>
+    <a href="/ru/blog/0001-robot-voice/" hreflang="ru" lang="ru" aria-current="page">RU</a>
+    </nav>
+  </div>
+  <main>
+    <nav class="toolbar">
+      <a href="/ru/blog/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>Блог</a>
+    </nav>
+
+    <article class="post">
+      <header class="post-head">
+        <h1>Пиу-пиу: как мы собрали роботу голос из формул</h1>
+        <div class="post-meta"><time datetime="2026-11-25">25 ноября 2026</time><span class="tags"><a class="tag" href="/ru/blog/tags/ai/">AI</a><a class="tag" href="/ru/blog/tags/voice/">Voice</a><a class="tag" href="/ru/blog/tags/bots/">Bots</a></span></div>
+      </header>
+
+      <div class="post-body">
+<p>У моего бота, Грока Дворового, есть обычный нейроголос: гладкий, почти человеческий. Теперь у него есть и второй голос, робот, которого мы собрали сами, с нуля, из синусоид, шума и фильтров. Эта статья о том, как он родился, сколько раз ломался и почему самая красивая цифра в конце оказалась не самой честной.</p>
+<p>Пишем вдвоём. Основной текст мой, а реплики Грока даны цитатами.</p>
+<h2 id="акт-первый-утка">Акт первый. Утка<a class="headerlink" href="#акт-первый-утка" title="Ссылка на этот раздел">#</a></h2>
+<p>Началось с хулиганства. Я попросил Грока сказать голосом Дональда Дака одну классическую русскую фразу из трёх слов. Копировать голос персонажа он отказался и предложил крякнуть синтезатором. Я сказал: давай, если сможешь.</p>
+<figure class="audio-figure"><div class="audio audio-single"><audio controls preload="metadata" src="/ru/blog/0001-robot-voice/01_duck-beep.ogg">Браузер не может воспроизвести это аудио.</audio></div>
+<figcaption>Первое «кряканье». Тонкий писк со слайдом вниз, тот самый «пиу», который дал эксперименту прозвище.</figcaption></figure>
+<p>Это была пищалка, а не утка. Дальше я начал давить: дай FM и AM, дай стартовый тон около 450 Гц и шестнадцать гармоник, мне нужна утиная <em>речь</em>, а не динамик. Грок добавил горло, потом ритм фразы четырьмя кряками, потом два носовых форманта, как у мультяшной утки. Получилась ворона, потом мультяшная утка, но слов так и не было.</p>
+<p>Тогда я сменил задачу: забудь утку, произнеси фразу цепочкой фонем, по порядку, а длительности и артикуляцию поправим потом.</p>
+<figure class="audio-figure"><div class="audio audio-single"><audio controls preload="metadata" src="/ru/blog/0001-robot-voice/07_first-phonemes.ogg">Браузер не может воспроизвести это аудио.</audio></div>
+<figcaption>Первая речь формантного движка. Отрывисто, криво, но это уже слова.</figcaption></figure>
+<blockquote>
+<p><strong>Грок:</strong> Каждый звук был набором синусоид на формантах, а шипящие были просто шумом. «Х» вышла как удар белого шума, и Дмитрий сразу это услышал. Я пропустил шум через форманты «о», и согласная потемнела.</p>
+</blockquote>
+<p>Потом форманты научились плыть, ударные гласные пошли вверх, конец фразы вниз. Эту версию я назвал лучшей на тот момент. К концу вечера Грок прогнал всю русскую азбуку: гласные, слоги, мягкие слоги и «привет, шеф».</p>
+<figure class="audio-figure"><div class="audio audio-single"><audio controls preload="metadata" src="/ru/blog/0001-robot-voice/10_russian-alphabet.ogg">Браузер не может воспроизвести это аудио.</audio></div>
+<figcaption>Вся русская азбука. Конец первого вечера.</figcaption></figure>
+<h2 id="немного-физики">Немного физики<a class="headerlink" href="#немного-физики" title="Ссылка на этот раздел">#</a></h2>
+<p>Голосовые связки дают жужжание на основном тоне с кучей обертонов. Рот и горло работают как фильтры и усиливают несколько полос частот, форманты. «А» от «о» отличается именно их положением. Формантный синтез повторяет это правилами, без записей живого голоса. Классика жанра — синтезатор Денниса Клатта из MIT, опубликованный в 1980 году<sup id="fnref:klatt"><a class="footnote-ref" href="#fn:klatt">1</a></sup>. Его система KlattTalk стала коммерческим DECtalk, а голос Perfect Paul был сделан по голосу самого Клатта<sup id="fnref:jasa"><a class="footnote-ref" href="#fn:jasa">2</a></sup>. Стивен Хокинг говорил через Speech Plus CallText 5010, тоже потомка MITalk Клатта<sup id="fnref:chm"><a class="footnote-ref" href="#fn:chm">3</a></sup>.</p>
+<p>У нас всё устроено так. Текст превращается в фонемы, фонемы в граф фильтров ffmpeg. Звонкий источник — это сумма гармоник основного тона до 5 кГц, и громкость каждой гармоники задают резонансы F1, F2 и F3, которые кусочно-линейно плывут от фонемы к фонеме. Согласные делаются из шума с огибающими. Каждый кусок речи без пауз — одна формула <code>aevalsrc</code>. Для фразы «Ты ключи не видел?» длиной 1,3 секунды граф занимает 12 430 символов. Звук считают формулы. Нейросети в нём не участвуют: одна только расставляет ударения (ruaccent), другая работает судьёй (Whisper).</p>
+<h2 id="акт-второй-утро-и-подмена">Акт второй. Утро и подмена<a class="headerlink" href="#акт-второй-утро-и-подмена" title="Ссылка на этот раздел">#</a></h2>
+<p>Наутро я попросил в чате прочитать роботом стишок про мальчика на диванчике. Грок прислал запись, но это был не робот, а его обычный нейроголос.</p>
+<figure class="audio-figure"><div class="audio audio-single"><audio controls preload="metadata" src="/ru/blog/0001-robot-voice/11_xtts-mistaken-robot.ogg">Браузер не может воспроизвести это аудио.</audio></div>
+<figcaption>Подмена. Это не робот, а обычный нейроголос бота.</figcaption></figure>
+<p>Я это поймал, и с того момента «голос робота» стал отдельным инструментом. Утро ушло на фонетику. «Д» и «к» щёлкали, поэтому смягчили взрывные. Не хватало аканья, поэтому безударное «о» стало тянуться к «а», а ударения теперь ставятся автоматически. Скороговорки показали, что «г» звучит как «д», а безударные окончания проглатываются. К 09:35 появился английский: словарь CMUdict, правила «буква → звук» на случай, если слова в словаре нет, и своя таблица формант для фонем ARPAbet. Латиница читается по-английски, кириллица по-русски, и их можно мешать в одной фразе.</p>
+<figure class="audio-figure"><div class="audio audio-single"><audio controls preload="metadata" src="/ru/blog/0001-robot-voice/18_poem-akanye-final.ogg">Браузер не может воспроизвести это аудио.</audio></div>
+<figcaption>Аканье и автоматические ударения. Стишок наконец звучит как русская речь.</figcaption></figure>
+<h2 id="акт-третий-знак-вопроса-просто-символ">Акт третий. Знак вопроса — просто символ<a class="headerlink" href="#акт-третий-знак-вопроса-просто-символ" title="Ссылка на этот раздел">#</a></h2>
+<p>Дальше был Некрасов, «Откуда дровишки?». Робот прочитал вопрос ровно, как утверждение.</p>
+<blockquote>
+<p><strong>Грок:</strong> Для синтезатора знак вопроса был просто символом. Пока высоту не задали явно, голос её не поднимал. Я поднял последний слог на шесть полутонов, и вопрос стал вопросом.</p>
+</blockquote>
+<figure class="audio-figure"><div class="audio audio-single"><audio controls preload="metadata" src="/ru/blog/0001-robot-voice/30_otkuda-question-rise.ogg">Браузер не может воспроизвести это аудио.</audio></div>
+<figcaption>«Откуда дровишки?» с подъёмом на конце.</figcaption></figure>
+<p>Потом мы целое утро дирижировали одной строфой: девять полных прочтений, каждое по новой партитуре. Сначала пробовали «крышечки» <code>^</code> над буквами, потом глиссандо, а к 12:28 сложился язык разметки:</p>
+<ul>
+<li><code>(текст){n,m}</code>: высота плавно идёт от уровня n к уровню m. Уровни от 0 до 6, обычный голос — 2, один шаг — 3 полутона.</li>
+<li><code>(текст)[k]</code>: скорость, где k &gt; 1 быстрее.</li>
+<li><code>+</code> после гласной — ударение. <code>|</code>, <code>||</code> и <code>|||</code> — паузы на 200, 500 и 750 мс.</li>
+</ul>
+<figure class="audio-figure"><div class="audio audio-single"><audio controls preload="metadata" src="/ru/blog/0001-robot-voice/48_da-ty-chto.ogg">Браузер не может воспроизвести это аудио.</audio></div>
+<figcaption>«Да ты что? Не может быть!» (д+а){1,5} (ты){5,4} (что+){3,6}| (не){4,5} (мо+жет){2,6} (бы+ть){6,0}</figcaption></figure>
+<h2 id="акт-четвёртый-гонка-версий">Акт четвёртый. Гонка версий<a class="headerlink" href="#акт-четвёртый-гонка-версий" title="Ссылка на этот раздел">#</a></h2>
+<p>«Нравится на слух» — не метрика. Поэтому каждая версия читала один и тот же русский монолог про ключи, ракету Starship и кофе в Люксембурге, а ещё одну и ту же английскую фразу «Hello, I am Grok from the Hood…». Судьёй был Whisper base, а мерили WER, долю неправильно понятых слов<sup id="fnref:wer"><a class="footnote-ref" href="#fn:wer">4</a></sup>. Обычный нейроголос бота на том же монологе даёт 16%.</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Таблица">
+<table>
+<thead>
+<tr>
+<th>Версия</th>
+<th>Что меняли</th>
+<th>WER RU</th>
+<th>WER EN</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v1</td>
+<td>исходный робот</td>
+<td>87,5%</td>
+<td>26,7%</td>
+</tr>
+<tr>
+<td>v3</td>
+<td>ударения, шире мелодия, живее темп, лёгкое дыхание</td>
+<td>68,8%</td>
+<td>13,3%</td>
+</tr>
+<tr>
+<td>v4</td>
+<td>убрали шум под гласными</td>
+<td>65,6%</td>
+<td>13,3%</td>
+</tr>
+<tr>
+<td>v5</td>
+<td>ассимиляция согласных</td>
+<td>43,8%</td>
+<td>13,3%</td>
+</tr>
+<tr>
+<td>v6</td>
+<td>фазы гармоник, один проход рендера</td>
+<td>56,2%</td>
+<td>33,3%</td>
+</tr>
+<tr>
+<td>v7.2</td>
+<td>темп как у живого голоса, ударения</td>
+<td>56,2%</td>
+<td>13,3%</td>
+</tr>
+<tr>
+<td>v8.1</td>
+<td>мелодия только из разметки</td>
+<td>46,9%</td>
+<td>13,3%</td>
+</tr>
+<tr>
+<td>v9.2</td>
+<td>сонорные, «ф» и «в», «л»</td>
+<td>37,5%</td>
+<td>13,3%</td>
+</tr>
+</tbody>
+</table>
+</div>
+<figure class="audio-figure"><div class="audio audio-tabs"><div class="audio-bar"><div class="audio-tablist" role="tablist" aria-label="Язык записи"><button type="button" role="tab" class="audio-tab" id="audio-1-tab-ru" data-lang="ru" aria-controls="audio-1-panel-ru" aria-selected="true" tabindex="0">RU</button><button type="button" role="tab" class="audio-tab" id="audio-1-tab-en" data-lang="en" aria-controls="audio-1-panel-en" aria-selected="false" tabindex="-1">EN</button></div></div><div class="audio-panel is-active" role="tabpanel" id="audio-1-panel-ru" data-lang="ru" aria-labelledby="audio-1-tab-ru"><div class="audio-panel-label">RU</div><audio controls preload="metadata" src="/ru/blog/0001-robot-voice/v1_ru.ogg">Браузер не может воспроизвести это аудио.</audio></div><div class="audio-panel" role="tabpanel" id="audio-1-panel-en" data-lang="en" aria-labelledby="audio-1-tab-en"><div class="audio-panel-label">EN</div><audio controls preload="metadata" src="/ru/blog/0001-robot-voice/v1_en.ogg">Браузер не может воспроизвести это аудио.</audio></div></div>
+<figcaption>v1, исходная точка. Whisper слышит «Brock from the hood».</figcaption></figure>
+<p><strong>Белый шум.</strong> v3 звучала живее, но я написал: «каждый звук шипит будто белый шум». Виноват был слой дыхания на −28 дБ под гласными. В v4 его убрали, и шумовой пол гласных в полосе 5,5–8 кГц упал с −41 до −79 дБ. Настоящие «с» и «ш» не трогали.</p>
+<p><strong>Согласные.</strong> v5 научилась регрессивной ассимиляции: «вчера» звучит как [фч], «сделать» как [зд], «к дому» как [гд], а «свет» и «в Москве» не ломаются. Русский WER упал с 65,6% до 43,8%. Английский файл при этом вышел побайтно таким же, как у v4: в той фразе правилам было нечего менять.</p>
+<p><strong>Металл.</strong> Все гармоники стартовали в одной фазе и звенели перед каждым импульсом связок. v6 дала каждой гармонике фазу резонаторов F1 и F2 и заодно рендерила за один проход вместо двух, поэтому RTF (время генерации, делённое на длину аудио) упал с 0,77 до 0,48. Металл ушёл, но разборчивость упала: русский 43,8% → 56,2%, английский 13,3% → 33,3%, а «Grok» превратился в «Rock from the road».</p>
+<p><strong>Ударения наугад.</strong> v7 подогнала темп под живой голос, и русский WER по одному из замеров взлетел до 75%. Ударения звучали случайно. Оказалось, сэмпл отрендерили в рабочей копии без модели ударений, и каждое слово получило ударение на последний слог. В v7.1 это починили и добавили правило: ударная гласная — самая длинная и самая высокая в слове. В v7.2 русский темп дошёл до 0,9 от живого голоса. Это я назвал лучшей версией на тот момент.</p>
+<p><strong>Тупик с пунктуацией.</strong> В 19:31 синтезатор научили сам строить мелодию по точкам и вопросам, а в 19:46 это выкинули. Решили так: рендерер только играет высоты, а мелодию пишет сам Грок, разметкой. В v8.1 вектор высоты — одно или два целых числа, а три числа или дробь — ошибка с кодом выхода 1. Подъём-спад внутри слова пишется склеенными кусками: <code>(ви+){2,5}(дел){5,2}</code>.</p>
+<p><strong>Сонорные.</strong> В v9 «м», «н», «л» и «р» стали входить в гласную за 6 мс вместо прежнего плавного перехода на 35–75 мс и перестали звучать как взрывные. В v9.2 «ф» и «в» перестали слышаться как «с», а «л» как «р» или «н». Русский WER упал с 46,9% до 37,5%. Мой вердикт: «9.2 збс. Пушим».</p>
+<figure class="audio-figure"><div class="audio audio-tabs"><div class="audio-bar"><div class="audio-tablist" role="tablist" aria-label="Язык записи"><button type="button" role="tab" class="audio-tab" id="audio-2-tab-ru" data-lang="ru" aria-controls="audio-2-panel-ru" aria-selected="true" tabindex="0">RU</button><button type="button" role="tab" class="audio-tab" id="audio-2-tab-en" data-lang="en" aria-controls="audio-2-panel-en" aria-selected="false" tabindex="-1">EN</button></div></div><div class="audio-panel is-active" role="tabpanel" id="audio-2-panel-ru" data-lang="ru" aria-labelledby="audio-2-tab-ru"><div class="audio-panel-label">RU</div><audio controls preload="metadata" src="/ru/blog/0001-robot-voice/v9.2_ru.ogg">Браузер не может воспроизвести это аудио.</audio></div><div class="audio-panel" role="tabpanel" id="audio-2-panel-en" data-lang="en" aria-labelledby="audio-2-tab-en"><div class="audio-panel-label">EN</div><audio controls preload="metadata" src="/ru/blog/0001-robot-voice/v9.2_en.ogg">Браузер не может воспроизвести это аудио.</audio></div></div>
+<figcaption>v9.2. Тот же монолог и та же английская фраза.</figcaption></figure>
+<blockquote>
+<p><strong>Грок:</strong> Один провал не попадёт в таблицу. Друг из чата попросил мелодии четырёх языков поверх его голоса. Я прислал клип и уверенно его описал. Когда он попросил график контуров, оказалось, что за клипом нет никакого анализа высоты. Я признался в этом прямо в чате.</p>
+</blockquote>
+<h2 id="акт-пятый-карточка-за-карточкой">Акт пятый. Карточка за карточкой<a class="headerlink" href="#акт-пятый-карточка-за-карточкой" title="Ссылка на этот раздел">#</a></h2>
+<p>Последний шаг сделали вручную. Шесть реплик бытового диалога про ключи и кофе, по-русски и по-английски. Каждая реплика идёт отдельной карточкой с разметкой и аудио: я слушаю и либо принимаю, либо правлю цифры. Русские реплики 3, 4 и 5 потребовали двух-трёх моих правок, шестая прошла с первого раза. Английскую шестую рендерили 22 раза.</p>
+<div class="code" data-lang=""><div class="code-bar"><span class="code-lang"></span><button type="button" class="code-copy" data-label="Копировать" data-copied="Скопировано">Копировать</button></div><pre><code class="hl">(да ско+лько){3,6} (мо+жно){6,3} || (опя+ть){2,5} (ты всё перекла+дываешь){5,1}
+((o){3}(ka+y){5})[0.8] ((o){3}(ka+y){5})[0.8] ||| (will you grab some){4,2} (coffee){2,6}</code></pre></div>
+<p>На этой шестой реплике всплыл баг. Каждое «okay» по разметке должно было идти вверх, а падало со 139 до 123 Гц. Английское слово целиком получало класс своей первой метки, поэтому «kay» не получал своей высоты. После фикса 74f9d36 «okay» поднимается со 139 до 184 Гц. Попутно выяснили ещё две вещи. Высоту и скорость на одной группе можно задать только вложением <code>((x){a,b})[k]</code>, а двойной суффикс <code>(x){a,b}[k]</code> молча игнорируется. И в одну утверждённую разметку по ошибке попал уровень 7. Тогда рендерер тихо обрезал его до 6, а теперь это ошибка.</p>
+<h2 id="финал-v10">Финал: v10<a class="headerlink" href="#финал-v10" title="Ссылка на этот раздел">#</a></h2>
+<figure class="audio-figure"><div class="audio audio-tabs"><div class="audio-bar"><div class="audio-tablist" role="tablist" aria-label="Язык записи"><button type="button" role="tab" class="audio-tab" id="audio-3-tab-ru" data-lang="ru" aria-controls="audio-3-panel-ru" aria-selected="true" tabindex="0">RU</button><button type="button" role="tab" class="audio-tab" id="audio-3-tab-en" data-lang="en" aria-controls="audio-3-panel-en" aria-selected="false" tabindex="-1">EN</button></div></div><div class="audio-panel is-active" role="tabpanel" id="audio-3-panel-ru" data-lang="ru" aria-labelledby="audio-3-tab-ru"><div class="audio-panel-label">RU</div><audio controls preload="metadata" src="/ru/blog/0001-robot-voice/v10_ru.ogg">Браузер не может воспроизвести это аудио.</audio></div><div class="audio-panel" role="tabpanel" id="audio-3-panel-en" data-lang="en" aria-labelledby="audio-3-tab-en"><div class="audio-panel-label">EN</div><audio controls preload="metadata" src="/ru/blog/0001-robot-voice/v10_en.ogg">Браузер не может воспроизвести это аудио.</audio></div></div>
+<figcaption>v10. Откалиброванный диалог, около 17,2 с на каждом языке.</figcaption></figure>
+<p>Цифры v10: русский WER 36,7% и CER 13,0%, английский WER 2,5% и CER 2,0%, RTF 0,43 и 0,48. Текст здесь другой, поэтому с монологом из таблицы это не сравнить. Whisper ошибся в английском одним словом, «Have» → «How». В русском он услышал «Котя кутишь?» вместо «Кофе купишь?».</p>
+<p>И вот тут честная часть. По цифрам английский почти идеален. На слух в следующем раунде калибровки «fine» звучало как «vine», а темп был слишком быстрым, и разметкой я это не вытянул. Поэтому английский — следующий приоритет: стыки звуков, «f», которое слышится как «v», и темп. Русский при этом не должен стать хуже.</p>
+<p>Робот при этом детерминирован. Случайный дрейф высоты засевается хешем SHA-256 от текста, так что одна и та же разметка даёт побайтно один и тот же ogg. Я проверил: два рендера «Ты ключи не видел?» совпали до байта. Тембр останется синтетическим, и это не баг: этот голос не притворяется человеком.</p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:klatt">
+<p>D. H. Klatt, <a href="https://www.fon.hum.uva.nl/david/ma_ssp/2009/klatt-1980-JAS000971.pdf" target="_blank" rel="noopener">«Software for a cascade/parallel formant synthesizer»</a>, <em>JASA</em> 67(3), 1980.&#160;<a class="footnote-backref" href="#fnref:klatt" title="Вернуться к сноске 1 в тексте">&#8617;</a></p>
+</li>
+<li id="fn:jasa">
+<p><a href="https://pubs.aip.org/asa/jasa/article/148/1/R1/966268/Speech-synthesizer-produced-voices-for-disabled" target="_blank" rel="noopener">«Speech synthesizer produced voices for disabled, including Stephen Hawking»</a>, <em>JASA</em>, 2020.&#160;<a class="footnote-backref" href="#fnref:jasa" title="Вернуться к сноске 2 в тексте">&#8617;</a></p>
+</li>
+<li id="fn:chm">
+<p>Computer History Museum, <a href="https://computerhistory.org/blog/how-dectalk-gave-voice-to-a-genius-engineering-stephen-hawkings-wheelchair/" target="_blank" rel="noopener">«Bringing A New Voice to Genius — MITalk, the CallText 5010, and Stephen Hawking's Wheelchair»</a>.&#160;<a class="footnote-backref" href="#fnref:chm" title="Вернуться к сноске 3 в тексте">&#8617;</a></p>
+</li>
+<li id="fn:wer">
+<p>Whisper base, temperature 0. WER — доля слов, распознанных неправильно (замены, пропуски, вставки); CER — то же по буквам. Цифры из разных прогонов могут немного расходиться: в прогоне v8.1 та же v7.2 дала 40,6%.&#160;<a class="footnote-backref" href="#fnref:wer" title="Вернуться к сноске 4 в тексте">&#8617;</a></p>
+</li>
+</ol>
+</div>
+      </div>
+
+    </article>
+
+  </main>
+</body>
+</html>
