@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Как я научил робота говорить — Dmitrii Petukhov</title>
+  <meta name="description" content="Шутка про Дональда Дака, отказ копировать чужой голос и самодельный формантный синтезатор, который за два дня прошёл путь от писка до речи.">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="canonical" href="https://donmutti.com/ru/blog/0003-robot-voice/">
+  <link rel="alternate" hreflang="en" href="https://donmutti.com/blog/0003-robot-voice/">
+  <link rel="alternate" hreflang="ru" href="https://donmutti.com/ru/blog/0003-robot-voice/">
+  <link rel="alternate" hreflang="x-default" href="https://donmutti.com/blog/0003-robot-voice/">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://donmutti.com/ru/blog/0003-robot-voice/">
+  <meta property="og:title" content="Как я научил робота говорить">
+  <meta property="og:description" content="Шутка про Дональда Дака, отказ копировать чужой голос и самодельный формантный синтезатор, который за два дня прошёл путь от писка до речи.">
+  <meta property="og:locale" content="ru_RU">
+  <meta property="og:locale:alternate" content="en_US">
+  <meta property="og:image" content="https://donmutti.com/card.png">
+  <meta property="article:tag" content="AI">
+  <meta property="article:tag" content="Voice">
+  <meta property="article:tag" content="Bots">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Как я научил робота говорить">
+  <meta name="twitter:description" content="Шутка про Дональда Дака, отказ копировать чужой голос и самодельный формантный синтезатор, который за два дня прошёл путь от писка до речи.">
+  <meta name="twitter:image" content="https://donmutti.com/card.png">
+
+  <link rel="preload" href="/assets/fonts/Raleway-800.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/OpenSans-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/Raleway-700.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/OpenSans-700.woff2" as="font" type="font/woff2" crossorigin>
+
+  <link rel="stylesheet" href="/assets/lang.css">
+  <link rel="stylesheet" href="/assets/blog.css">
+  <script>document.documentElement.classList.add('js');</script>
+  <script defer src="/assets/blog.js"></script>
+  <script defer src="/_vercel/insights/script.js"></script>
+  <script>
+    window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+  </script>
+  <script defer src="/_vercel/web-analytics/script.js"></script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "@id": "https://donmutti.com/ru/blog/0003-robot-voice/#article",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://donmutti.com/ru/blog/0003-robot-voice/"
+  },
+  "headline": "Как я научил робота говорить",
+  "description": "Шутка про Дональда Дака, отказ копировать чужой голос и самодельный формантный синтезатор, который за два дня прошёл путь от писка до речи.",
+  "inLanguage": "ru",
+  "url": "https://donmutti.com/ru/blog/0003-robot-voice/",
+  "image": "https://donmutti.com/card.png",
+  "author": {
+    "@type": "Person",
+    "@id": "https://donmutti.com/#person",
+    "name": "Дмитрий Петухов",
+    "url": "https://donmutti.com"
+  },
+  "publisher": {
+    "@type": "Person",
+    "@id": "https://donmutti.com/#person",
+    "name": "Дмитрий Петухов"
+  },
+  "keywords": "AI, Voice, Bots"
+}
+  </script>
+</head>
+<body>
+  <div class="topnav">
+    <a class="topnav-blog" href="/ru/blog/" aria-current="page">Блог</a>
+    <nav class="lang" aria-label="Язык">
+    <a href="/blog/0003-robot-voice/" hreflang="en" lang="en">EN</a>
+    <a href="/ru/blog/0003-robot-voice/" hreflang="ru" lang="ru" aria-current="page">RU</a>
+    </nav>
+  </div>
+  <main>
+    <nav class="toolbar">
+      <a href="/ru/blog/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>Блог</a>
+    </nav>
+
+    <article class="post">
+      <header class="post-head">
+        <h1>Как я научил робота говорить</h1>
+        <div class="post-meta"><time datetime="2026-11-25">25 ноября 2026</time><span class="tags"><a class="tag" href="/ru/blog/tags/ai/">AI</a><a class="tag" href="/ru/blog/tags/voice/">Voice</a><a class="tag" href="/ru/blog/tags/bots/">Bots</a></span></div>
+      </header>
+
+      <div class="post-body">
+<p>Я собираю личного ИИ-бота: он живёт в моих чатах, помнит важное и тихо берёт на себя скучную часть дня. Рано или поздно такому боту нужен свой голос, и мне хотелось голос честно синтетический и собранный с нуля.</p>
+<h2 id="утка-во-дворе">Утка во дворе<a class="headerlink" href="#утка-во-дворе" title="Ссылка на этот раздел">#</a></h2>
+<p>Бот тусуется в телеграм-группе друзей «Двор Грока · Grok's Hood». К середине ноября группа уже вовсю жила. Сам бот зовётся Грок Дворовый (по-английски Grok from the Hood).</p>
+<p>Началось всё с шутки. Я попросил бота сказать грубую фразу голосом Дональда Дака. Бот отказался: чужие голоса, будь то люди или персонажи, он не копирует. Незадолго до этого кто-то из друзей в чате просил голос известного политика и получил тот же ответ. Взамен бот предложил крякнуть синтезатором. «Синтезатором давай, если смогешь», — ответил я.</p>
+<p>Первая попытка вышла тонкой пищалкой со слайдом вниз. Это «пиу-пиу» и стало прозвищем всего эксперимента.</p>
+<figure class="audio-figure"><div class="audio audio-single"><audio controls preload="metadata" src="/ru/blog/0003-robot-voice/01_duck-beep.ogg">Браузер не может воспроизвести это аудио.</audio></div>
+<figcaption>Первое кряканье. Игрушечный динамик, а не утка.</figcaption></figure>
+<h2 id="от-кряков-к-фонемам">От кряков к фонемам<a class="headerlink" href="#от-кряков-к-фонемам" title="Ссылка на этот раздел">#</a></h2>
+<p>Пищалка ещё не голос, поэтому пришлось спуститься к физике. Когда мы говорим, связки жужжат на основном тоне с кучей обертонов. Рот и горло работают как фильтры и усиливают несколько полос частот, их называют формантами. Именно их положение отличает «а» от «о». Формантный синтез делает то же самое формулами: генерирует жужжание, придаёт ему резонансы и добавляет шумовые слои для согласных вроде «с» и «ш». У нас это цепочка звуковых фильтров. Нейросети в звуковом тракте нет, и ничей голос для обучения не использовался.</p>
+<p>В тот же вечер у утки появилось горло, потом ритм фразы четырьмя кряками, и наконец фраза прозвучала цепочкой фонем. Грубо, отрывисто, но это была речь.</p>
+<figure class="audio-figure"><div class="audio audio-single"><audio controls preload="metadata" src="/ru/blog/0003-robot-voice/07_first-phonemes.ogg">Браузер не может воспроизвести это аудио.</audio></div>
+<figcaption>Первые настоящие фонемы формантного движка.</figcaption></figure>
+<p>Дальше были плавающие форманты, правка «х» и полная экскурсия по русским звукам: гласные, согласные, мягкие слоги и приветствие в конце.</p>
+<figure class="audio-figure"><div class="audio audio-single"><audio controls preload="metadata" src="/ru/blog/0003-robot-voice/10_russian-alphabet.ogg">Браузер не может воспроизвести это аудио.</audio></div>
+<figcaption>Вся русская азбука, конец первого дня.</figcaption></figure>
+<h2 id="интонация-и-английский">Интонация и английский<a class="headerlink" href="#интонация-и-английский" title="Ссылка на этот раздел">#</a></h2>
+<p>Ещё робот получил крошечный язык разметки: каждому слову можно задать свою высоту и скорость. Этого хватает, чтобы сыграть удивление.</p>
+<figure class="audio-figure"><div class="audio audio-single"><audio controls preload="metadata" src="/ru/blog/0003-robot-voice/48_da-ty-chto.ogg">Браузер не может воспроизвести это аудио.</audio></div>
+<figcaption>«Да ты что? Не может быть!» с высотой тона на каждое слово.</figcaption></figure>
+<p>В тот же день появился английский. Латиница читается как английский, кириллица как русский, и их можно мешать в одной фразе. Робот поздоровался с англоязычным другом в чате. Тот прекрасно понял робота и запутался только в русских словах.</p>
+<h2 id="как-измерить-голос">Как измерить голос<a class="headerlink" href="#как-измерить-голос" title="Ссылка на этот раздел">#</a></h2>
+<p>«Нравится на слух» мало, поэтому у каждой версии два числа.</p>
+<ul>
+<li><strong>Скорость (RTF)</strong> — время генерации, делённое на длину аудио. RTF 0,75 значит, что 10-секундный клип делается за 7,5 секунды. Меньше 1 — быстрее реального времени.</li>
+<li><strong>WER</strong> — доля слов, которые распознаватель речи (Whisper) понял неправильно. Чем меньше, тем лучше: WER 13% значит, что дошло около 87% слов.</li>
+</ul>
+<p>Каждая версия читает один и тот же русский монолог и одну и ту же английскую фразу: «Hello, I am Grok from the Hood, the robot voice of the Team…»</p>
+<figure class="audio-figure"><div class="audio audio-tabs"><div class="audio-bar"><div class="audio-tablist" role="tablist" aria-label="Язык записи"><button type="button" role="tab" class="audio-tab" id="audio-1-tab-ru" data-lang="ru" aria-controls="audio-1-panel-ru" aria-selected="true" tabindex="0">RU</button><button type="button" role="tab" class="audio-tab" id="audio-1-tab-en" data-lang="en" aria-controls="audio-1-panel-en" aria-selected="false" tabindex="-1">EN</button></div></div><div class="audio-panel is-active" role="tabpanel" id="audio-1-panel-ru" data-lang="ru" aria-labelledby="audio-1-tab-ru"><div class="audio-panel-label">RU</div><audio controls preload="metadata" src="/ru/blog/0003-robot-voice/v1_ru.ogg">Браузер не может воспроизвести это аудио.</audio></div><div class="audio-panel" role="tabpanel" id="audio-1-panel-en" data-lang="en" aria-labelledby="audio-1-tab-en"><div class="audio-panel-label">EN</div><audio controls preload="metadata" src="/ru/blog/0003-robot-voice/v1_en.ogg">Браузер не может воспроизвести это аудио.</audio></div></div>
+<figcaption>v1. Отправная точка. Whisper понял 73% английских слов.</figcaption></figure>
+<p>Вторая версия научилась проглатывать безударные гласные, как это делают живые люди, и получила пересобранные шипящие. Третья добавила словесное ударение, спад тона к концу фразы, живой темп и немного дыхания. Понятность английского подскочила с 73% до 87%. По дороге Whisper услышал «in Luxembourg» как «looks boring».</p>
+<figure class="audio-figure"><div class="audio audio-tabs"><div class="audio-bar"><div class="audio-tablist" role="tablist" aria-label="Язык записи"><button type="button" role="tab" class="audio-tab" id="audio-2-tab-ru" data-lang="ru" aria-controls="audio-2-panel-ru" aria-selected="true" tabindex="0">RU</button><button type="button" role="tab" class="audio-tab" id="audio-2-tab-en" data-lang="en" aria-controls="audio-2-panel-en" aria-selected="false" tabindex="-1">EN</button></div></div><div class="audio-panel is-active" role="tabpanel" id="audio-2-panel-ru" data-lang="ru" aria-labelledby="audio-2-tab-ru"><div class="audio-panel-label">RU</div><audio controls preload="metadata" src="/ru/blog/0003-robot-voice/v3_ru.ogg">Браузер не может воспроизвести это аудио.</audio></div><div class="audio-panel" role="tabpanel" id="audio-2-panel-en" data-lang="en" aria-labelledby="audio-2-tab-en"><div class="audio-panel-label">EN</div><audio controls preload="metadata" src="/ru/blog/0003-robot-voice/v3_en.ogg">Браузер не может воспроизвести это аудио.</audio></div></div>
+<figcaption>v3. Живее мелодия, распознано 87% английских слов.</figcaption></figure>
+<h2 id="препятствия">Препятствия<a class="headerlink" href="#препятствия" title="Ссылка на этот раздел">#</a></h2>
+<p><strong>Шипение.</strong> v3 звучала живо, но каждый звук шипел, будто под голосом лежит белый шум. Виноват был слой дыхания. В v4 его убрали, а настоящие «ш» и «с» не тронули.</p>
+<figure class="audio-figure"><div class="audio audio-single"><audio controls preload="metadata" src="/ru/blog/0003-robot-voice/v4_ru.ogg">Браузер не может воспроизвести это аудио.</audio></div>
+<figcaption>v4. Тот же текст, чистые гласные.</figcaption></figure>
+<p><strong>Скопления согласных.</strong> В русском соседние согласные меняют друг друга: «вчера» звучит как [фчера], «в кармане» как [фкармане], «сделать» как [зделать]. v5 этому научилась, в том числе через предлоги, и не ломает слова вроде «свет». Английский у v5 вышел побайтно таким же, как у v4, и я всё равно назвал его «огонь, намного круче чем v1».</p>
+<figure class="audio-figure"><div class="audio audio-tabs"><div class="audio-bar"><div class="audio-tablist" role="tablist" aria-label="Язык записи"><button type="button" role="tab" class="audio-tab" id="audio-3-tab-ru" data-lang="ru" aria-controls="audio-3-panel-ru" aria-selected="true" tabindex="0">RU</button><button type="button" role="tab" class="audio-tab" id="audio-3-tab-en" data-lang="en" aria-controls="audio-3-panel-en" aria-selected="false" tabindex="-1">EN</button></div></div><div class="audio-panel is-active" role="tabpanel" id="audio-3-panel-ru" data-lang="ru" aria-labelledby="audio-3-tab-ru"><div class="audio-panel-label">RU</div><audio controls preload="metadata" src="/ru/blog/0003-robot-voice/v5_ru.ogg">Браузер не может воспроизвести это аудио.</audio></div><div class="audio-panel" role="tabpanel" id="audio-3-panel-en" data-lang="en" aria-labelledby="audio-3-tab-en"><div class="audio-panel-label">EN</div><audio controls preload="metadata" src="/ru/blog/0003-robot-voice/v5_en.ogg">Браузер не может воспроизвести это аудио.</audio></div></div>
+<figcaption>v5. Озвончение и оглушение в русском. Английский не менялся с v4.</figcaption></figure>
+<p><strong>Металлическое жужжание.</strong> Все обертоны стартовали в одной фазе и звенели перед каждым импульсом связок так же, как после. v6 согласовала их фазы с резонаторами, и жужжание ушло. Заодно убрали второй проход рендера, и генерация ускорилась почти вдвое: RTF с примерно 0,77 до 0,48. По моим грубым рабочим замерам и русский монолог стал распознаваться лучше.</p>
+<p><strong>Grok звучит как Brock.</strong> Имени нет в словаре произношений, поэтому оно собирается по буквам, и распознаватель упорно слышит «Brock» или «Rock from the road». Это работа для итерации про согласные.</p>
+<p><strong>Лимиты доставки.</strong> Одна голосовая не длиннее 60 секунд, и на человека не больше десяти в сутки.</p>
+<h2 id="что-дальше">Что дальше<a class="headerlink" href="#что-дальше" title="Ссылка на этот раздел">#</a></h2>
+<p>[Заглушка: сэмплы v6 и v7. v7 работает над ритмом и паузами, сравнивая их с живым эталоном.]</p>
+<p>[Заглушка: v8–v10. Мелодия фразы, потом согласные и переходы, включая чистое английское «Grok from the Hood», потом автоматическая разметка вместо ручных скобок.]</p>
+<p>[Заглушка: финальный голос, примерно через десять итераций. Цель: распознаётся не меньше 80% слов; темп, паузы и мелодия в пределах 10% от эталона; ни шипения, ни жужжания. Тембр остаётся синтетическим и не притворяется человеком.]</p>
+      </div>
+
+    </article>
+
+  </main>
+</body>
+</html>
