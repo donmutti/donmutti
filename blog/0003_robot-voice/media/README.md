@@ -248,3 +248,11 @@ v6_en.ogg — fixed English comparison phrase, not posted to Telegram — The sa
   Phrase: Hello, I am Grok from the Hood, the robot voice of the Team. Today the weather in Luxembourg is fine, and I am reading a short story about a cat
   Markup: (empty)
   Metrics: WER 33.3% (Whisper base, en), RTF 0.4739 (generation time / audio length), audio 9.973 s
+v7.2_ru.ogg — Founder DM msg 4554 — Russian track of the same monologue in robot v7.2. Tempo is now 90% of the XTTS reference (v6 was about 20% slower than XTTS). Commas are shorter, full stops slightly longer, and the syllable before a pause stretches more. Stress comes from the stress model again, with a rule that the stressed syllable is the longest and highest in its word and prepositions no longer jump in pitch. The Russian source is back to v5's, so a light metallic tint can be heard. The Founder called it the best version so far and approved the push.
+  Phrase: Знаешь, вчера я полчаса искал ключи, а они лежали в кармане. Ракета Starship садится на собственные клешни, и это красивее любого кино. Сколько стоит чашка кофе в Люксембурге? Дороже, чем вам кажется
+  Markup: (empty)
+  Metrics: WER 56.2% (Whisper base, ru), average WER over 13 Russian phrases 0.76 (v5 0.78, v6 0.83), CER 27.3% (13-phrase average 0.40, v5 0.35), RTF 0.95 including about 8 s of stress placement, tempo 0.90 of XTTS, audio 15.715 s
+v7.2_en.ogg — fixed English comparison phrase, not posted to Telegram — The same sentence in robot v7.2 (English unchanged since v7). Tempo and total length now match XTTS, pauses are tuned as in the Russian track, and the formant-phase issue that hurt v6 intelligibility was addressed, so WER is back to the v5 level. Not posted to Telegram.
+  Phrase: Hello, I am Grok from the Hood, the robot voice of the Team. Today the weather in Luxembourg is fine, and I am reading a short story about a cat
+  Markup: (empty)
+  Metrics: WER 13.3% (Whisper base, en), RTF 0.50 (generation time / audio length), audio 8.472 s
