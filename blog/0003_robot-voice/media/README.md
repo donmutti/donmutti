@@ -276,3 +276,31 @@ v9.2_en.ogg — fixed English comparison phrase, not posted to Telegram — The 
   Phrase: Hello, I am Grok from the Hood, the robot voice of the Team. Today the weather in Luxembourg is fine, and I am reading a short story about a cat
   Markup: (empty)
   Metrics: WER 13.3% (Whisper base, en), audio 8.472 s
+v10_ru.ogg — not posted to Telegram — Russian track of a six-line keys-and-coffee dialog whose pitch contour (the melody of each phrase) was calibrated with Dmitrii (the author), line by line, using the expression markup of Grok from the Hood. The syntax is the same as in v8.1: `(t){n}` is a flat pitch level, `(t){n,m}` a glide, levels 0 to 6 with base 2 and 3 semitones per step, `+` after a vowel marks stress, `(t)[k]` sets speed, `|` / `||` / `|||` are 200 / 500 / 750 ms pauses, and nesting `((x){a,b})[k]` combines pitch and speed. Unlike v1–v9.2, this is not the four-sentence monologue, but a short exchange about lost keys, then coffee. In Russian, lines 003, 004 and 005 needed two or three Founder corrections; line 006 was approved on the first try. Six lines with 0.8 s gaps, rendered fresh 2026-11-25 22:32 Europe/Luxembourg. The engine is team commit 74f9d36; this Russian take does not itself demonstrate the English glued-group fix. Not posted to Telegram.
+  Phrase 1: Ты ключи не видел?
+  Markup 1: ты ключи не (ви+){2,5}(дел){5,2}
+  Phrase 2: В кармане твоей куртки!
+  Markup 2: (в кармане твоей ку+){2,5}(ртки){5,1}
+  Phrase 3: Серьёзно? Не может быть…
+  Markup 3: серь(ё+зно){2,7} | (не может){2,4}(бы+ть){4,2}
+  Phrase 4: Я же тебе вчера сказал, куда положил!
+  Markup 4: (я же тебе вчера сказа+л){2,5} (куда положи+л){4,1}
+  Phrase 5: Да сколько можно?! Опять ты всё перекладываешь!
+  Markup 5: (да ско+лько){3,6} (мо+жно){6,3} || (опя+ть){2,5} (ты всё перекла+дываешь){5,1}
+  Phrase 6: Ладно, ладно. Кофе купишь?
+  Markup 6: (ла+дно){3,2} (ла+дно){2,1} || (ко+фе){2} (ку+){2,5}(пишь){5,3}
+  Metrics: WER 36.7% (Whisper base, ru; 30 words), CER 13.0% (0.1295); audio 17.186 s (lines 1.297 + 1.727 + 1.735 + 2.631 + 3.568 + 2.222 s, plus five 0.800 s gaps); speech-only 13.180 s; audio_gen RTF 0.43 (5.7 s over 13.218 s of one-shot re-rendered speech; engine wall printed to 0.1 s). Tempo vs XTTS not measured (no natural reference of this dialog). Full process-wall RTF on three of six lines includes a large CLI startup cost (see /workspace/blog-media/0003_robot-voice/v10.md). Whisper hypothesis: «Ты к нючине видел? Скорманет твоей кутки. Серьёзно, не может быть. Я же тебе вчера сказал, куда положил. Да сколько можно? А как ты всё-таки пладываешь? Ладно, ладно. Котя кутишь?»
+v10_en.ogg — not posted to Telegram — English track of the same calibrated dialog, a line-by-line parallel of the Russian one, approved the same way. The renderer is 74f9d36. EN-005 showed that pitch and speed on one group need nesting, `((x){a,b})[k]`; a double suffix `(x){a,b}[k]` is dropped silently. EN-006 revealed the English glued-group bug: before the fix, each «okay» written as `((o){3}(ka+y){5})[0.8]` fell from 139 to 123 Hz; after 74f9d36 it rises from 139 to 184 Hz. Render attempts counted by filenames in the markup session: en-001 en1* = 2, en-002 en2* = 5, en-003 en3* = 2, en-004 en4* = 3, en-005 en5* = 7, en-006 en6* = 22 (including en6g-fix.ogg and en6i-fix.ogg). Six lines with 0.8 s gaps, rendered fresh 2026-11-25 22:32 Europe/Luxembourg. Not posted to Telegram.
+  Phrase 1: Have you seen my keys?
+  Markup 1: (have you seen my){4,2} (keys){2,5}
+  Phrase 2: They're in your jacket pocket!
+  Markup 2: (they're in your jacket){2,5} (po+cket){5,1}
+  Phrase 3: Really? That can't be…
+  Markup 3: (re+ally){3,6} | (that){3} (ca+n't){4,2} (be){2,1}
+  Phrase 4: I told you yesterday where I put them.
+  Markup 4: (i told you){2,4} (yesterday){3} (where i){2,4} (pu+t them){3}
+  Phrase 5: Oh, come on?! You keep moving my stuff around!
+  Markup 5: ((oh){5,2})[0.75] | (come){2,6} ((o+n){6,2})[0.5] || (you keep mo+ving my){5,3} (stuff around){4,1}
+  Phrase 6: Okay, okay. Will you grab some coffee?
+  Markup 6: ((o){3}(ka+y){5})[0.8] ((o){3}(ka+y){5})[0.8] ||| (will you grab some){4,2} (coffee){2,6}
+  Metrics: WER 2.5% (Whisper base, en; 40 words), CER 2.0%; audio 17.204 s (lines 1.336 + 1.422 + 1.490 + 2.188 + 3.544 + 3.218 s, plus five 0.800 s gaps); speech-only 13.198 s; audio_gen RTF 0.48 (6.3 s over 13.236 s of one-shot re-rendered speech). Tempo vs XTTS not measured (no natural reference of this dialog). This WER is not comparable to the 13.3% on the older «Hello, I am Grok from the Hood…» sentence: the text is different. Whisper hypothesis: «How you seen my keys? They're in your jacket pocket. Really? That can't be. I told you yesterday where I put them. Oh, come on. You keep moving my stuff around. Okay, okay. Will you grab some coffee?» (one substitution: Have → How).
