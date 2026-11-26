@@ -130,7 +130,7 @@ The last step was done by hand. Six lines of an everyday dialog about keys and c
 
 That English line 6 surfaced a bug. Each "okay" was marked to go up, but it fell from 139 to 123 Hz. An English word as a whole got the class of its first mark, so "kay" never got its own pitch. After fix 74f9d36, "okay" rises from 139 to 184 Hz. Two more things came out along the way. Pitch and speed on one group can only be set by nesting, `((x){a,b})[k]`, and a double suffix `(x){a,b}[k]` is silently ignored. And level 7 once slipped into an approved markup by mistake. Back then the renderer quietly clipped it to 6; now it's an error.
 
-## Finale: v10
+## Act six. v10 and a number you can't trust
 
 ```audio
 ru: v10_ru.ogg
@@ -140,7 +140,48 @@ caption: v10. The calibrated dialog, about 17.2 s in each language.
 
 The v10 numbers: Russian WER 36.7% and CER 13.0%, English WER 2.5% and CER 2.0%, RTF 0.43 and 0.48. The text here is different, so it can't be compared with the monologue in the table. Whisper got one English word wrong, "Have" → "How". In Russian it heard «Котя кутишь?» instead of «Кофе купишь?» ("Will you buy coffee?").
 
-And here's the honest part. By the numbers, the English is nearly perfect. By ear, in the next calibration round "fine" sounded like "vine" and the tempo was too fast, and I couldn't fix that with markup. So English is the next priority: how sounds join, "f" heard as "v", and tempo. And Russian must not get worse in the process.
+And here's the honest part. By the numbers, the English is nearly perfect. By ear, in the next calibration round "fine" sounded like "vine", the English ran noticeably faster than the Russian, and the joins between sounds were terrible. I couldn't fix that with markup, so I stopped the English calibration.
+
+## Act seven. v11: fix the mouth, then conduct
+
+Markup controls pitch and speed, but these problems sat deeper, in the sounds themselves. So the engine got fixed first.
+
+The join bug turned out to be very specific. A consonant followed by a consonant didn't hold its locus, its target formant frequencies, so the "m" in "from the" slid all the way into the "th". Now each English consonant holds its locus, a consonant pair crosses over in 2×18 ms, and r, w, y and l glide into the vowel over 70 ms. English "f" got its own noise: it used to borrow the Russian "ф" at −32 dB, which got masked and was heard as "v", and now it sits at −24 dB. English tempo went down from 1.2 to 1.02, from about 5.7 to 4.8 syllables per second, close to the Russian robot. At the slower tempo "hood" was heard as "Fuji", so "h" got 4 dB louder. Mean WER on eight English calibration texts fell from 24.4% to 14.0%, and the Russian audio stayed byte-for-byte the same.
+
+Then calibration resumed. I took "Today the weather in Luxembourg is fine…" almost at once: the second part perfect, the first nearly. I wrote the first part's markup myself. "Hello, I am Grok from the Hood…" passed on its old markup, but only once the joins were fixed.
+
+```audio
+src: v11_en-m-006.ogg
+caption: "Today the weather in Luxembourg is fine…" I wrote the first part's markup myself.
+```
+
+The approved markups were turned into default intonation rules: `MARKUP_RULES.md` for people and `markup_rules.json` for the machine. In a question like "how much", the peak sits on the question word and then falls to level 2. There's no pause before «чем» or "than". The comparative word gets the focus. A non-final clause rises, the final one falls. A lone interjection is slowed to [0.8]. The `||` pause became 580 ms. A level outside 0–6 and a double suffix are now honest errors instead of a silent "whatever". One flaw remains: Whisper hears "Queen" as "clean". I called this version the reference.
+
+```audio
+ru: v11_ru.ogg
+en: v11_en.ogg
+caption: v11, the reference. The Russian keys-and-coffee monologue (15.7 s) and the English sentence (9.95 s).
+```
+
+## Act eight. v12.3: Klatt-style transitions
+
+Remember Klatt from the physics section? In v12.3 we borrowed smooth transitions from his school. The timbre stayed the same; only the way formants travel from sound to sound changed. After stops and affricates they follow a critically damped curve, elsewhere a cosine. Each consonant has a locus by place of articulation, and for "г", "к" and "х" it shifts depending on whether the neighbouring vowel is front or back. Soft Russian consonants raise F2 and add a 75 ms glide. Short vowels slightly undershoot their target, like a real mouth. Melody and durations stayed untouched: across all 18 approved markups durations shifted by 0.0% and pitch was identical. The `--transitions v11` flag brings back v11 byte for byte.
+
+Here's the judge's verdict (Whisper base, temperature 0, one run for both versions): Russian keys-and-coffee monologue, WER 54.7% → 29.7%, CER 21.4% → 15.2%. On the eight English texts WER fell from 14.0% to 10.8%. RTF is 0.34 for Russian and 0.46 for English, so faster than real time.
+
+A note on method. The text is the same as in the act four table, but it was measured a new way: the monologue is voiced with the default intonation rules, and v11 itself scored 54.7% in this run, while another run the same evening gave 46.9%. So 29.7% can only be compared with the 54.7% from the same run, not with v9.2's 37.5%, and not with v10's 36.7%, which was a different text, the dialog.
+
+Now the twist. I listened to v11 and v12.3 again, and to me they sound the same. I like the transitions, but I can't hear the difference. Whisper hears a difference the human doesn't, and with English on the v10 engine it was the other way round: Whisper gave the dialog 2.5% while I heard "vine".
+
+```audio
+ru: v12.3_ru.ogg
+en: v12.3_en.ogg
+caption: v12.3. Same text as v11: Klatt-style transitions, melody and durations unchanged.
+```
+
+## Finale
+
+The next step is noise resonators for "ф", "с", "ш" and English "h". That's where the fine/vine and hood/road pairs live, which neither markup nor smooth transitions can reach.
 
 The robot is deterministic, too. The random pitch drift is seeded with a SHA-256 hash of the text, so the same markup gives a byte-identical ogg. I checked: two renders of "Ты ключи не видел?" matched down to the byte. The timbre will stay synthetic, and that's not a bug: this voice doesn't pretend to be human.
 
