@@ -922,17 +922,18 @@ def tags_html(tags, lang: str, linked: bool = True) -> str:
     return f'<span class="tags">{chips}</span>'
 
 
-def meta_line(article: Article, lang: str) -> str:
-    parts = []
+def date_html(article: Article, lang: str) -> str:
     date = str(article.published if article.is_published else (article.target or ""))
     if DATE_RE.match(date):
-        parts.append(f'<time datetime="{esc(date)}">{esc(fmt_date(date, lang))}</time>')
-    elif date:
-        parts.append(f'<time>{esc(date)}</time>')
+        return f'<div class="post-date"><time datetime="{esc(date)}">{esc(fmt_date(date, lang))}</time></div>'
+    if date:
+        return f'<div class="post-date"><time>{esc(date)}</time></div>'
+    return ""
+
+
+def tags_line(article: Article, lang: str) -> str:
     t = tags_html(article.tags, lang)
-    if t:
-        parts.append(t)
-    return "".join(parts)
+    return f'<div class="post-meta">{t}</div>' if t else ""
 
 
 def updates_section(article: Article, lang: str) -> str:
@@ -996,7 +997,7 @@ def render_article_page(article: Article, lang: str, errors: list[str], media: p
     sections = "".join((updates_section(article, lang), see_also_section(article, lang), discussion_section(article, lang)))
     content = render_template(
         "article.html", back_href=S[lang]["prefix"] + "/blog/", back_label=esc(s["back_list"]),
-        title=esc(article.title(lang)), meta=meta_line(article, lang), body=body, sections=sections)
+        title=esc(article.title(lang)), date=date_html(article, lang), meta=tags_line(article, lang), body=body, sections=sections)
     url = SITE + article.url(lang)
     title = f'{article.title(lang)} — Dmitrii Petukhov'
     desc = t["description"]
@@ -1031,7 +1032,7 @@ def render_list_page(lang: str, articles: list[Article], tag: str | None, tag_na
     prefix = s["prefix"]
     if articles:
         cards = "\n".join(
-            render_template("card.html", href=esc(a.url(lang)), title=esc(a.title(lang)), meta=meta_line(a, lang),
+            render_template("card.html", href=esc(a.url(lang)), title=esc(a.title(lang)), date=date_html(a, lang), meta=tags_line(a, lang),
                             description=esc(a.text[lang]["description"]))
             for a in articles)
         body = f'    <ul class="post-list">\n{cards}\n    </ul>\n'
