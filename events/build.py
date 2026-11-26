@@ -13,7 +13,8 @@ so a later rebuild keeps the structured data in sync with the cards.
 Whether an event is upcoming or past is derived from its dates, never stored:
 an event is past once its last day is behind the day this runs. That means the
 pages are only as current as the last build, so a scheduled rebuild keeps them
-honest.
+honest. Pass `--today YYYY-MM-DD` to build as of another day, for example the
+next day to move an event that has just ended into Past.
 
 Each event in events.json has these fields: title, series, start (ISO time
 with offset), venue, link (optional, the Meetup page), and backdrop
@@ -26,6 +27,7 @@ import html
 import json
 import pathlib
 import re
+import sys
 
 ROOT = pathlib.Path(__file__).parent.parent
 EVENTS = ROOT / "events.json"
@@ -213,6 +215,8 @@ def fill(home, archive, upcoming, past, when_fn, upcoming_heading, past_heading,
 def main():
     events = load()
     today = datetime.date.today()
+    if "--today" in sys.argv:
+        today = datetime.date.fromisoformat(sys.argv[sys.argv.index("--today") + 1])
 
     # Past once the last day is behind us: an event still shows as upcoming
     # all through the day it happens, which is when people look it up.
