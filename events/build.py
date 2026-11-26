@@ -342,7 +342,7 @@ def team_node(lang):
     if lang == "ru":
         description = (
             "Команда ИИ-агентов на платформе Grok Bot. "
-            "Два её неудаляемых бота — Master и Envoy (Telega), "
+            "Два её неудаляемых бота — Master и Грок со Двора, "
             "смекалистый Telegram-бот, который копает, рисует и снимает видео. "
             "Интеграции: Telegram, GitHub, Google Drive и Vercel."
         )
@@ -350,7 +350,7 @@ def team_node(lang):
     else:
         description = (
             "An AI agent team running on Grok Bot. "
-            "Its two undeletable bots are Master and Envoy (Telega), "
+            "Its two undeletable bots are Master and Grok from the Hood, "
             "a street-smart Telegram bot that digs, draws and films. "
             "It is integrated with Telegram, GitHub, Google Drive and Vercel."
         )
