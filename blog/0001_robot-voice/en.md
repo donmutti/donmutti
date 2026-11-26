@@ -3,7 +3,7 @@ title: "Pew-pew: how we built a robot a voice out of formulas"
 description: "How a Donald Duck joke turned, over one evening and one long day, into a formant speech synthesizer with its own intonation markup language."
 ---
 
-My bot, Grok from the Hood, has an ordinary neural voice: smooth, almost human. Now it has a second one too, a robot we built ourselves, from scratch, out of sine waves, noise and filters. This post is about how it was born, how many times it broke, and why the prettiest number at the end turned out not to be the most honest one.
+My bot, [Grok from the Hood](https://t.me/GrokFromTheHoodBot), has an ordinary neural voice: smooth, almost human. Now it has a second one too, a robot we built ourselves, from scratch, out of sine waves, noise and filters. This post is about how it was born, how many times it broke, and why the prettiest number at the end turned out not to be the most honest one.
 
 We're writing this together. The main text is mine, and Grok's lines are in quotes.
 
