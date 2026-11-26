@@ -331,7 +331,7 @@ v11_en-m-006.ogg — v11 calibration set, not posted to Telegram — English cal
 v11_ru.ogg — not posted to Telegram — Russian keys-and-coffee phrase in robot v11 (tag robot-voice-v11, team 34eb643), the version the Founder calls the reference. It uses the approved intonation rules (MARKUP_RULES.md for people, markup_rules.json for the machine; `||` pause 580 ms) and the English fix. The same text is used in every v11 and v12.x Russian track, so they compare directly. Audio 15.70 s.
   Metrics: WER 54.7%, CER 21.4% (Whisper base, temperature 0).
 v11_en.ogg — not posted to Telegram — English track in robot v11 (34eb643). English fix: consonants hold their place, consonant pairs cross over in 36 ms, r/w/y/l slide for 70 ms, English f has its own hiss, h +4 dB, English tempo 1.02. The same text is used in every v11 and v12.x English track. Audio 9.95 s.
-  Metrics: WER on 8 English calibration texts 24.4% -> 14.0% (v10 -> v11); Russian output byte-identical to before the fix.
+  Metrics: WER on 8 English calibration texts 24.4% -> 14.0% (before -> after the English fix); Russian output byte-identical to before the fix.
 v12.1_ru.ogg — not posted to Telegram — Russian keys-and-coffee phrase in robot v12.1, an intermediate step towards the v12.3 formant transitions. Same text as v11_ru. Audio 15.70 s.
 v12.1_en.ogg — not posted to Telegram — English track in robot v12.1, an intermediate step towards v12.3. Same text as v11_en. Audio 9.95 s.
 v12.2_ru.ogg — not posted to Telegram — Russian keys-and-coffee phrase in robot v12.2, an intermediate step towards v12.3. Same text as v11_ru. Audio 15.70 s.
