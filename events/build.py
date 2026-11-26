@@ -6,7 +6,7 @@ hand-written HTML stays untouched. Titles, series and venues are copied as
 written in events.json. Russian pages get Russian month names and the
 surrounding labels; the English card text stays as it has been.
 
-The same pass writes a JSON-LD block on each page (Person and The Team on
+The same pass writes a JSON-LD block on each page (Person and WebSite on
 the home pages, Event nodes from events.json on the home and events pages)
 so a later rebuild keeps the structured data in sync with the cards.
 
@@ -252,7 +252,7 @@ def main():
 
 
 PERSON_ID = "https://donmutti.com/#person"
-TEAM_ID = "https://donmutti.com/#the-team"
+WEBSITE_ID = "https://donmutti.com/#website"
 SITE = "https://donmutti.com"
 
 # Public profile links already printed on the home pages.
@@ -301,7 +301,6 @@ def person_node(lang, full=True):
                     ),
                     "sameAs": "https://www.linkedin.com/company/inca-tech",
                 },
-                "owns": {"@id": TEAM_ID},
             })
         return node
 
@@ -332,37 +331,20 @@ def person_node(lang, full=True):
                 ),
                 "sameAs": "https://www.linkedin.com/company/inca-tech",
             },
-            "owns": {"@id": TEAM_ID},
         })
     return node
 
 
-def team_node(lang):
-    """The Team: an AI agent team, with only the two undeletable bots named."""
-    if lang == "ru":
-        description = (
-            "Команда ИИ-агентов на платформе Grok Bot. "
-            "Два её неудаляемых бота — Master и Грок со Двора, "
-            "смекалистый Telegram-бот, который копает, рисует и снимает видео. "
-            "Интеграции: Telegram, GitHub, Google Drive и Vercel."
-        )
-        in_language = "ru"
-    else:
-        description = (
-            "An AI agent team running on Grok Bot. "
-            "Its two undeletable bots are Master and Grok from the Hood, "
-            "a street-smart Telegram bot that digs, draws and films. "
-            "It is integrated with Telegram, GitHub, Google Drive and Vercel."
-        )
-        in_language = "en"
+def website_node(lang):
+    """donmutti.com, the personal site of Dmitrii Petukhov."""
     return {
-        "@type": "SoftwareApplication",
-        "@id": TEAM_ID,
-        "name": "The Team",
-        "description": description,
-        "creator": {"@id": PERSON_ID},
-        "featureList": ["Telegram", "GitHub", "Google Drive", "Vercel"],
-        "inLanguage": in_language,
+        "@type": "WebSite",
+        "@id": WEBSITE_ID,
+        "name": "donmutti.com",
+        "url": SITE + "/",
+        "author": {"@id": PERSON_ID},
+        "publisher": {"@id": PERSON_ID},
+        "inLanguage": lang,
     }
 
 
@@ -442,8 +424,8 @@ def write_json_ld(upcoming, past):
     ]
 
     pages = (
-        (HOME, [person_node("en"), team_node("en"), *next_en]),
-        (HOME_RU, [person_node("ru"), team_node("ru"), *next_ru]),
+        (HOME, [person_node("en"), website_node("en"), *next_en]),
+        (HOME_RU, [person_node("ru"), website_node("ru"), *next_ru]),
         (ARCHIVE, [person_node("en", full=False), *archive_en]),
         (ARCHIVE_RU, [person_node("ru", full=False), *archive_ru]),
     )
