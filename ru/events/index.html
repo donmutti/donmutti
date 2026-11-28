@@ -23,8 +23,186 @@
   <meta name="twitter:title" content="События — Dmitrii Petukhov">
   <meta name="twitter:description" content="Митапы и выступления с моим участием.">
 
-  <link rel="stylesheet" href="/assets/event-card.css">
-  <link rel="stylesheet" href="/assets/lang.css">
+<!-- shared-css:start -->
+  <style>
+  /* event-card.css */
+/* The event card, shared by the home page and /events/.
+   events/build.py inlines this file into those pages (and keeps the
+   markup in step). Change it here, not in a page. */
+
+.next-meetup {
+  border: 1px solid #263044;
+  border-radius: 6px;
+  padding: 20px 22px 22px;
+  transition: box-shadow 0.14s ease;
+}
+
+/* lighten on hover with a full-coverage inset, the way Paragrapher does it:
+   a wash over whatever colour sits underneath, rather than a new background. */
+.next-meetup:hover {
+  box-shadow: inset 0 0 0 9999px rgba(255, 255, 255, 0.045);
+}
+
+.nm-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px 16px;
+}
+
+.nm-title {
+  font-weight: 700;
+  color: #fff;
+  font-size: 18px;
+}
+
+/* A label, so it never breaks: the row above wraps instead. */
+.nm-kind {
+  display: inline-block;
+  padding: 3px 10px 4px;
+  border: 1px solid #2b3647;
+  border-radius: 999px;
+  color: #aab3c2;
+  font-size: 13px;
+  line-height: 1.3;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.nm-when {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #cbd2dd;
+  margin-top: 8px;
+}
+
+.nm-where {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #8d97a8;
+  font-size: 15px;
+  margin-top: 4px;
+}
+
+.nm-ic {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  color: #6b7585;
+}
+
+.nm-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 12px;
+  font-size: 15px;
+  color: #0186ff;
+  text-decoration: none;
+}
+
+.nm-link:hover { text-decoration: underline; }
+
+.nm-arrow {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  margin-left: -3px;
+  transform: translateY(1.5px);
+}
+
+.nm-empty { color: #8d97a8; }
+
+/* Backdrop: the event's image behind the text, under a dark tint that is
+   heaviest on the left, where the text sits. */
+.next-meetup.has-backdrop {
+  background:
+    linear-gradient(90deg, rgba(15, 21, 34, 0.96) 0%, rgba(15, 21, 34, 0.84) 55%, rgba(15, 21, 34, 0.55) 100%),
+    var(--nm-backdrop) right center / cover no-repeat;
+}
+  /* lang.css */
+/* Language switch and the Blog link. The pages reserve a top band so this never covers content. */
+
+.topnav {
+  position: fixed;
+  z-index: 2;
+  top: max(10px, env(safe-area-inset-top));
+  right: max(12px, env(safe-area-inset-right));
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.topnav-blog {
+  display: inline-block;
+  padding: 6px 11px 7px;
+  border: 1px solid #2b3647;
+  border-radius: 999px;
+  background: #111827;
+  color: #8d97a8;
+  font-family: 'Open Sans', system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.topnav-blog:hover {
+  color: #cbd2dd;
+  text-decoration: none;
+}
+
+.topnav-blog[aria-current="page"] {
+  color: #fff;
+  background: #1c2536;
+}
+
+.topnav-blog:focus-visible {
+  outline: 2px solid #0186ff;
+  outline-offset: 2px;
+}
+
+.lang {
+  display: flex;
+  padding: 2px;
+  border: 1px solid #2b3647;
+  border-radius: 999px;
+  background: #111827;
+  font-family: 'Open Sans', system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.04em;
+}
+
+.lang a {
+  color: #8d97a8;
+  text-decoration: none;
+  padding: 4px 9px 5px;
+  border-radius: 999px;
+}
+
+.lang a[aria-current="page"] {
+  color: #fff;
+  background: #1c2536;
+}
+
+.lang a:hover {
+  color: #cbd2dd;
+  text-decoration: none;
+}
+
+.lang a:focus-visible {
+  outline: 2px solid #0186ff;
+  outline-offset: 2px;
+}
+  </style>
+<!-- shared-css:end -->
 
   <style>
     @font-face {
@@ -139,7 +317,7 @@
       font-size: 13px;
       letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: #6b7585;
+      color: #8d97a8;
       margin: 40px 0 16px;
     }
 
@@ -254,7 +432,7 @@
 
     <!-- all-events:start -->
       <h2>Ближайшие</h2>
-      <div class="next-meetup has-backdrop" style="--nm-backdrop: url(&quot;https://secure.meetupstatic.com/photos/event/7/9/f/c/highres_537331228.webp?w=1080&quot;)">
+      <div class="next-meetup has-backdrop" style="--nm-backdrop: url(&quot;https://secure.meetupstatic.com/photos/event/7/9/f/c/600_537331228.webp&quot;)">
         <div class="nm-head">
           <span class="nm-title">Dec'26: What My AI Team Looks Like</span>
           <span class="nm-kind">Go Indie Club</span>

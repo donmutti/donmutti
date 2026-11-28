@@ -50,6 +50,7 @@ S = {
     "en": {
         "lang_label": "Language", "back_home": "Back", "back_list": "Blog", "blog": "Blog",
         "list_description": "Articles by Dmitrii Petukhov.", "empty": "The first article is on its way.", "empty_home": "Home",
+        "events": "Events",
         "tag": "Tag", "updated": "Updated", "see_also": "See also", "discussion": "Discussion",
         "thread": "Thread", "copy": "Copy", "copied": "Copied", "draft": "Draft",
         "target": "Target", "anchor": "Link to this section", "table": "Table",
@@ -59,6 +60,7 @@ S = {
     "ru": {
         "lang_label": "Язык", "back_home": "Назад", "back_list": "Блог", "blog": "Блог",
         "list_description": "Статьи Дмитрия Петухова.", "empty": "Первая статья уже в работе.", "empty_home": "На главную",
+        "events": "События",
         "tag": "Тег", "updated": "Обновлено", "see_also": "Читайте также", "discussion": "Обсуждение",
         "thread": "Тред", "copy": "Копировать", "copied": "Скопировано", "draft": "Черновик",
         "target": "Цель", "anchor": "Ссылка на этот раздел", "table": "Таблица",
@@ -652,13 +654,14 @@ def page(lang: str, title: str, description: str, canonical_path: str, en_path: 
          social: str, jsonld: str, content: str, noindex: bool = False) -> str:
     s = S[lang]
     robots = '  <meta name="robots" content="noindex, nofollow">\n' if noindex else ""
+    lang_css = (ROOT / "assets" / "lang.css").read_text(encoding="utf-8")
     return render_template(
         "page.html", lang=lang, title=esc(title), description=esc(description), robots=robots,
         canonical=esc(SITE + canonical_path), hreflang=hreflang_block(en_path, ru_path),
         social=social, jsonld=jsonld, lang_label=esc(s["lang_label"]),
         lang_links=lang_links(en_path, ru_path, lang),
         blog_href=s["prefix"] + "/blog/", blog_label=esc(s["blog"]),
-        blog_current=' aria-current="page"', content=content)
+        blog_current=' aria-current="page"', content=content, lang_css=lang_css)
 
 
 def social_block(lang: str, kind: str, url: str, title: str, description: str, image: str,
@@ -824,7 +827,11 @@ def render_list_page(lang: str, articles: list[Article], tag: str | None) -> str
     else:
         body = (
             f'    <p class="list-empty">{esc(s["empty"])}</p>\n'
-            f'    <p class="list-home"><a href="{esc(s["home"])}">{esc(s["empty_home"])}</a></p>\n'
+            f'    <p class="list-home">'
+            f'<a href="{esc(s["home"])}">{esc(s["empty_home"])}</a>'
+            f' · <a href="{esc(s["prefix"] + "/events/")}">{esc(s["events"])}</a>'
+            f' · <a href="{esc(s["prefix"] + "/blog/")}">{esc(s["blog"])}</a>'
+            f'</p>\n'
         )
     if tag:
         title_text = f'{s["tag"]}: {tag}'

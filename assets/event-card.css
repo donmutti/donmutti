@@ -1,6 +1,6 @@
 /* The event card, shared by the home page and /events/.
-   Both pages render it from events/build.py, so the markup and these
-   rules have to stay in step. Change it here, not in a page. */
+   events/build.py inlines this file into those pages (and keeps the
+   markup in step). Change it here, not in a page. */
 
 .next-meetup {
   border: 1px solid #263044;

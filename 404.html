@@ -8,7 +8,88 @@
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="preload" href="/assets/fonts/Raleway-800.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/assets/fonts/OpenSans-400.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="/assets/lang.css">
+<!-- shared-css:start -->
+  <style>
+  /* lang.css */
+/* Language switch and the Blog link. The pages reserve a top band so this never covers content. */
+
+.topnav {
+  position: fixed;
+  z-index: 2;
+  top: max(10px, env(safe-area-inset-top));
+  right: max(12px, env(safe-area-inset-right));
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.topnav-blog {
+  display: inline-block;
+  padding: 6px 11px 7px;
+  border: 1px solid #2b3647;
+  border-radius: 999px;
+  background: #111827;
+  color: #8d97a8;
+  font-family: 'Open Sans', system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.topnav-blog:hover {
+  color: #cbd2dd;
+  text-decoration: none;
+}
+
+.topnav-blog[aria-current="page"] {
+  color: #fff;
+  background: #1c2536;
+}
+
+.topnav-blog:focus-visible {
+  outline: 2px solid #0186ff;
+  outline-offset: 2px;
+}
+
+.lang {
+  display: flex;
+  padding: 2px;
+  border: 1px solid #2b3647;
+  border-radius: 999px;
+  background: #111827;
+  font-family: 'Open Sans', system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.04em;
+}
+
+.lang a {
+  color: #8d97a8;
+  text-decoration: none;
+  padding: 4px 9px 5px;
+  border-radius: 999px;
+}
+
+.lang a[aria-current="page"] {
+  color: #fff;
+  background: #1c2536;
+}
+
+.lang a:hover {
+  color: #cbd2dd;
+  text-decoration: none;
+}
+
+.lang a:focus-visible {
+  outline: 2px solid #0186ff;
+  outline-offset: 2px;
+}
+  </style>
+<!-- shared-css:end -->
   <link rel="stylesheet" href="/assets/blog.css">
   <script>
     if (/^\/ru(\/|$)/.test(location.pathname)) {
@@ -17,7 +98,7 @@
         document.title = 'Страница не найдена — Дмитрий Петухов';
         var t = {
           'nf-blog': ['Блог', '/ru/blog/'], 'nf-home': ['На главную', '/ru/'],
-          'nf-blog2': ['Блог', '/ru/blog/']
+          'nf-events': ['События', '/ru/events/'], 'nf-blog2': ['Блог', '/ru/blog/']
         };
         for (var id in t) { var a = document.getElementById(id); a.textContent = t[id][0]; a.href = t[id][1]; }
         document.getElementById('nf-title').textContent = 'Страница не найдена';
@@ -37,7 +118,7 @@
   <main>
     <h1 class="list-title" id="nf-title">Page not found</h1>
     <p class="list-empty" id="nf-text">This page doesn’t exist. It may have moved, or the address has a typo.</p>
-    <p class="list-home"><a id="nf-home" href="/">Home</a> · <a id="nf-blog2" href="/blog/">Blog</a></p>
+    <p class="list-home"><a id="nf-home" href="/">Home</a> · <a id="nf-events" href="/events/">Events</a> · <a id="nf-blog2" href="/blog/">Blog</a></p>
   </main>
 </body>
 </html>

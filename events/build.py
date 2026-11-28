@@ -21,6 +21,11 @@ with offset), venue, link (optional, the Meetup page), and backdrop
 (optional, an image URL). The backdrop is linked by its URL, never copied
 into this repo, and is drawn behind that event's card under a dark tint;
 a card without one keeps the plain background.
+
+The event-card and language-switch CSS live in assets/event-card.css and
+assets/lang.css. This script inlines those files into the four pages, and
+into 404.html (lang.css only), so the stylesheets stay the source of truth
+and a rebuild keeps the copies in step.
 """
 import datetime
 import html
@@ -35,6 +40,9 @@ HOME = ROOT / "index.html"
 ARCHIVE = ROOT / "events" / "index.html"
 HOME_RU = ROOT / "ru" / "index.html"
 ARCHIVE_RU = ROOT / "ru" / "events" / "index.html"
+NOT_FOUND = ROOT / "404.html"
+ASSETS = ROOT / "assets"
+
 
 # Genitive month names, so the date does not depend on the machine locale.
 # The English dates stay on strftime, which is how they have always been formed.
@@ -181,6 +189,38 @@ def card(event, indent, past=False, when_fn=when, rsvp="Details and RSVP on Meet
     return "\n".join(lines)
 
 
+def css_text(*names):
+    """The contents of one or more stylesheets from assets/, joined in order."""
+    parts = []
+    for name in names:
+        chunk = (ASSETS / name).read_text()
+        if not chunk.endswith("\n"):
+            chunk += "\n"
+        parts.append(f"  /* {name} */\n{chunk}")
+    return "".join(parts)
+
+
+def inline_shared_css(path, *names):
+    """Write the named stylesheets into path, between shared-css markers.
+
+    On a first run, the <link rel="stylesheet"> tags for those files are
+    replaced with a marked <style> block. Later runs only refresh the block.
+    """
+    body = f"  <style>\n{css_text(*names)}  </style>"
+    text = path.read_text()
+    if "<!-- shared-css:start -->" in text:
+        replace_block(path, "shared-css", body)
+        return
+    pattern = re.compile(
+        r"(?:  <link rel=\"stylesheet\" href=\"/assets/(?:event-card|lang)\.css\">\n)+"
+    )
+    block = f"<!-- shared-css:start -->\n{body}\n<!-- shared-css:end -->\n"
+    new, n = pattern.subn(block, text, count=1)
+    if n != 1:
+        raise SystemExit(f"could not find stylesheet links to inline in {path}")
+    path.write_text(new)
+
+
 def replace_block(path, name, body):
     """Swap whatever sits between <!-- name:start --> and <!-- name:end -->."""
     text = path.read_text()
@@ -251,6 +291,10 @@ def main():
     )
 
     write_json_ld(upcoming, past)
+
+    for path in (HOME, HOME_RU, ARCHIVE, ARCHIVE_RU):
+        inline_shared_css(path, "event-card.css", "lang.css")
+    inline_shared_css(NOT_FOUND, "lang.css")
 
     print(f"rendered {len(upcoming)} upcoming, {len(past)} past, en and ru")
 

@@ -30,7 +30,86 @@
   <link rel="preload" href="/assets/fonts/Raleway-700.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/assets/fonts/OpenSans-700.woff2" as="font" type="font/woff2" crossorigin>
 
-  <link rel="stylesheet" href="/assets/lang.css">
+  <style>
+/* Language switch and the Blog link. The pages reserve a top band so this never covers content. */
+
+.topnav {
+  position: fixed;
+  z-index: 2;
+  top: max(10px, env(safe-area-inset-top));
+  right: max(12px, env(safe-area-inset-right));
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.topnav-blog {
+  display: inline-block;
+  padding: 6px 11px 7px;
+  border: 1px solid #2b3647;
+  border-radius: 999px;
+  background: #111827;
+  color: #8d97a8;
+  font-family: 'Open Sans', system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.topnav-blog:hover {
+  color: #cbd2dd;
+  text-decoration: none;
+}
+
+.topnav-blog[aria-current="page"] {
+  color: #fff;
+  background: #1c2536;
+}
+
+.topnav-blog:focus-visible {
+  outline: 2px solid #0186ff;
+  outline-offset: 2px;
+}
+
+.lang {
+  display: flex;
+  padding: 2px;
+  border: 1px solid #2b3647;
+  border-radius: 999px;
+  background: #111827;
+  font-family: 'Open Sans', system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.04em;
+}
+
+.lang a {
+  color: #8d97a8;
+  text-decoration: none;
+  padding: 4px 9px 5px;
+  border-radius: 999px;
+}
+
+.lang a[aria-current="page"] {
+  color: #fff;
+  background: #1c2536;
+}
+
+.lang a:hover {
+  color: #cbd2dd;
+  text-decoration: none;
+}
+
+.lang a:focus-visible {
+  outline: 2px solid #0186ff;
+  outline-offset: 2px;
+}
+
+  </style>
   <link rel="stylesheet" href="/assets/blog.css">
   <script>document.documentElement.classList.add('js');</script>
   <script defer src="/assets/blog.js"></script>
@@ -38,7 +117,6 @@
   <script>
     window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
   </script>
-  <script defer src="/_vercel/web-analytics/script.js"></script>
 
 </head>
 <body>
@@ -56,7 +134,7 @@
 
     <h1 class="list-title">Блог</h1>
     <p class="list-empty">Первая статья уже в работе.</p>
-    <p class="list-home"><a href="/ru/">На главную</a></p>
+    <p class="list-home"><a href="/ru/">На главную</a> · <a href="/ru/events/">События</a> · <a href="/ru/blog/">Блог</a></p>
 
 
   </main>
